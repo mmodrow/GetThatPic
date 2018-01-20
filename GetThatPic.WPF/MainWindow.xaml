@@ -7,20 +7,24 @@
         mc:Ignorable="d"
         Title="GetThatPic" Height="350" Width="525">
     <Grid>
-        <TabControl HorizontalAlignment="Left" Height="319" VerticalAlignment="Top" Width="517">
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TabItem Header="Load">
                 <Grid Background="#FFE5E5E5">
-                    <Button Name="OpenLastFileButton" Content="Open Last File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="88"/>
-                    <Button Name="ClearLogButton" Content="Clear log" HorizontalAlignment="Left" Margin="426,10,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button x:Name="CopyLastFilePathButton" Content="Copy Last File's Path" HorizontalAlignment="Left" Margin="103,10,0,0" VerticalAlignment="Top" Width="121"/>
-                    <TextBox Name="LogTextBox" HorizontalAlignment="Left" Height="246" Margin="10,35,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="484"/>
+                    <Button Name="OpenLastFileButton" Content="Open Last File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="88" Click="OpenLastFileButton_Click"/>
+                    <Button Name="ClearLogButton" Content="Clear log" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="75" Click="ClearLogButton_Click"/>
+                    <Button x:Name="CopyLastFilePathButton" Content="Copy Last File's Path" HorizontalAlignment="Left" Margin="103,10,0,0" VerticalAlignment="Top" Width="121" Click="CopyLastFilePathButton_Click"/>
+                    <TextBox Name="LogTextBox" HorizontalAlignment="Stretch" Margin="10,35,10,10" VerticalAlignment="Stretch" IsReadOnly="True" AllowDrop="True" DragOver="LogTextBox_DragOver" DragLeave="LogTextBox_DragLeave" Drop="DropUrl" PreviewDragOver="EnableDropping">
+                    </TextBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Preview">
                 <Grid Background="#FFE5E5E5">
-                    <Button Name="PreviousPreviewImageButton" Content="&lt;" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Width="18"/>
-                    <Button Name="NextPreviewImageButton" Content="&gt;" HorizontalAlignment="Left" Margin="483,130,0,0" VerticalAlignment="Top" Width="18"/>
-                    <Image Name="PreviewImage" HorizontalAlignment="Left" Height="271" Margin="41,10,0,0" VerticalAlignment="Top" Width="430"/>
+                    <Button Name="PreviousPreviewImageButton" Content="&lt;" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="18" Click="PreviewPreviousImage"/>
+                    <Button Name="NextPreviewImageButton" Content="&gt;" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="18" Click="PreviewNextImage"/>
+                    <Label Name="PreviewImageName" Content="File Name" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="41,10,40,0" VerticalAlignment="Top" Width="430"/>
+                    <StackPanel AllowDrop="True" Drop="DropUrl" PreviewDragOver="EnableDropping" Margin="10,41,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Image x:Name="PreviewImage" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch" Height="219"/>
+                    </StackPanel>
                 </Grid>
             </TabItem>
         </TabControl>
