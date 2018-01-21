@@ -8,6 +8,14 @@
     public class RingBuffer<T>
     {
 
+        private int _length;
+
+        /// <summary>
+        /// The buffer.
+        /// </summary>
+        // ReSharper disable once InconsistentNaming
+        private readonly T[] buffer;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RingBuffer{T}"/> class.
         /// </summary>
@@ -30,7 +38,7 @@
         /// <value>
         /// The index.
         /// </value>
-        private int WriteIndex { get; set; } = -1;
+        private int StartIndex { get; set; } = 0;
 
         /// <summary>
         /// Gets or sets the readIndex of the ring buffer.
@@ -39,12 +47,6 @@
         /// The index.
         /// </value>
         private int ReadIndex { get; set; }
-
-        /// <summary>
-        /// The buffer.
-        /// </summary>
-        // ReSharper disable once InconsistentNaming
-        private readonly T[] buffer;
 
         /// <summary>
         /// Gets the <see cref="T"/> with the specified i.
@@ -56,19 +58,40 @@
         /// <returns></returns>
         public T this[int i] => buffer[i];
 
+
+        public int Length
+        {
+            get => _length;
+            private set
+            {
+                if (_length >= 0 && _length <= BufferSize)
+                {
+                    _length = value;
+                }
+            }
+        }
+
+        public bool IsEmpty => 0 >= Length;
+
         /// <summary>
         /// Adds a new entry.
         /// </summary>
         /// <param name="newEntry">The new entry.</param>
         public void Push(T newEntry)
         {
-            bool updateReadIndex = WriteIndex == ReadIndex;
-            WriteIndex = (WriteIndex + 1) % BufferSize;
-            buffer[WriteIndex] = newEntry;
+            // TODO: Reenable overflow.
+            bool updateReadIndex = Length - 1 == ReadIndex;
+            int writeIndex = (StartIndex + Length) % BufferSize;
+            buffer[writeIndex] = newEntry;
+
+            if (Length < BufferSize)
+            {
+                Length++;
+            }
 
             if (updateReadIndex)
             {
-                ReadIndex = WriteIndex;
+                ReadIndex = Length - 1;
             }
         }
 
@@ -78,9 +101,18 @@
         /// <returns></returns>
         public T Pop()
         {
-            T output = buffer[WriteIndex];
-            buffer[WriteIndex] = default(T);
-            WriteIndex--;
+            if (Length == 0)
+            {
+                return default(T);
+            }
+
+            int index = (StartIndex + Length + BufferSize - 1) % BufferSize;
+
+            T output = buffer[index];
+            buffer[index] = default(T);
+
+            Length--;
+            
             return output;
         }
 
@@ -90,7 +122,7 @@
         /// <value>
         /// The current entry.
         /// </value>
-        public T LastWritten => -1 < WriteIndex ? buffer[WriteIndex] : default(T);
+        public T LastWritten => buffer[(StartIndex + Length) % BufferSize];
 
         /// <summary>
         /// Gets the entry pointed at by the current read index.
@@ -98,7 +130,7 @@
         /// <value>
         /// The current entry.
         /// </value>
-        public T Current => -1 < ReadIndex ? buffer[ReadIndex] : default(T);
+        public T Current => -1 < ReadIndex ? buffer[(StartIndex + ReadIndex) % BufferSize] : default(T);
 
         /// <summary>
         /// Gets the previous element.
@@ -110,11 +142,12 @@
         {
             get
             {
-                if(
-                    null == buffer[(ReadIndex + BufferSize - 1) % BufferSize] 
-                    || buffer[(ReadIndex + BufferSize - 1) % BufferSize].Equals(default(T)))
+                if (
+                    IsEmpty
+                    ||null == buffer[(ReadIndex + StartIndex + BufferSize - 1) % BufferSize]
+                    || buffer[(ReadIndex + StartIndex + BufferSize - 1) % BufferSize].Equals(default(T)))
                 {
-                    return Current;
+                    return default(T);
                 }
 
                 ReadIndex = (ReadIndex + BufferSize - 1) % BufferSize;
@@ -133,8 +166,8 @@
             get
             {
                 if (
-                    null == buffer[(ReadIndex + 1) % BufferSize]
-                    || buffer[(ReadIndex + 1) % BufferSize].Equals(default(T)))
+                    null == buffer[(ReadIndex + StartIndex + 1) % BufferSize]
+                    || buffer[(ReadIndex + StartIndex + 1) % BufferSize].Equals(default(T)))
                 {
                     return Current;
                 }
