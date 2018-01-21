@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Media.Imaging;
-using GetThatPic.Data.Struct;
+using GetThatPic.Data.Structure;
 
 namespace GetThatPic.WPF.Models
 {

@@ -16,7 +16,7 @@ namespace GetThatPic.Parsing
 
         public IList<Domain> Domains { get; } = new List<Domain>();
 
-        public void InitializeConfig(bool clearFirst)
+        public void InitializeConfig(bool clearFirst = true)
         {
             if (clearFirst)
             {

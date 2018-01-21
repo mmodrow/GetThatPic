@@ -5,3 +5,4 @@
 /GetThatPic.WPF/publish
 **/packages
 **/Properties
+**/*.pfx

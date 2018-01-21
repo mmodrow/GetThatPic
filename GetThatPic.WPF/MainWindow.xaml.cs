@@ -167,7 +167,7 @@ namespace GetThatPic.WPF
                 return;
             }
 
-            System.Diagnostics.Process.Start(state.History.LastWritten.FileSystemLocation);
+            System.Diagnostics.Process.Start((string)state.History.LastWritten.FileSystemLocation);
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
