@@ -80,9 +80,14 @@
         public void Push(T newEntry)
         {
             // TODO: Reenable overflow.
-            bool updateReadIndex = Length - 1 == ReadIndex;
+            bool updateReadIndex = Length - 1 == ReadIndex && Length < BufferSize;
+
             int writeIndex = (StartIndex + Length) % BufferSize;
             buffer[writeIndex] = newEntry;
+            if (Length == BufferSize)
+            {
+                StartIndex = (StartIndex + 1) % BufferSize;
+            }
 
             if (Length < BufferSize)
             {

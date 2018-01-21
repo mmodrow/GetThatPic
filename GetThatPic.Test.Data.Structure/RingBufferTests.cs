@@ -133,7 +133,7 @@ namespace GetThatPic.Test.Data.Structure
                 buffer.Push(i);
             }
 
-            Assert.Equal(buffer.Current, last);
+            Assert.Equal(last, buffer.Current);
         }
 
         [Theory]
@@ -149,7 +149,7 @@ namespace GetThatPic.Test.Data.Structure
                 buffer.Push(i);
             }
 
-            Assert.Equal(buffer.Length, length);
+            Assert.Equal(length, buffer.Length);
         }
 
         [Theory]
@@ -165,7 +165,7 @@ namespace GetThatPic.Test.Data.Structure
                 buffer.Push(i);
             }
             
-            Assert.Equal(buffer.Previous, previous);
+            Assert.Equal(previous, buffer.Previous);
         }
     }
 }
