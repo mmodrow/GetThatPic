@@ -1,6 +1,7 @@
 ﻿using GetThatPic.WPF.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +36,6 @@ namespace GetThatPic.WPF
             InitializeComponent();
             state = new MainWindowState();
             LogTextBox.Text = LogCallToAction;
-            // TODO: set default image to enable dropping there.
             // TODO: click image to open it in the file system.
         }
 
@@ -90,17 +90,17 @@ namespace GetThatPic.WPF
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         private void DropUrl(object sender, DragEventArgs e)
         {
-            string DroppedUrl = (string)e.Data.GetData(DataFormats.Text);
-            LogTextBox.Text += "\n" + DroppedUrl;
-            BitmapImage bitmap = state.LoadImageFromUrlToPreview(DroppedUrl);
+            string droppedUrl = (string)e.Data.GetData(DataFormats.Text);
+            LogTextBox.Text += "\n" + droppedUrl;
+            BitmapImage bitmap = state.LoadImageFromUrlToPreview(droppedUrl);
             
             PreviewImage.Source = bitmap;
-            PreviewImageName.Content = DroppedUrl;
+            PreviewImageName.Content = droppedUrl;
 
             state.History.Push(new ImageEntry
             {
-                Name = DroppedUrl,
-                FileSystemLocation = DroppedUrl,
+                Name = droppedUrl,
+                FileSystemLocation = droppedUrl,
                 Content = bitmap
             });
         }
@@ -146,6 +146,11 @@ namespace GetThatPic.WPF
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void CopyLastFilePathButton_Click(object sender, RoutedEventArgs e)
         {
+            if (null == state.History?.LastWritten?.FileSystemLocation)
+            {
+                return;
+            }
+
             Clipboard.SetText(state.History.LastWritten.FileSystemLocation);
         }
 
@@ -157,7 +162,18 @@ namespace GetThatPic.WPF
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void OpenLastFileButton_Click(object sender, RoutedEventArgs e)
         {
+            if (null == state.History?.LastWritten?.FileSystemLocation)
+            {
+                return;
+            }
+
             System.Diagnostics.Process.Start(state.History.LastWritten.FileSystemLocation);
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
         }
     }
 }

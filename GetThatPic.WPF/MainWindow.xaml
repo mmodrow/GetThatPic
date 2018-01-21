@@ -3,9 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GetThatPic.WPF"
         mc:Ignorable="d"
-        Title="GetThatPic" Height="350" Width="525">
+        Title="GetThatPic" Height="350" Width="525" VerticalAlignment="Center" HorizontalAlignment="Center" Icon="Assets/download-to-storage-drive128.png">
     <Grid>
         <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TabItem Header="Load">
@@ -23,8 +22,16 @@
                     <Button Name="NextPreviewImageButton" Content="&gt;" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="18" Click="PreviewNextImage"/>
                     <Label Name="PreviewImageName" Content="File Name" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="41,10,40,0" VerticalAlignment="Top" Width="430"/>
                     <StackPanel AllowDrop="True" Drop="DropUrl" PreviewDragOver="EnableDropping" Margin="10,41,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <Image x:Name="PreviewImage" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch" Height="219"/>
+                        <Image x:Name="PreviewImage" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch" Source="Assets/download-to-storage-drive512.png" Height="219"/>
                     </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Legal">
+                <Grid Background="#FFE5E5E5">
+                    <TextBlock Name="IconAttribution" HorizontalAlignment="Stretch" Margin="10,73,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="51" Width="491">
+                        <Span xml:space="preserve"><Run Name="IconAttributionPre">Download-Icon made by </Run><Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://www.flaticon.com/authors/dave-gandy" ToolTip="Dave Gandy Creator's page">Dave Gandy</Hyperlink><Run Name="IconAttributionPost"> from www.flaticon.com</Run>
+                        </Span>
+                    </TextBlock>
                 </Grid>
             </TabItem>
         </TabControl>
