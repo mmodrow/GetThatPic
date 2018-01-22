@@ -20,9 +20,12 @@ namespace GetThatPic.Parsing
         /// <summary>
         /// Initializes a new instance of the <see cref="Link"/> class.
         /// </summary>
-        public Link()
+        public Link(bool autoInitialize = true)
         {
-            InitializeConfig();
+            if (autoInitialize)
+            {
+                InitializeConfig();
+            }
         }
 
         /// <summary>
@@ -57,9 +60,9 @@ namespace GetThatPic.Parsing
         /// </summary>
         /// <param name="link">The link.</param>
         /// <returns>The identified Domain configuration node or null if none applies.</returns>
-        public Domain IdentifyDomain(Uri link)
+        public Domain IdentifyDomain(string link)
         {
-            return Domains.FirstOrDefault(domain => domain.Url == link.Host);
+            return Domains.FirstOrDefault(domain => domain.Url == link);
         }
     }
 }
