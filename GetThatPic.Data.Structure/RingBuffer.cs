@@ -144,7 +144,7 @@ namespace GetThatPic.Data.Structure
         /// <value>
         /// The current entry.
         /// </value>
-        public T LastWritten => buffer[(StartIndex + Length - 1) % BufferSize];
+        public T LastWritten => buffer[Math.Max((StartIndex + Length - 1) % BufferSize, 0)];
 
         /// <summary>
         /// Gets the entry pointed at by the current read index.
@@ -165,8 +165,9 @@ namespace GetThatPic.Data.Structure
             get
             {
                 if (
-                    IsEmpty
-                    ||null == buffer[(ReadIndex + StartIndex + BufferSize - 1) % BufferSize]
+                    ReadIndex <= 0
+                    || IsEmpty
+                    || null == buffer[(ReadIndex + StartIndex + BufferSize - 1) % BufferSize]
                     || buffer[(ReadIndex + StartIndex + BufferSize - 1) % BufferSize].Equals(default(T)))
                 {
                     return default(T);
@@ -187,8 +188,12 @@ namespace GetThatPic.Data.Structure
         {
             get
             {
-                if (
-                    null == buffer[(ReadIndex + StartIndex + 1) % BufferSize]
+                if(ReadIndex >= Length - 1)
+                {
+                    return default(T);
+                }
+
+                if (null == buffer[(ReadIndex + StartIndex + 1) % BufferSize]
                     || buffer[(ReadIndex + StartIndex + 1) % BufferSize].Equals(default(T)))
                 {
                     return Current;

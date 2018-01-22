@@ -157,6 +157,35 @@ namespace GetThatPic.Test.Data.Structure
             Assert.Equal(5, buffer.Next);
         }
 
+
+        [Fact]
+        public void Next_Overflow()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>(3);
+
+            for (int i = 1; i <= 10; i++)
+            {
+                buffer.Push(i);
+                // ReSharper disable once UnusedVariable
+                int bufferPrevious = buffer.Previous;
+            }
+            
+            Assert.Equal(9, buffer.Next);
+        }
+
+        [Fact]
+        public void Next_Overflow_IndexTooGreat()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>(3);
+
+            for (int i = 1; i <= 10; i++)
+            {
+                buffer.Push(i);
+            }
+
+            Assert.Equal(0, buffer.Next);
+        }
+
         [Fact]
         public void Next_Empty()
         {
