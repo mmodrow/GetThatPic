@@ -1,4 +1,6 @@
-﻿namespace GetThatPic.Data.Structure
+﻿using System;
+
+namespace GetThatPic.Data.Structure
 {
     /// <summary>
     /// Implements a generic RingBuffer.
@@ -56,7 +58,22 @@
         /// </value>
         /// <param name="i">The i.</param>
         /// <returns></returns>
-        public T this[int i] => buffer[i];
+        public T this[int i]
+        {
+            get
+            {
+                if(i < 0 | IsEmpty)
+                {
+                    i = Math.Max(Length - 1, 0);
+                }
+                else if (i >= Length)
+                {
+                    i = i % (Length);
+                }
+
+                return buffer[(StartIndex + i) % BufferSize];
+            }
+        }
 
 
         public int Length
@@ -127,7 +144,7 @@
         /// <value>
         /// The current entry.
         /// </value>
-        public T LastWritten => buffer[(StartIndex + Length) % BufferSize];
+        public T LastWritten => buffer[(StartIndex + Length - 1) % BufferSize];
 
         /// <summary>
         /// Gets the entry pointed at by the current read index.

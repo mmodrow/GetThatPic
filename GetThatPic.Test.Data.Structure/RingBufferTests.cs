@@ -120,6 +120,174 @@ namespace GetThatPic.Test.Data.Structure
             Assert.Equal(output, found);
         }
 
+        [Fact]
+        public void Next_FromFirstInCollection()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>();
+
+            for (int i  = 1; i < 10; i++)
+            {
+                buffer.Push(i);
+                // ReSharper disable once UnusedVariable
+                int bufferPrevious = buffer.Previous;
+            }
+
+            Assert.Equal(2, buffer.Next);
+        }
+
+        [Fact]
+        public void Next_FromWithinInCollection()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>();
+
+            for (int i  = 1; i < 10; i++)
+            {
+                buffer.Push(i);
+                // ReSharper disable once UnusedVariable
+                int bufferPrevious = buffer.Previous;
+            }
+
+            // ReSharper disable once UnusedVariable
+            // ReSharper disable once NotAccessedVariable
+            int bufferNext = buffer.Next;
+            // ReSharper disable once RedundantAssignment
+            bufferNext = buffer.Next;
+            // ReSharper disable once RedundantAssignment
+            bufferNext = buffer.Next;
+            Assert.Equal(5, buffer.Next);
+        }
+
+        [Fact]
+        public void Next_Empty()
+        {
+            RingBuffer<string> buffer = new RingBuffer<string>();
+
+            Assert.Null(buffer.Next);
+        }
+
+        [Fact]
+        public void LastWritten_Empty()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>();
+            
+            Assert.Equal(0, buffer.LastWritten);
+        }
+
+        [Fact]
+        public void LastWritten_Written()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>();
+
+            for (int i = 1; i <= 10; i++)
+            {
+                buffer.Push(i);
+            }
+            Assert.Equal(10, buffer.LastWritten);
+        }
+
+        [Fact]
+        public void LastWritten_WrittenAndDeleted()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>();
+
+            for (int i = 1; i <= 10; i++)
+            {
+                buffer.Push(i);
+            }
+
+            buffer.Pop();
+            buffer.Pop();
+            Assert.Equal(8, buffer.LastWritten);
+        }
+
+        [Fact]
+        public void Item_Empty()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>();
+
+            Assert.Equal(0, buffer[0]);
+        }
+
+        [Fact]
+        public void Item_First()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>();
+
+            for (int i = 1; i <= 10; i++)
+            {
+                buffer.Push(i);
+            }
+
+            Assert.Equal(1, buffer[0]);
+        }
+
+        [Fact]
+        public void Item_Within()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>();
+
+            for (int i = 1; i <= 10; i++)
+            {
+                buffer.Push(i);
+            }
+
+            Assert.Equal(4, buffer[3]);
+        }
+
+        [Fact]
+        public void Item_Last()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>();
+
+            for (int i = 1; i <= 10; i++)
+            {
+                buffer.Push(i);
+            }
+
+            Assert.Equal(10, buffer[9]);
+        }
+
+        [Fact]
+        public void Item_Overflow()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>(4);
+
+            for (int i = 1; i <= 10; i++)
+            {
+                buffer.Push(i);
+                // ReSharper disable once UnusedVariable
+                int bufferPrevious = buffer.Previous;
+            }
+
+            Assert.Equal(8, buffer[1]);
+        }
+
+        [Fact]
+        public void Item_IndexTooGreat()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>();
+
+            for (int i = 1; i <= 10; i++)
+            {
+                buffer.Push(i);
+            }
+
+            Assert.Equal(4, buffer[13]);
+        }
+
+        [Fact]
+        public void Item_NegativeIndex()
+        {
+            RingBuffer<int> buffer = new RingBuffer<int>();
+
+            for (int i = 1; i < 10; i++)
+            {
+                buffer.Push(i);
+            }
+
+            Assert.Equal(9, buffer[-2]);
+        }
+
         [Theory]
         [InlineData(new int[]{}, 0)]
         [InlineData(new []{1,2,3,4}, 4)]
