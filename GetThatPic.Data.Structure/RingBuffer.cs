@@ -193,12 +193,6 @@ namespace GetThatPic.Data.Structure
                     return default(T);
                 }
 
-                if (null == buffer[(ReadIndex + StartIndex + 1) % BufferSize]
-                    || buffer[(ReadIndex + StartIndex + 1) % BufferSize].Equals(default(T)))
-                {
-                    return Current;
-                }
-
                 ReadIndex = (ReadIndex + 1) % BufferSize;
                 return Current;
             }
