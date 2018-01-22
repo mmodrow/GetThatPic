@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using GetThatPic.Data.Configuration;
+using GetThatPic.Data.IO;
 
 namespace GetThatPic.Parsing
 {
@@ -18,8 +19,9 @@ namespace GetThatPic.Parsing
     public class Link
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Link"/> class.
+        /// Initializes a new instance of the <see cref="Link" /> class.
         /// </summary>
+        /// <param name="autoInitialize">if set to <c>true</c> the config gets automatically initialized.</param>
         public Link(bool autoInitialize = true)
         {
             if (autoInitialize)
@@ -39,20 +41,31 @@ namespace GetThatPic.Parsing
         /// <summary>
         /// Initializes the configuration.
         /// </summary>
-        /// <param name="clearFirst">if set to <c>true</c> [clear first].</param>
-        public void InitializeConfig(bool clearFirst = true)
+        /// <param name="clearFirst">if set to <c>true</c> clear the config before initializing.</param>
+        /// <param name="domains">The domains.</param>
+        public void InitializeConfig(bool clearFirst = true, IList<Domain> domains = null)
         {
             if (clearFirst)
             {
                 Domains.Clear();
             }
 
-            Domains.Add(new Domain
+            if (null == domains)
             {
-                Name = "dilbert.com",
-                Url = "http://dilbert.com",
-                Path = new Regex("^/strip/((?:[0-9]+-?)+)$")
-            });
+                Domains.Add(new Domain
+                {
+                    Name = "dilbert.com",
+                    Url = "http://dilbert.com",
+                    Path = new Regex("^/strip/((?:[0-9]+-?)+)$")
+                });
+            }
+            else
+            {
+                foreach (Domain domain in domains)
+                {
+                    Domains.Add(domain);
+                }
+            }
         }
 
         /// <summary>
@@ -62,7 +75,16 @@ namespace GetThatPic.Parsing
         /// <returns>The identified Domain configuration node or null if none applies.</returns>
         public Domain IdentifyDomain(string link)
         {
-            return Domains.FirstOrDefault(domain => domain.Url == link);
+            if (string.IsNullOrWhiteSpace(link) || !Domains.Any())
+            {
+                return null;
+            }
+
+            string domain = HttpRequester.ProtocolAndDomain.Replace(link, "$1");
+            string path = HttpRequester.PathAfterdomain.Replace(link, "$1");
+            IList<Domain> matchingDomains = Domains.Where(d => d.Url == domain && d.Path.IsMatch(path)).ToList();
+
+            return matchingDomains.FirstOrDefault();
         }
     }
 }

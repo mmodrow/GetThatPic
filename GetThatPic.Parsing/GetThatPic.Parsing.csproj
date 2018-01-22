@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GetThatPic.Data.Configuration\GetThatPic.Data.Configuration.csproj" />
+    <ProjectReference Include="..\GetThatPic.Data.IO\GetThatPic.Data.IO.csproj" />
   </ItemGroup>
 
 </Project>
