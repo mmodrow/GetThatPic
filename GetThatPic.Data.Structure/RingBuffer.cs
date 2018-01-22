@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="RingBuffer.cs" company="Marc A. Modrow">
+// Copyright (c) 2018 All Rights Reserved
+// <author>Marc A. Modrow</author>
+// </copyright>
+using System;
 
 namespace GetThatPic.Data.Structure
 {
@@ -6,18 +10,20 @@ namespace GetThatPic.Data.Structure
     /// Implements a generic RingBuffer.
     /// Act base on the first in last out principle.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type this buffer should buffer.</typeparam>
     public class RingBuffer<T>
     {
-
-        private int _length;
-
         /// <summary>
         /// The buffer.
         /// </summary>
         // ReSharper disable once InconsistentNaming
         private readonly T[] buffer;
 
+        /// <summary>
+        /// The length.
+        /// </summary>
+        private int length;
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="RingBuffer{T}"/> class.
         /// </summary>
@@ -29,114 +35,36 @@ namespace GetThatPic.Data.Structure
         }
 
         /// <summary>
-        /// The buffer size.
+        /// Gets the buffer size.
         /// Using a ring buffer to make caching superfluous.
         /// </summary>
         public int BufferSize { get; }
 
         /// <summary>
-        /// Gets or sets the writeIndex of the ring buffer.
+        /// Gets the length.
         /// </summary>
         /// <value>
-        /// The index.
+        /// The length.
         /// </value>
-        private int StartIndex { get; set; } = 0;
-
-        /// <summary>
-        /// Gets or sets the readIndex of the ring buffer.
-        /// </summary>
-        /// <value>
-        /// The index.
-        /// </value>
-        private int ReadIndex { get; set; }
-
-        /// <summary>
-        /// Gets the <see cref="T"/> with the specified i.
-        /// </summary>
-        /// <value>
-        /// The <see cref="T"/>.
-        /// </value>
-        /// <param name="i">The i.</param>
-        /// <returns></returns>
-        public T this[int i]
-        {
-            get
-            {
-                if(i < 0 | IsEmpty)
-                {
-                    i = Math.Max(Length - 1, 0);
-                }
-                else if (i >= Length)
-                {
-                    i = i % (Length);
-                }
-
-                return buffer[(StartIndex + i) % BufferSize];
-            }
-        }
-
-
         public int Length
         {
-            get => _length;
+            get => length;
             private set
             {
-                if (_length >= 0 && _length <= BufferSize)
+                if (length >= 0 && length <= BufferSize)
                 {
-                    _length = value;
+                    length = value;
                 }
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is empty.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
+        /// </value>
         public bool IsEmpty => 0 >= Length;
-
-        /// <summary>
-        /// Adds a new entry.
-        /// </summary>
-        /// <param name="newEntry">The new entry.</param>
-        public void Push(T newEntry)
-        {
-            // TODO: Reenable overflow.
-            bool updateReadIndex = Length - 1 == ReadIndex && Length < BufferSize;
-
-            int writeIndex = (StartIndex + Length) % BufferSize;
-            buffer[writeIndex] = newEntry;
-            if (Length == BufferSize)
-            {
-                StartIndex = (StartIndex + 1) % BufferSize;
-            }
-
-            if (Length < BufferSize)
-            {
-                Length++;
-            }
-
-            if (updateReadIndex)
-            {
-                ReadIndex = Length - 1;
-            }
-        }
-
-        /// <summary>
-        /// Pops this instance's last written entry.
-        /// </summary>
-        /// <returns></returns>
-        public T Pop()
-        {
-            if (Length == 0)
-            {
-                return default(T);
-            }
-
-            int index = (StartIndex + Length + BufferSize - 1) % BufferSize;
-
-            T output = buffer[index];
-            buffer[index] = default(T);
-
-            Length--;
-            
-            return output;
-        }
 
         /// <summary>
         /// Gets the entry pointed at by the current read index.
@@ -188,7 +116,7 @@ namespace GetThatPic.Data.Structure
         {
             get
             {
-                if(ReadIndex >= Length - 1)
+                if (ReadIndex >= Length - 1)
                 {
                     return default(T);
                 }
@@ -198,5 +126,93 @@ namespace GetThatPic.Data.Structure
             }
         }
 
+        /// <summary>
+        /// Gets or sets the writeIndex of the ring buffer.
+        /// </summary>
+        /// <value>
+        /// The index.
+        /// </value>
+        private int StartIndex { get; set; } = 0;
+
+        /// <summary>
+        /// Gets or sets the readIndex of the ring buffer.
+        /// </summary>
+        /// <value>
+        /// The index.
+        /// </value>
+        private int ReadIndex { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="T"/> with the specified i.
+        /// </summary>
+        /// <value>
+        /// The <see cref="T"/>.
+        /// </value>
+        /// <param name="i">The i.</param>
+        /// <returns>The desired element.</returns>
+        public T this[int i]
+        {
+            get
+            {
+                if (i < 0 || IsEmpty)
+                {
+                    i = Math.Max(Length - 1, 0);
+                }
+                else if (i >= Length)
+                {
+                    i = i % Length;
+                }
+
+                return buffer[(StartIndex + i) % BufferSize];
+            }
+        }
+
+        /// <summary>
+        /// Adds a new entry.
+        /// </summary>
+        /// <param name="newEntry">The new entry.</param>
+        public void Push(T newEntry)
+        {
+            // TODO: Reenable overflow.
+            bool updateReadIndex = Length - 1 == ReadIndex && Length < BufferSize;
+
+            int writeIndex = (StartIndex + Length) % BufferSize;
+            buffer[writeIndex] = newEntry;
+            if (Length == BufferSize)
+            {
+                StartIndex = (StartIndex + 1) % BufferSize;
+            }
+
+            if (Length < BufferSize)
+            {
+                Length++;
+            }
+
+            if (updateReadIndex)
+            {
+                ReadIndex = Length - 1;
+            }
+        }
+
+        /// <summary>
+        /// Pops this instance's last written entry.
+        /// </summary>
+        /// <returns>The popped element.</returns>
+        public T Pop()
+        {
+            if (Length == 0)
+            {
+                return default(T);
+            }
+
+            int index = (StartIndex + Length + BufferSize - 1) % BufferSize;
+
+            T output = buffer[index];
+            buffer[index] = default(T);
+
+            Length--;
+            
+            return output;
+        }
     }
 }

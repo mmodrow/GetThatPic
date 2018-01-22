@@ -1,19 +1,12 @@
-﻿using GetThatPic.WPF.Models;
-using System;
-using System.Collections.Generic;
+﻿// <copyright file="MainWindow.xaml.cs" company="Marc A. Modrow">
+// Copyright (c) 2018 All Rights Reserved
+// <author>Marc A. Modrow</author>
+// </copyright>
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using GetThatPic.WPF.Models;
 
 namespace GetThatPic.WPF
 {
@@ -27,7 +20,11 @@ namespace GetThatPic.WPF
         /// </summary>
         private readonly MainWindowState state;
 
-        private string LogCallToAction = "Drop URLs here!";
+        /// <summary>
+        /// The log call to action for the initializing of the drop-target-log TextBox.
+        /// </summary>
+        private string logCallToAction = "Drop URLs here!";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
@@ -35,7 +32,8 @@ namespace GetThatPic.WPF
         {
             InitializeComponent();
             state = new MainWindowState();
-            LogTextBox.Text = LogCallToAction;
+            LogTextBox.Text = logCallToAction;
+
             // TODO: click image to open it in the file system.
         }
 
@@ -67,7 +65,7 @@ namespace GetThatPic.WPF
         /// <param name="newPreviewItem">The new preview item.</param>
         private void UpdatePreview(ImageEntry newPreviewItem)
         {
-            if(null == newPreviewItem)
+            if (null == newPreviewItem)
             {
                 return;
             }
@@ -78,9 +76,14 @@ namespace GetThatPic.WPF
             PreviewImage.Source = newPreviewItem.Content;
         }
 
+        /// <summary>
+        /// Handles the Click event of the ClearLogButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void ClearLogButton_Click(object sender, RoutedEventArgs e)
         {
-            LogTextBox.Text = LogCallToAction;
+            LogTextBox.Text = logCallToAction;
         }
 
         /// <summary>
@@ -113,7 +116,6 @@ namespace GetThatPic.WPF
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         private void LogTextBox_DragOver(object sender, DragEventArgs e)
         {
-
         }
 
         /// <summary>
@@ -124,7 +126,6 @@ namespace GetThatPic.WPF
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         private void LogTextBox_DragLeave(object sender, DragEventArgs e)
         {
-
         }
 
         /// <summary>
@@ -170,6 +171,11 @@ namespace GetThatPic.WPF
             System.Diagnostics.Process.Start((string)state.History.LastWritten.FileSystemLocation);
         }
 
+        /// <summary>
+        /// Handles the RequestNavigate event of the Hyperlink control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RequestNavigateEventArgs"/> instance containing the event data.</param>
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));

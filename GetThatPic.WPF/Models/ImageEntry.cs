@@ -1,11 +1,15 @@
-﻿using System.Windows.Media.Imaging;
+﻿// <copyright file="ImageEntry.cs" company="Marc A. Modrow">
+// Copyright (c) 2018 All Rights Reserved
+// <author>Marc A. Modrow</author>
+// </copyright>
+using System.Windows.Media.Imaging;
 
 namespace GetThatPic.WPF.Models
 {
     /// <summary>
     /// Models all data needed to know about a previously downloaded image.
     /// </summary>
-    class ImageEntry
+    public class ImageEntry
     {
         /// <summary>
         /// Gets or sets the content.

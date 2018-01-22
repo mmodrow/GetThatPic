@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿// <copyright file="App.xaml.cs" company="Marc A. Modrow">
+// Copyright (c) 2018 All Rights Reserved
+// <author>Marc A. Modrow</author>
+// </copyright>
+using System.Windows;
 
 namespace GetThatPic.WPF
 {
