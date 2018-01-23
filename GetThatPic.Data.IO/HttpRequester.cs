@@ -23,8 +23,8 @@ namespace GetThatPic.Data.IO
             {
                 var client = new HttpClient();
                 var stringTask = client.GetStringAsync(url);
-
-                return await stringTask;
+                string response = await stringTask;
+                return response;
             }
             catch
             {

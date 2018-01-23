@@ -18,30 +18,30 @@ namespace GetThatPic.Test.Data.IO
         /// Gets a null url.
         /// </summary>
         [Fact]
-        public void Get_Null()
+        public async Task Get_NullAsync()
         {
             HttpRequester requester = new HttpRequester();
-            Assert.Null(requester.Get(null));
+            Assert.Null(await requester.Get(null));
         }
 
         /// <summary>
         /// Gets an empty url.
         /// </summary>
         [Fact]
-        public void Get_Empty()
+        public async Task Get_Empty()
         {
             HttpRequester requester = new HttpRequester();
-            Assert.Null(requester.Get(String.Empty));
+            Assert.Null(await requester.Get(String.Empty));
         }
 
         /// <summary>
         /// Gets a non url.
         /// </summary>
         [Fact]
-        public void Get_NonUrl()
+        public async Task Get_NonUrl()
         {
             HttpRequester requester = new HttpRequester();
-            Assert.Null(requester.Get("this is no path"));
+            Assert.Null(await requester.Get("this is no path"));
         }
 
         /// <summary>
