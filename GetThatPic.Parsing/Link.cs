@@ -4,20 +4,28 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using GetThatPic.Data.Configuration;
 using GetThatPic.Data.IO;
+using HtmlAgilityPack;
+using HtmlAgilityPack.CssSelectors.NetCore;
 
 namespace GetThatPic.Parsing
 {
     /// <summary>
     /// Parses an url for the correct domain configuration node.
     /// From Domain and url other data can be retreived.
-    /// TODO: Include http://html-agility-pack.net/?z=codeplex
     /// </summary>
     public class Link
     {
+        /// <summary>
+        /// The http requester.
+        /// </summary>
+        private readonly HttpRequester requester;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Link" /> class.
         /// </summary>
@@ -28,6 +36,8 @@ namespace GetThatPic.Parsing
             {
                 InitializeConfig();
             }
+
+            requester = new HttpRequester();
         }
 
         /// <summary>
@@ -85,6 +95,118 @@ namespace GetThatPic.Parsing
             IList<Domain> matchingDomains = Domains.Where(d => d.Url == domain && d.Path.IsMatch(path)).ToList();
 
             return matchingDomains.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the http document from an URL.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>The parsed HtmlDocument.</returns>
+        public async Task<HtmlDocument> GetDocumentFromUrl(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return null;
+            }
+
+            Stream stream = await requester.GetStream(url);
+            var doc = new HtmlDocument();
+            doc.Load(stream);
+
+            return doc;
+        }
+
+        /// <summary>
+        /// Gets the http document from given markup.
+        /// </summary>
+        /// <param name="markup">The markup.</param>
+        /// <returns>The parsed HtmlDocument.</returns>
+        public HtmlDocument GetDocumentFromMarkup(string markup)
+        {
+            if (string.IsNullOrEmpty(markup))
+            {
+                return null;
+            }
+
+            try
+            {
+                var doc = new HtmlDocument();
+                doc.LoadHtml(markup);
+                if (doc.ParseErrors.Any())
+                {
+                    return null;
+                }
+
+                return doc;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets a document from either an url or markup.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>The parsed HtmlDocument.</returns>
+        public async Task<HtmlDocument> GetDocument(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return null;
+            }
+
+            if (HttpRequester.ProtocolAndDomain.IsMatch(input))
+            {
+                return await GetDocumentFromUrl(input);
+            }
+
+            return GetDocumentFromMarkup(input);
+        }
+
+        /// <summary>
+        /// Gets the content specified by a DomElementAccessor from a given HtmlDocument.
+        /// </summary>
+        /// <param name="doc">The document.</param>
+        /// <param name="accessor">The accessor.</param>
+        /// <returns>The desired Content.</returns>
+        public IList<string> GetContent(HtmlDocument doc, DomElementAccessor accessor)
+        {
+            if (null == doc || null == accessor || string.IsNullOrWhiteSpace(accessor.Selector))
+            {
+                return null;
+            }
+
+            IList<HtmlNode> nodes = doc.QuerySelectorAll(accessor.Selector);
+            IList<string> output;
+
+            switch (accessor.Type)
+            {
+                case DomElementAccessor.TargetType.Html:
+                    output = nodes.Select(node => node.InnerHtml).ToList();
+                    break;
+
+                case DomElementAccessor.TargetType.Text:
+                    output = nodes.Select(node => node.InnerText).ToList();
+                    break;
+
+                case DomElementAccessor.TargetType.Attribute:
+                    if (string.IsNullOrWhiteSpace(accessor.AttributeName))
+                    {
+                        return null;
+                    }
+
+                    output = nodes.Select(
+                        node => node.Attributes.First(
+                            attribute => accessor.AttributeName == attribute.Name).Value).ToList();
+                    break;
+
+                default:
+                    return null;
+            }
+
+            return output;
         }
     }
 }
