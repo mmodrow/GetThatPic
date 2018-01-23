@@ -3,7 +3,6 @@
 // <author>Marc A. Modrow</author>
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -15,6 +14,7 @@ namespace GetThatPic.Parsing
     /// <summary>
     /// Parses an url for the correct domain configuration node.
     /// From Domain and url other data can be retreived.
+    /// TODO: Include http://html-agility-pack.net/?z=codeplex
     /// </summary>
     public class Link
     {
