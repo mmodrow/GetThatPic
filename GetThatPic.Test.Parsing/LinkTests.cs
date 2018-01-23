@@ -311,6 +311,64 @@ namespace GetThatPic.Test.Parsing
         }
 
         /// <summary>
+        /// Tries GetContent with a null accessor
+        /// </summary>
+        [Fact]
+        public void GetContent_nullAccessor()
+        {
+            Link link = new Link(false);
+            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            DomElementAccessor accessor = null;
+
+            IList<string> content = link.GetContent(doc, accessor);
+
+            Assert.Null(content);
+        }
+
+        /// <summary>
+        /// Tries GetContent with an invalid selector.
+        /// </summary>
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void GetContent_InvalidSelector(string selector)
+        {
+            Link link = new Link(false);
+            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            DomElementAccessor accessor = new DomElementAccessor()
+            {
+                Type = DomElementAccessor.TargetType.Text,
+                Selector = selector
+            };
+
+            IList<string> content = link.GetContent(doc, accessor);
+
+            Assert.Null(content);
+        }
+
+        /// <summary>
+        /// Tries GetContent with an invalid selector.
+        /// </summary>
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void GetContent_InvalidAttributeName(string name)
+        {
+            Link link = new Link(false);
+            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            DomElementAccessor accessor = new DomElementAccessor()
+            {
+                Type = DomElementAccessor.TargetType.Attribute,
+                Selector = "span",
+                AttributeName = name
+            };
+
+            IList<string> content = link.GetContent(doc, accessor);
+
+            Assert.Null(content);
+        }
+
+        /// <summary>
         /// Gets the content inner text.
         /// </summary>
         [Fact]
