@@ -308,7 +308,7 @@ namespace GetThatPic.Test.Parsing
         }
 
         /// <summary>
-        /// Gets the image urls for a  dilbert comic.
+        /// Gets the image url for a  dilbert comic.
         /// </summary>
         /// <returns>A Task.</returns>
         [Fact]
@@ -322,7 +322,7 @@ namespace GetThatPic.Test.Parsing
         }
 
         /// <summary>
-        /// Gets the image urls for a  dilbert comic.
+        /// Gets the image urls for a multi-panel schisslaweng comic.
         /// </summary>
         /// <returns>A Task.</returns>
         [Fact]
