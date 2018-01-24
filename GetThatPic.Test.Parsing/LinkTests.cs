@@ -369,8 +369,7 @@ namespace GetThatPic.Test.Parsing
 
             Assert.Null(await link.GetImageUrls("http://this.pageis.not/present"));
         }
-
-
+        
         /// <summary>
         /// Gets the image file name for a  dilbert comic.
         /// </summary>

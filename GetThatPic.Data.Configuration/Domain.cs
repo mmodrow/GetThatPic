@@ -2,6 +2,8 @@
 // Copyright (c) 2018 All Rights Reserved
 // <author>Marc A. Modrow</author>
 // </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -12,6 +14,11 @@ namespace GetThatPic.Data.Configuration
     /// </summary>
     public class Domain
     {
+        /// <summary>
+        /// The download directory.
+        /// </summary>
+        private string downloadDirectory;
+
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
@@ -43,7 +50,7 @@ namespace GetThatPic.Data.Configuration
         /// The images.
         /// </value>
         public IEnumerable<IContentAccessor> Images { get; set; } = new List<IContentAccessor>();
-        
+
         /// <summary>
         /// Gets or sets the file name fragments.
         /// </summary>
@@ -52,6 +59,35 @@ namespace GetThatPic.Data.Configuration
         /// </value>
         public IEnumerable<IContentAccessor> FileNameFragments { get; set; } = new List<IContentAccessor>();
 
+        /// <summary>
+        /// Gets or sets the file name fragment delimiter.
+        /// </summary>
+        /// <value>
+        /// The file name fragment delimiter.
+        /// </value>
         public string FileNameFragmentDelimiter { get; set; } = "_";
+
+        /// <summary>
+        /// Gets or sets the download directory.
+        /// Defaults to %userprofile%\Pictures\GetThatPic\»DomainName«
+        /// </summary>
+        /// <value>
+        /// The download directory.
+        /// </value>
+        public string DownloadDirectory
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(downloadDirectory))
+                {
+                    DownloadDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) +
+                                      @"\GetThatPic\" + Name;
+                }
+
+                return downloadDirectory;
+            }
+
+            set => downloadDirectory = value;
+        }
     }
 }
