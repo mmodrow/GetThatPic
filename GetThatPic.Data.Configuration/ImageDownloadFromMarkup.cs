@@ -8,8 +8,8 @@ namespace GetThatPic.Data.Configuration
     /// Models the configuration Node for an image to be loaded from data within a DOM Element.
     /// </summary>
     /// <seealso cref="GetThatPic.Data.Configuration.DomElementAccessor" />
-    /// <seealso cref="GetThatPic.Data.Configuration.IImageDownloadInstruction" />
-    public class ImageDownloadFromMarkup : DomElementAccessor, IImageDownloadInstruction
+    /// <seealso cref="IContentAccessor" />
+    public class ImageDownloadFromMarkup : DomElementAccessor, IContentAccessor
     {
     }
 }

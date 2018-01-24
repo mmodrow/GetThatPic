@@ -42,6 +42,16 @@ namespace GetThatPic.Data.Configuration
         /// <value>
         /// The images.
         /// </value>
-        public IEnumerable<IImageDownloadInstruction> Images { get; set; }
+        public IEnumerable<IContentAccessor> Images { get; set; } = new List<IContentAccessor>();
+        
+        /// <summary>
+        /// Gets or sets the file name fragments.
+        /// </summary>
+        /// <value>
+        /// The file name fragments.
+        /// </value>
+        public IEnumerable<IContentAccessor> FileNameFragments { get; set; } = new List<IContentAccessor>();
+
+        public string FileNameFragmentDelimiter { get; set; } = "_";
     }
 }

@@ -4,12 +4,9 @@
 // </copyright>
 
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GetThatPic.Data.Configuration;
-using GetThatPic.Data.IO;
 using GetThatPic.Parsing;
 using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
@@ -311,235 +308,17 @@ namespace GetThatPic.Test.Parsing
         }
 
         /// <summary>
-        /// Tries GetContent with a null accessor
+        /// Gets the image urls for a  dilbert comic.
         /// </summary>
+        /// <returns>A Task.</returns>
         [Fact]
-        public void GetContent_nullAccessor()
+        public async Task GetImageUrls_Single_Dilbert()
         {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = null;
+            Link link = new Link();
 
-            IList<string> content = link.GetContent(doc, accessor);
-
-            Assert.Null(content);
-        }
-
-        /// <summary>
-        /// Tries GetContent with an invalid selector.
-        /// </summary>
-        /// <param name="selector">The selector.</param>
-        [Theory]
-        [InlineData("")]
-        [InlineData(null)]
-        public void GetContent_InvalidSelector(string selector)
-        {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
-            {
-                Type = DomElementAccessor.TargetType.Text,
-                Selector = selector
-            };
-
-            IList<string> content = link.GetContent(doc, accessor);
-
-            Assert.Null(content);
-        }
-
-        /// <summary>
-        /// Tries GetContent with an invalid selector.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        [Theory]
-        [InlineData("")]
-        [InlineData(null)]
-        public void GetContent_InvalidAttributeName(string name)
-        {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
-            {
-                Type = DomElementAccessor.TargetType.Attribute,
-                Selector = "span",
-                AttributeName = name
-            };
-
-            IList<string> content = link.GetContent(doc, accessor);
-
-            Assert.Null(content);
-        }
-
-        /// <summary>
-        /// Gets the content inner text.
-        /// </summary>
-        [Fact]
-        public void GetContent_InnerText()
-        {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
-            {
-                Type = DomElementAccessor.TargetType.Text,
-                Selector = "head"
-            };
-
-            string content = link.GetContent(doc, accessor).FirstOrDefault()?.Trim();
-
-            Assert.Equal("groﬂartig", content);
-        }
-
-        /// <summary>
-        /// Gets the content inner HTML single.
-        /// </summary>
-        [Fact]
-        public void GetContent_InnerHtml_Single()
-        {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
-            {
-                Type = DomElementAccessor.TargetType.Html,
-                Selector = "head"
-            };
-
-            string content = link.GetContent(doc, accessor).FirstOrDefault();
-
-            Assert.Equal(
-@"
-        <title>groﬂartig</title>
-    ", 
-                content);
-        }
-
-        /// <summary>
-        /// Gets the content inner HTML multiple.
-        /// </summary>
-        [Fact]
-        public void GetContent_InnerHtml_Multiple()
-        {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
-            {
-                Type = DomElementAccessor.TargetType.Html,
-                Selector = "h2"
-            };
-
-            IList<string> content = link.GetContent(doc, accessor);
-
-            Assert.Equal(2, content.Count);
-        }
-
-        /// <summary>
-        /// Gets the content attribute data.
-        /// </summary>
-        [Fact]
-        public void GetContent_Attribute_Data()
-        {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
-            {
-                Type = DomElementAccessor.TargetType.Attribute,
-                AttributeName = "data-stuff",
-                Selector = "#MainNavChild"
-            };
-
-            string content = link.GetContent(doc, accessor).FirstOrDefault();
-
-            Assert.Equal("Dreams are made of", content);
-        }
-
-        /// <summary>
-        /// Gets the content and replaces it.
-        /// </summary>
-        [Fact]
-        public void GetContent_Pattern_Valid()
-        {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
-            {
-                Type = DomElementAccessor.TargetType.Attribute,
-                AttributeName = "data-stuff",
-                Selector = "#MainNavChild",
-                Pattern = new Regex(@"^((?:[A-Za-z]+\s){3}).*$"),
-                Replace = "$1up"
-            };
-
-            string content = link.GetContent(doc, accessor).FirstOrDefault();
-
-            Assert.Equal("Dreams are made up", content);
-        }
-
-        /// <summary>
-        /// Gets the content andtries to replace it with an invalid regex.
-        /// </summary>
-        /// <param name="regexContent">Content of the regex.</param>
-        [Theory]
-        [InlineData("")]
-        [InlineData(null)]
-        public void GetContent_Pattern_Invalid(string regexContent)
-        {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
-            {
-                Type = DomElementAccessor.TargetType.Attribute,
-                AttributeName = "data-stuff",
-                Selector = "#MainNavChild",
-                Pattern = null != regexContent ? new Regex(regexContent) : null
-            };
-
-            string content = link.GetContent(doc, accessor)?.FirstOrDefault();
-
-            Assert.Null(content);
-        }
-
-        /// <summary>
-        /// Gets the content and replaces it.
-        /// </summary>
-        [Fact]
-        public void GetContent_Replace_Valid()
-        {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
-            {
-                Type = DomElementAccessor.TargetType.Attribute,
-                AttributeName = "data-stuff",
-                Selector = "#MainNavChild",
-                Pattern = new Regex(@"^((?:[A-Za-z]+\s){3}).*$")
-            };
-
-            string content = link.GetContent(doc, accessor).FirstOrDefault();
-
-            Assert.Equal("Dreams are made ", content);
-        }
-
-        /// <summary>
-        /// Gets the content andtries to replace it with an invalid replacement string.
-        /// </summary>
-        /// <param name="replace">The replace.</param>
-        [Theory]
-        [InlineData("")]
-        [InlineData(null)]
-        public void GetContent_Replace_Invalid(string replace)
-        {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
-            {
-                Type = DomElementAccessor.TargetType.Attribute,
-                AttributeName = "data-stuff",
-                Selector = "#MainNavChild",
-                Replace = replace
-            };
-
-            string content = link.GetContent(doc, accessor)?.FirstOrDefault();
-
-            Assert.Null(content);
+            Assert.Contains(
+                "http://assets.amuniversal.com/64a5e1b036e9012ea5cb00163e41dd5b", 
+                await link.GetImageUrls("http://dilbert.com/strip/2011-03-24"));
         }
 
         /// <summary>
@@ -547,13 +326,90 @@ namespace GetThatPic.Test.Parsing
         /// </summary>
         /// <returns>A Task.</returns>
         [Fact]
-        public async Task GetImageUrls_Dilbert()
+        public async Task GetImageUrls_Multiple_Schisslaweng()
+        {
+            Link link = new Link();
+
+            IList<string> foundImageUrls = await link.GetImageUrls("https://www.schisslaweng.net/probe/");
+            IList<string> expectedImageUrls = new List<string>
+            {
+                "https://www.schisslaweng.net/wp-content/uploads/sites/2/2017/03/01_Trainingistalles_FINAL_web-980x1386.jpg",
+                "https://www.schisslaweng.net/wp-content/uploads/sites/2/2017/03/02_Trainingistalles_FINAL_web-980x1386.jpg",
+                "https://www.schisslaweng.net/wp-content/uploads/sites/2/2017/03/03_Trainingistalles_FINAL_web-980x1386.jpg"
+            };
+
+            Assert.Equal(
+                expectedImageUrls, 
+                foundImageUrls);
+        }
+
+        /// <summary>
+        /// Gets the image urls for an invalid url.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>A Task.</returns>
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public async Task GetImageUrls_Invalid(string url)
+        {
+            Link link = new Link();
+
+            Assert.Null(await link.GetImageUrls(url));
+        }
+
+        /// <summary>
+        /// Gets the image urls from a non configured url.
+        /// </summary>
+        /// <returns>A Task.</returns>
+        [Fact]
+        public async Task GetImageUrls_NonConfigured()
+        {
+            Link link = new Link();
+
+            Assert.Null(await link.GetImageUrls("http://this.pageis.not/present"));
+        }
+
+
+        /// <summary>
+        /// Gets the image file name for a  dilbert comic.
+        /// </summary>
+        /// <returns>A Task.</returns>
+        [Fact]
+        public async Task GetImageFileName_Dilbert()
         {
             Link link = new Link();
 
             Assert.Contains(
-                "http://assets.amuniversal.com/64a5e1b036e9012ea5cb00163e41dd5b", 
-                await link.GetImageUrls("http://dilbert.com/strip/2011-03-24"));
+                "2018-01-23_-_User Specifications Are Not Complete",
+                await link.GetImageFileName("http://dilbert.com/strip/2018-01-23"));
+        }
+
+        /// <summary>
+        /// Gets the image file name for an invalid url.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>A Task.</returns>
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public async Task GetImageFileName_Invalid(string url)
+        {
+            Link link = new Link();
+
+            Assert.Null(await link.GetImageFileName(url));
+        }
+
+        /// <summary>
+        /// Gets the image file name from a non configured url.
+        /// </summary>
+        /// <returns>A Task.</returns>
+        [Fact]
+        public async Task GetImageFileName_NonConfigured()
+        {
+            Link link = new Link();
+
+            Assert.Null(await link.GetImageFileName("http://this.pageis.not/present"));
         }
     }
 }

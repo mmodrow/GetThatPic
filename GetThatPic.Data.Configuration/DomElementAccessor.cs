@@ -4,7 +4,11 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
+using HtmlAgilityPack;
+using HtmlAgilityPack.CssSelectors.NetCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -86,5 +90,41 @@ namespace GetThatPic.Data.Configuration
         public bool IsValid => Enum.IsDefined(typeof(TargetType), Type) && null != Pattern && !string.IsNullOrWhiteSpace(Pattern.ToString()) &&
                                !string.IsNullOrWhiteSpace(Replace) && !string.IsNullOrWhiteSpace(Selector) &&
                                !(TargetType.Attribute == Type && string.IsNullOrWhiteSpace(AttributeName));
+
+        /// <summary>
+        /// Gets the content specified by a DomElementAccessor from a given HtmlDocument.
+        /// </summary>
+        /// <param name="doc">The document.</param>
+        /// <returns>The desired Content.</returns>
+        public IList<string> GetContent(HtmlDocument doc)
+        {
+            if (null == doc || !IsValid)
+            {
+                return null;
+            }
+
+            IList<HtmlNode> nodes = doc.QuerySelectorAll(Selector);
+            IList<string> output = null;
+
+            switch (Type)
+            {
+                case DomElementAccessor.TargetType.Html:
+                    output = nodes.Select(node => node.InnerHtml).ToList<string>();
+                    break;
+
+                case DomElementAccessor.TargetType.Text:
+                    output = nodes.Select(node => node.InnerText).ToList<string>();
+                    break;
+
+                case DomElementAccessor.TargetType.Attribute:
+                    output = nodes.Select(
+                        node => node.Attributes.First(
+                            attribute => AttributeName == attribute.Name).Value).ToList<string>();
+                    break;
+            }
+
+            output = output?.Select(item => Pattern.Replace(item, Replace)).ToList();
+            return output;
+        }
     }
 }

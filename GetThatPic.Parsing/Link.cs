@@ -3,6 +3,7 @@
 // <author>Marc A. Modrow</author>
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -67,7 +68,7 @@ namespace GetThatPic.Parsing
                     Name = "dilbert.com",
                     Url = "http://dilbert.com",
                     Path = new Regex("^/strip/((?:[0-9]+-?)+)$"),
-                    Images = new List<IImageDownloadInstruction>()
+                    Images = new List<IContentAccessor>()
                     {
                         new ImageDownloadFromMarkup()
                         {
@@ -75,7 +76,54 @@ namespace GetThatPic.Parsing
                             AttributeName = "src",
                             Selector = ".img-comic"
                         }
-                    }
+                    },
+                    FileNameFragments = new List<IContentAccessor>()
+                    {
+                        new ImageDownloadFromMarkup()
+                        {
+                            Type = DomElementAccessor.TargetType.Text,
+                            Selector = "title",
+                            Pattern = new Regex(@"^.*?-  Dilbert Comic Strip on (\d{4}-\d{2}-\d{2}).*$")
+                        },
+                        new ImageDownloadFromMarkup()
+                        {
+                            Type = DomElementAccessor.TargetType.Text,
+                            Selector = ".comic-title-name"
+                        }
+                    },
+                    FileNameFragmentDelimiter = "_-_"
+                });
+
+                Domains.Add(new Domain
+                {
+                    Name = "www.schisslaweng.net",
+                    Url = "https://www.schisslaweng.net",
+                    Path = new Regex("^/(.*?)/.*$"),
+                    Images = new List<IContentAccessor>()
+                    {
+                        new ImageDownloadFromMarkup()
+                        {
+                            Type = DomElementAccessor.TargetType.Attribute,
+                            AttributeName = "src",
+                            Selector = ".gallery-item img"
+                        }
+                    },
+                    FileNameFragments = new List<IContentAccessor>()
+                    {
+                        new ImageDownloadFromMarkup()
+                        {
+                            Type = DomElementAccessor.TargetType.Attribute,
+                            AttributeName = "content",
+                            Selector = @"meta[name=""shareaholic:article_published_time""]",
+                            Pattern = new Regex(@"^(\d{4}-\d{2}-\d{2}).*$")
+                        },
+                        new ImageDownloadFromMarkup()
+                        {
+                            Type = DomElementAccessor.TargetType.Text,
+                            Selector = "h1"
+                        }
+                    },
+                    FileNameFragmentDelimiter = "_-_"
                 });
             }
             else
@@ -94,15 +142,28 @@ namespace GetThatPic.Parsing
         /// <returns>List of Image Urls</returns>
         public async Task<IList<string>> GetImageUrls(string url)
         {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return null;
+            }
+
             Domain domain = IdentifyDomain(url);
+
+            if (null == domain || !domain.Images.Any())
+            {
+                return null;
+            }
 
             HtmlDocument doc = await GetDocument(url);
 
-            IList<string> imagePaths;
-            foreach (IImageDownloadInstruction downloadInstruction in domain.Images)
+            if (null == doc)
             {
-                // TODO: improve typing.
-                imagePaths = GetContent(doc, (DomElementAccessor)downloadInstruction);
+                return null;
+            }
+
+            foreach (IContentAccessor downloadInstruction in domain.Images)
+            {
+                IList<string> imagePaths = downloadInstruction.GetContent(doc);
                 if (null != imagePaths)
                 {
                     return imagePaths;
@@ -110,6 +171,42 @@ namespace GetThatPic.Parsing
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the image file name for a given input url.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>List of Image Urls</returns>
+        public async Task<string> GetImageFileName(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return null;
+            }
+
+            Domain domain = IdentifyDomain(url);
+
+            if (null == domain || !domain.FileNameFragments.Any())
+            {
+                return null;
+            }
+
+            HtmlDocument doc = await GetDocument(url);
+
+            if (null == doc)
+            {
+                return null;
+            }
+
+            IList<IList<string>> imageNameFragments = new List<IList<string>>();
+
+            foreach (IContentAccessor downloadInstruction in domain.FileNameFragments)
+            {
+                imageNameFragments.Add(downloadInstruction.GetContent(doc));
+            }
+
+            return string.Join(domain.FileNameFragmentDelimiter, imageNameFragments.SelectMany(fragments => fragments));
         }
 
         /// <summary>
@@ -143,11 +240,18 @@ namespace GetThatPic.Parsing
                 return null;
             }
 
-            Stream stream = await requester.GetStream(url);
-            var doc = new HtmlDocument();
-            doc.Load(stream);
+            try
+            {
+                Stream stream = await requester.GetStream(url);
+                var doc = new HtmlDocument();
+                doc.Load(stream);
 
-            return doc;
+                return doc;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -190,43 +294,6 @@ namespace GetThatPic.Parsing
             }
 
             return GetDocumentFromMarkup(input);
-        }
-
-        /// <summary>
-        /// Gets the content specified by a DomElementAccessor from a given HtmlDocument.
-        /// </summary>
-        /// <param name="doc">The document.</param>
-        /// <param name="accessor">The accessor.</param>
-        /// <returns>The desired Content.</returns>
-        public IList<string> GetContent(HtmlDocument doc, DomElementAccessor accessor)
-        {
-            if (null == doc || null == accessor || !accessor.IsValid)
-            {
-                return null;
-            }
-
-            IList<HtmlNode> nodes = doc.QuerySelectorAll(accessor.Selector);
-            IList<string> output = null;
-
-            switch (accessor.Type)
-            {
-                case DomElementAccessor.TargetType.Html:
-                    output = nodes.Select(node => node.InnerHtml).ToList();
-                    break;
-
-                case DomElementAccessor.TargetType.Text:
-                    output = nodes.Select(node => node.InnerText).ToList();
-                    break;
-
-                case DomElementAccessor.TargetType.Attribute:
-                    output = nodes.Select(
-                        node => node.Attributes.First(
-                            attribute => accessor.AttributeName == attribute.Name).Value).ToList();
-                    break;
-            }
-
-            output = output?.Select(item => accessor.Pattern.Replace(item, accessor.Replace)).ToList();
-            return output;
         }
     }
 }

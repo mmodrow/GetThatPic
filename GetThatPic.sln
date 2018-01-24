@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetThatPic.Test.Parsing", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetThatPic.Test.Data.IO", "GetThatPic.Test.Data.IO\GetThatPic.Test.Data.IO.csproj", "{ED18D8ED-A053-45F2-BF5D-AF2D5A3BCAA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetThatPic.Test.Data.Configuration", "GetThatPic.Test.Data.Configuration\GetThatPic.Test.Data.Configuration.csproj", "{F448F907-8F89-4453-B55A-CEA700AE6C02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{ED18D8ED-A053-45F2-BF5D-AF2D5A3BCAA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED18D8ED-A053-45F2-BF5D-AF2D5A3BCAA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED18D8ED-A053-45F2-BF5D-AF2D5A3BCAA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F448F907-8F89-4453-B55A-CEA700AE6C02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F448F907-8F89-4453-B55A-CEA700AE6C02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F448F907-8F89-4453-B55A-CEA700AE6C02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F448F907-8F89-4453-B55A-CEA700AE6C02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{1CF6F362-640D-452E-99E3-BDDD8A303099} = {5E18C8FF-61C6-4E01-8EB7-88209278EBA7}
 		{BE5FBE62-1FBA-45EE-919E-3A0F1F528EAC} = {5E18C8FF-61C6-4E01-8EB7-88209278EBA7}
 		{ED18D8ED-A053-45F2-BF5D-AF2D5A3BCAA1} = {1CF6F362-640D-452E-99E3-BDDD8A303099}
+		{F448F907-8F89-4453-B55A-CEA700AE6C02} = {1CF6F362-640D-452E-99E3-BDDD8A303099}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30B6C25A-BE71-4960-B282-4726C81EA45E}
