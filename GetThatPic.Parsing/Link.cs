@@ -66,7 +66,16 @@ namespace GetThatPic.Parsing
                 {
                     Name = "dilbert.com",
                     Url = "http://dilbert.com",
-                    Path = new Regex("^/strip/((?:[0-9]+-?)+)$")
+                    Path = new Regex("^/strip/((?:[0-9]+-?)+)$"),
+                    Images = new List<IImageDownloadInstruction>()
+                    {
+                        new ImageDownloadFromMarkup()
+                        {
+                            Type = DomElementAccessor.TargetType.Attribute,
+                            AttributeName = "src",
+                            Selector = ".img-comic"
+                        }
+                    }
                 });
             }
             else
@@ -79,19 +88,44 @@ namespace GetThatPic.Parsing
         }
 
         /// <summary>
+        /// Gets the image urls for a given input url.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>List of Image Urls</returns>
+        public async Task<IList<string>> GetImageUrls(string url)
+        {
+            Domain domain = IdentifyDomain(url);
+
+            HtmlDocument doc = await GetDocument(url);
+
+            IList<string> imagePaths;
+            foreach (IImageDownloadInstruction downloadInstruction in domain.Images)
+            {
+                // TODO: improve typing.
+                imagePaths = GetContent(doc, (DomElementAccessor)downloadInstruction);
+                if (null != imagePaths)
+                {
+                    return imagePaths;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Identifies the domain fro a given uri.
         /// </summary>
-        /// <param name="link">The link.</param>
+        /// <param name="url">The url.</param>
         /// <returns>The identified Domain configuration node or null if none applies.</returns>
-        public Domain IdentifyDomain(string link)
+        public Domain IdentifyDomain(string url)
         {
-            if (string.IsNullOrWhiteSpace(link) || !Domains.Any())
+            if (string.IsNullOrWhiteSpace(url) || !Domains.Any())
             {
                 return null;
             }
 
-            string domain = HttpRequester.ProtocolAndDomain.Replace(link, "$1");
-            string path = HttpRequester.PathAfterdomain.Replace(link, "$1");
+            string domain = HttpRequester.ProtocolAndDomain.Replace(url, "$1");
+            string path = HttpRequester.PathAfterdomain.Replace(url, "$1");
             IList<Domain> matchingDomains = Domains.Where(d => d.Url == domain && d.Path.IsMatch(path)).ToList();
 
             return matchingDomains.FirstOrDefault();
@@ -185,11 +219,6 @@ namespace GetThatPic.Parsing
                     break;
 
                 case DomElementAccessor.TargetType.Attribute:
-                    if (string.IsNullOrWhiteSpace(accessor.AttributeName))
-                    {
-                        return null;
-                    }
-
                     output = nodes.Select(
                         node => node.Attributes.First(
                             attribute => accessor.AttributeName == attribute.Name).Value).ToList();

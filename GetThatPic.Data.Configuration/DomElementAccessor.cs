@@ -77,6 +77,12 @@ namespace GetThatPic.Data.Configuration
         /// </value>
         public string Replace { get; set; } = "$1";
 
+        /// <summary>
+        /// Returns true if all properties are valid.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if all properties are valid; otherwise, <c>false</c>.
+        /// </value>
         public bool IsValid => Enum.IsDefined(typeof(TargetType), Type) && null != Pattern && !string.IsNullOrWhiteSpace(Pattern.ToString()) &&
                                !string.IsNullOrWhiteSpace(Replace) && !string.IsNullOrWhiteSpace(Selector) &&
                                !(TargetType.Attribute == Type && string.IsNullOrWhiteSpace(AttributeName));

@@ -328,6 +328,7 @@ namespace GetThatPic.Test.Parsing
         /// <summary>
         /// Tries GetContent with an invalid selector.
         /// </summary>
+        /// <param name="selector">The selector.</param>
         [Theory]
         [InlineData("")]
         [InlineData(null)]
@@ -349,6 +350,7 @@ namespace GetThatPic.Test.Parsing
         /// <summary>
         /// Tries GetContent with an invalid selector.
         /// </summary>
+        /// <param name="name">The name.</param>
         [Theory]
         [InlineData("")]
         [InlineData(null)]
@@ -474,6 +476,7 @@ namespace GetThatPic.Test.Parsing
         /// <summary>
         /// Gets the content andtries to replace it with an invalid regex.
         /// </summary>
+        /// <param name="regexContent">Content of the regex.</param>
         [Theory]
         [InlineData("")]
         [InlineData(null)]
@@ -518,6 +521,7 @@ namespace GetThatPic.Test.Parsing
         /// <summary>
         /// Gets the content andtries to replace it with an invalid replacement string.
         /// </summary>
+        /// <param name="replace">The replace.</param>
         [Theory]
         [InlineData("")]
         [InlineData(null)]
@@ -536,6 +540,20 @@ namespace GetThatPic.Test.Parsing
             string content = link.GetContent(doc, accessor)?.FirstOrDefault();
 
             Assert.Null(content);
+        }
+
+        /// <summary>
+        /// Gets the image urls for a  dilbert comic.
+        /// </summary>
+        /// <returns>A Task.</returns>
+        [Fact]
+        public async Task GetImageUrls_Dilbert()
+        {
+            Link link = new Link();
+
+            Assert.Contains(
+                "http://assets.amuniversal.com/64a5e1b036e9012ea5cb00163e41dd5b", 
+                await link.GetImageUrls("http://dilbert.com/strip/2011-03-24"));
         }
     }
 }
