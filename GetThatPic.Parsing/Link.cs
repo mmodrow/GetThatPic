@@ -166,7 +166,7 @@ namespace GetThatPic.Parsing
         /// <returns>The desired Content.</returns>
         public IList<string> GetContent(HtmlDocument doc, DomElementAccessor accessor)
         {
-            if (null == doc || null == accessor || string.IsNullOrWhiteSpace(accessor.Selector))
+            if (null == doc || null == accessor || !accessor.IsValid)
             {
                 return null;
             }
@@ -196,6 +196,7 @@ namespace GetThatPic.Parsing
                     break;
             }
 
+            output = output?.Select(item => accessor.Pattern.Replace(item, accessor.Replace)).ToList();
             return output;
         }
     }

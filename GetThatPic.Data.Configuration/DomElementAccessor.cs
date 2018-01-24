@@ -2,6 +2,8 @@
 // Copyright (c) 2018 All Rights Reserved
 // <author>Marc A. Modrow</author>
 // </copyright>
+
+using System;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -74,5 +76,9 @@ namespace GetThatPic.Data.Configuration
         /// The replace.
         /// </value>
         public string Replace { get; set; } = "$1";
+
+        public bool IsValid => Enum.IsDefined(typeof(TargetType), Type) && null != Pattern && !string.IsNullOrWhiteSpace(Pattern.ToString()) &&
+                               !string.IsNullOrWhiteSpace(Replace) && !string.IsNullOrWhiteSpace(Selector) &&
+                               !(TargetType.Attribute == Type && string.IsNullOrWhiteSpace(AttributeName));
     }
 }

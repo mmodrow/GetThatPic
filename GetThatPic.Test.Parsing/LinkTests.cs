@@ -448,5 +448,94 @@ namespace GetThatPic.Test.Parsing
 
             Assert.Equal("Dreams are made of", content);
         }
+
+        /// <summary>
+        /// Gets the content and replaces it.
+        /// </summary>
+        [Fact]
+        public void GetContent_Pattern_Valid()
+        {
+            Link link = new Link(false);
+            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            DomElementAccessor accessor = new DomElementAccessor()
+            {
+                Type = DomElementAccessor.TargetType.Attribute,
+                AttributeName = "data-stuff",
+                Selector = "#MainNavChild",
+                Pattern = new Regex(@"^((?:[A-Za-z]+\s){3}).*$"),
+                Replace = "$1up"
+            };
+
+            string content = link.GetContent(doc, accessor).FirstOrDefault();
+
+            Assert.Equal("Dreams are made up", content);
+        }
+
+        /// <summary>
+        /// Gets the content andtries to replace it with an invalid regex.
+        /// </summary>
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void GetContent_Pattern_Invalid(string regexContent)
+        {
+            Link link = new Link(false);
+            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            DomElementAccessor accessor = new DomElementAccessor()
+            {
+                Type = DomElementAccessor.TargetType.Attribute,
+                AttributeName = "data-stuff",
+                Selector = "#MainNavChild",
+                Pattern = null != regexContent ? new Regex(regexContent) : null
+            };
+
+            string content = link.GetContent(doc, accessor)?.FirstOrDefault();
+
+            Assert.Null(content);
+        }
+
+        /// <summary>
+        /// Gets the content and replaces it.
+        /// </summary>
+        [Fact]
+        public void GetContent_Replace_Valid()
+        {
+            Link link = new Link(false);
+            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            DomElementAccessor accessor = new DomElementAccessor()
+            {
+                Type = DomElementAccessor.TargetType.Attribute,
+                AttributeName = "data-stuff",
+                Selector = "#MainNavChild",
+                Pattern = new Regex(@"^((?:[A-Za-z]+\s){3}).*$")
+            };
+
+            string content = link.GetContent(doc, accessor).FirstOrDefault();
+
+            Assert.Equal("Dreams are made ", content);
+        }
+
+        /// <summary>
+        /// Gets the content andtries to replace it with an invalid replacement string.
+        /// </summary>
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void GetContent_Replace_Invalid(string replace)
+        {
+            Link link = new Link(false);
+            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            DomElementAccessor accessor = new DomElementAccessor()
+            {
+                Type = DomElementAccessor.TargetType.Attribute,
+                AttributeName = "data-stuff",
+                Selector = "#MainNavChild",
+                Replace = replace
+            };
+
+            string content = link.GetContent(doc, accessor)?.FirstOrDefault();
+
+            Assert.Null(content);
+        }
     }
 }
