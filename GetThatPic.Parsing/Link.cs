@@ -128,21 +128,14 @@ namespace GetThatPic.Parsing
                 return null;
             }
 
-            try
-            {
-                var doc = new HtmlDocument();
-                doc.LoadHtml(markup);
-                if (doc.ParseErrors.Any())
-                {
-                    return null;
-                }
-
-                return doc;
-            }
-            catch
+            var doc = new HtmlDocument();
+            doc.LoadHtml(markup);
+            if (doc.ParseErrors.Any())
             {
                 return null;
             }
+
+            return doc;
         }
 
         /// <summary>
@@ -179,7 +172,7 @@ namespace GetThatPic.Parsing
             }
 
             IList<HtmlNode> nodes = doc.QuerySelectorAll(accessor.Selector);
-            IList<string> output;
+            IList<string> output = null;
 
             switch (accessor.Type)
             {
@@ -201,9 +194,6 @@ namespace GetThatPic.Parsing
                         node => node.Attributes.First(
                             attribute => accessor.AttributeName == attribute.Name).Value).ToList();
                     break;
-
-                default:
-                    return null;
             }
 
             return output;

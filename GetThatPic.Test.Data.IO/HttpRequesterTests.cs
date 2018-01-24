@@ -61,6 +61,18 @@ namespace GetThatPic.Test.Data.IO
         }
 
         /// <summary>
+        /// Gets an non-existing url.
+        /// </summary>
+        /// <returns>A Task for async.</returns>
+        [Fact]
+        public async Task GetString_404()
+        {
+            HttpRequester requester = new HttpRequester();
+            string response = await requester.GetString("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklösdgklöjm/");
+            Assert.Null(response);
+        }
+
+        /// <summary>
         /// Gets a null url.
         /// </summary>
         /// <returns>A Task for async.</returns>
@@ -104,6 +116,18 @@ namespace GetThatPic.Test.Data.IO
             Stream stream = await requester.GetStream("https://google.com/");
             StreamReader reader = new StreamReader(stream);
             Assert.Contains("<title>Google</title>", reader.ReadToEnd());
+        }
+
+        /// <summary>
+        /// Gets an non-existing url.
+        /// </summary>
+        /// <returns>A Task for async.</returns>
+        [Fact]
+        public async Task GetStream_404()
+        {
+            HttpRequester requester = new HttpRequester();
+            Stream response = await requester.GetStream("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklösdgklöjm/");
+            Assert.Null(response);
         }
     }
 }
