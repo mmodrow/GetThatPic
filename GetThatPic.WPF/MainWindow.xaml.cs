@@ -34,7 +34,18 @@ namespace GetThatPic.WPF
             state = new MainWindowState();
             LogTextBox.Text = logCallToAction;
 
-            // TODO: click image to open it in the file system.
+            // TODO: Click image to open it in the file system.
+            // TODO: Download.
+            // TODO: Configuration loading from JSON.
+            // TODO: Async status updates on big downloads.
+            // TODO: Error Notification.
+            // TODO: Check if GIF/Video links work (also in preview).
+            // TODO: Check download target directory for file before saving copy. (Check by name and/or identity)
+            // TODO: File Name sanitizing.
+            // TODO: Command line Interface?
+            // TODO: Login functionality for private/mature content.
+            // TODO: Transpile old XML configs to JSON.
+
         }
 
         /// <summary>
