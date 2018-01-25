@@ -104,6 +104,7 @@ namespace GetThatPic.WPF
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         private void DropUrl(object sender, DragEventArgs e)
         {
+            // TODO: Migrate to using Link-Class here
             string droppedUrl = (string)e.Data.GetData(DataFormats.Text);
             LogTextBox.Text += "\n" + droppedUrl;
             BitmapImage bitmap = state.LoadImageFromUrlToPreview(droppedUrl);

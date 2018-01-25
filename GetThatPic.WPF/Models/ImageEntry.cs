@@ -11,6 +11,7 @@ namespace GetThatPic.WPF.Models
     /// </summary>
     public class ImageEntry
     {
+        // TODO: Move this to better namespace.
         /// <summary>
         /// Gets or sets the content.
         /// </summary>
