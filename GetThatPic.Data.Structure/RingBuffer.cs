@@ -173,7 +173,6 @@ namespace GetThatPic.Data.Structure
         /// <param name="newEntry">The new entry.</param>
         public void Push(T newEntry)
         {
-            // TODO: Reenable overflow.
             bool updateReadIndex = Length - 1 == ReadIndex && Length < BufferSize;
 
             int writeIndex = (StartIndex + Length) % BufferSize;

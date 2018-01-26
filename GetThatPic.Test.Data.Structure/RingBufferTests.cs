@@ -169,7 +169,7 @@ namespace GetThatPic.Test.Data.Structure
         [InlineData(new[] { 1, 2, 3, 4, 5, 6, 7 }, 6)]
         public void Previous_Overflow(int[] input, int previous)
         {
-            RingBuffer<int> buffer = new RingBuffer<int>(4);
+            RingBuffer<int> buffer = new RingBuffer<int>(3);
 
             foreach (int i in input)
             {
