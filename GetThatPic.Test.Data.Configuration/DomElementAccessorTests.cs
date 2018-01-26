@@ -56,7 +56,7 @@ namespace GetThatPic.Test.Data.Configuration
 
             IList<string> content = accessor.GetContent(doc);
 
-            Assert.Null(content);
+            Assert.Empty(content);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace GetThatPic.Test.Data.Configuration
 
             IList<string> content = accessor.GetContent(doc);
 
-            Assert.Null(content);
+            Assert.Empty(content);
         }
 
         /// <summary>

@@ -7,3 +7,5 @@
 **/Properties
 **/*.pfx
 **/*.Cache
+**/*.user
+**/*.Designer.cs

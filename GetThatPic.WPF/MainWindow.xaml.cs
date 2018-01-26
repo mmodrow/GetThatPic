@@ -138,6 +138,7 @@ namespace GetThatPic.WPF
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         private void LogTextBox_DragOver(object sender, DragEventArgs e)
         {
+            // Method intentionally left empty - for now.
         }
 
         /// <summary>
@@ -148,6 +149,7 @@ namespace GetThatPic.WPF
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         private void LogTextBox_DragLeave(object sender, DragEventArgs e)
         {
+            // Method intentionally left empty - for now.
         }
 
         /// <summary>

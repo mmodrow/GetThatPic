@@ -100,7 +100,7 @@ namespace GetThatPic.Data.Configuration
         {
             if (null == doc || !IsValid)
             {
-                return null;
+                return new List<string>();
             }
 
             IList<HtmlNode> nodes = doc.QuerySelectorAll(Selector);
@@ -124,7 +124,7 @@ namespace GetThatPic.Data.Configuration
             }
 
             output = output?.Select(item => Pattern.Replace(item, Replace)).ToList();
-            return output;
+            return output ?? new List<string>();
         }
     }
 }

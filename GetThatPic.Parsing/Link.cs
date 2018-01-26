@@ -164,7 +164,7 @@ namespace GetThatPic.Parsing
             foreach (IContentAccessor downloadInstruction in domain.Images)
             {
                 IList<string> imagePaths = downloadInstruction.GetContent(doc);
-                if (null != imagePaths)
+                if (imagePaths.Any())
                 {
                     return imagePaths;
                 }

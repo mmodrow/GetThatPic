@@ -38,7 +38,7 @@ namespace GetThatPic.Data.Structure
         /// Gets the buffer size.
         /// Using a ring buffer to make caching superfluous.
         /// </summary>
-        public int BufferSize { get; }
+        private int BufferSize { get; }
 
         /// <summary>
         /// Gets the length.
@@ -132,7 +132,7 @@ namespace GetThatPic.Data.Structure
         /// <value>
         /// The index.
         /// </value>
-        private int StartIndex { get; set; } = 0;
+        private int StartIndex { get; set; }
 
         /// <summary>
         /// Gets or sets the readIndex of the ring buffer.
