@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using GetThatPic.WPF.Models;
+using WpfAnimatedGif;
 
 namespace GetThatPic.WPF
 {
@@ -84,7 +85,15 @@ namespace GetThatPic.WPF
             state.PreviewItem = newPreviewItem;
 
             PreviewImageName.Content = newPreviewItem.Name;
-            PreviewImage.Source = newPreviewItem.Content;
+            if (newPreviewItem.FileSystemLocation?.EndsWith(".gif") ?? false)
+            {
+                ImageBehavior.SetAnimatedSource(PreviewImage, newPreviewItem.Content);
+            }
+            else
+            {
+                ImageBehavior.SetAnimatedSource(PreviewImage, null);
+                PreviewImage.Source = newPreviewItem.Content;
+            }
         }
 
         /// <summary>
@@ -108,16 +117,17 @@ namespace GetThatPic.WPF
             string droppedUrl = (string)e.Data.GetData(DataFormats.Text);
             LogTextBox.Text += "\n" + droppedUrl;
             BitmapImage bitmap = state.LoadImageFromUrlToPreview(droppedUrl);
-            
-            PreviewImage.Source = bitmap;
-            PreviewImageName.Content = droppedUrl;
 
-            state.History.Push(new ImageEntry
+            ImageEntry image = new ImageEntry
             {
                 Name = droppedUrl,
                 FileSystemLocation = droppedUrl,
                 Content = bitmap
-            });
+            };
+
+            UpdatePreview(image);
+
+            state.History.Push(image);
         }
 
         /// <summary>
