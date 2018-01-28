@@ -36,7 +36,7 @@ namespace GetThatPic.Data.Configuration
         public string Url { get; set; }
 
         /// <summary>
-        /// Gets or sets the path.
+        /// Gets or sets the Regex to identify the path portion of the url.
         /// </summary>
         /// <value>
         /// The path.
