@@ -412,6 +412,10 @@ namespace GetThatPic.Parsing
                 const int NormalFileEndingLength = 4;
 
                 const int MaxLength = NtfsNameLimit - UnixTimeStampWithSeprarator - NormalFileEndingLength;
+                if (input.Length <= MaxLength)
+                {
+                    return input;
+                }
 
                 output = input.Substring(0, MaxLength);
             }

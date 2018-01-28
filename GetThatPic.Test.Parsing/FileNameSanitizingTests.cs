@@ -219,14 +219,36 @@ breaks";
         }
 
         /// <summary>
-        /// Tests Crop.
+        /// Tests Crop for long input.
         /// </summary>
         [Fact]
-        public void Crop()
+        public void Crop_Long()
         {
             string expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, ";
             string input = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu.";
             Assert.Equal(expected, FileNameSanitizing.Crop(input));
+        }
+
+        /// <summary>
+        /// Tests Crop for short input.
+        /// </summary>
+        [Fact]
+        public void Crop_Short()
+        {
+            string expected = "Lorem ipsum";
+            string input = "Lorem ipsum";
+            Assert.Equal(expected, FileNameSanitizing.Crop(input));
+        }
+
+        /// <summary>
+        /// Tests Crop for empty input.
+        /// </summary>
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void Crop_Empty(string input)
+        {
+            Assert.Equal(string.Empty, FileNameSanitizing.Crop(input));
         }
     }
 }

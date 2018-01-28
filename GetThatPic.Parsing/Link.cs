@@ -140,75 +140,12 @@ namespace GetThatPic.Parsing
 
             if (null == domains)
             {
-                Domains.Add(new Domain
-                {
-                    Name = "dilbert.com",
-                    Url = "http://dilbert.com",
-                    Path = new Regex("^/strip/((?:[0-9]+-?)+)$"),
-                    Images = new List<IContentAccessor>()
-                    {
-                        new ImageDownloadFromMarkup()
-                        {
-                            Type = DomElementAccessor.TargetType.Attribute,
-                            AttributeName = "src",
-                            Selector = ".img-comic"
-                        }
-                    },
-                    FileNameFragments = new List<IContentAccessor>()
-                    {
-                        new ImageDownloadFromMarkup()
-                        {
-                            Type = DomElementAccessor.TargetType.Text,
-                            Selector = "title",
-                            Pattern = new Regex(@"^.*?-  Dilbert Comic Strip on (\d{4}-\d{2}-\d{2}).*$")
-                        },
-                        new ImageDownloadFromMarkup()
-                        {
-                            Type = DomElementAccessor.TargetType.Text,
-                            Selector = ".comic-title-name"
-                        }
-                    },
-                    FileNameFragmentDelimiter = "_-_"
-                });
-
-                Domains.Add(new Domain
-                {
-                    Name = "www.schisslaweng.net",
-                    Url = "https://www.schisslaweng.net",
-                    Path = new Regex("^/(.*?)/.*$"),
-                    Images = new List<IContentAccessor>()
-                    {
-                        new ImageDownloadFromMarkup()
-                        {
-                            Type = DomElementAccessor.TargetType.Attribute,
-                            AttributeName = "src",
-                            Selector = ".gallery-item img"
-                        }
-                    },
-                    FileNameFragments = new List<IContentAccessor>()
-                    {
-                        new ImageDownloadFromMarkup()
-                        {
-                            Type = DomElementAccessor.TargetType.Attribute,
-                            AttributeName = "content",
-                            Selector = @"meta[name=""shareaholic:article_published_time""]",
-                            Pattern = new Regex(@"^(\d{4}-\d{2}-\d{2}).*$")
-                        },
-                        new ImageDownloadFromMarkup()
-                        {
-                            Type = DomElementAccessor.TargetType.Text,
-                            Selector = "h1"
-                        }
-                    },
-                    FileNameFragmentDelimiter = "_-_"
-                });
+                domains = DefaultConfig.Domains;
             }
-            else
+
+            foreach (Domain domain in domains)
             {
-                foreach (Domain domain in domains)
-                {
-                    Domains.Add(domain);
-                }
+                Domains.Add(domain);
             }
         }
 
@@ -234,7 +171,8 @@ namespace GetThatPic.Parsing
                 int numDigits = (numImages + 1).ToString().Length;
                 for (int i = 1; i <= numImages; i++)
                 {
-                    string fileName = imageBaseFileName + i.ToString().PadLeft(numDigits, '0') + fileEndings.ElementAt(i - 1);
+                    string fileName = imageBaseFileName + i.ToString().PadLeft(numDigits, '0') +
+                                      fileEndings.ElementAt(i - 1);
                     imageFileNames.Add(fileName);
                 }
             }
@@ -244,13 +182,13 @@ namespace GetThatPic.Parsing
             }
 
             IList<ImageEntry> entries = imageUrls.Zip(
-                imageFileNames, 
+                imageFileNames,
                 (imageUrl, name) => new ImageEntry()
-                    {
-                        Content = HttpRequester.GetImage(imageUrl),
-                        Name = name,
-                        FileSystemLocation = imageUrl
-                    }).ToList();
+                {
+                    Content = HttpRequester.GetImage(imageUrl),
+                    Name = name,
+                    FileSystemLocation = imageUrl
+                }).ToList();
 
             return entries;
         }
@@ -342,7 +280,10 @@ namespace GetThatPic.Parsing
                 imageNameFragments.Add(downloadInstruction.GetContent(doc));
             }
 
-            return FileNameSanitizing.Sanititze(string.Join(domain.FileNameFragmentDelimiter, imageNameFragments.SelectMany(fragments => fragments)));
+            return FileNameSanitizing.Sanititze(
+                string.Join(
+                    domain.FileNameFragmentDelimiter,
+                    imageNameFragments.SelectMany(fragments => fragments)));
         }
 
         /// <summary>
