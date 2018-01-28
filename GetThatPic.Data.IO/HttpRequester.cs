@@ -75,8 +75,7 @@ namespace GetThatPic.Data.IO
                 return null;
             }
         }
-
-
+        
         /// <summary>
         /// Loads the image from URL to preview.
         /// </summary>

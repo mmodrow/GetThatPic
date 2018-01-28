@@ -42,6 +42,91 @@ namespace GetThatPic.Parsing
         public IList<Domain> Domains { get; } = new List<Domain>();
 
         /// <summary>
+        /// Gets the http document from an URL.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>The parsed HtmlDocument.</returns>
+        public static async Task<HtmlDocument> GetDocumentFromUrl(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return null;
+            }
+
+            try
+            {
+                Stream stream = await HttpRequester.GetStream(url);
+                var doc = new HtmlDocument();
+                doc.Load(stream);
+
+                return doc;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the http document from given markup.
+        /// </summary>
+        /// <param name="markup">The markup.</param>
+        /// <returns>The parsed HtmlDocument.</returns>
+        public static HtmlDocument GetDocumentFromMarkup(string markup)
+        {
+            if (string.IsNullOrEmpty(markup))
+            {
+                return null;
+            }
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(markup);
+            if (doc.ParseErrors.Any())
+            {
+                return null;
+            }
+
+            return doc;
+        }
+
+        /// <summary>
+        /// Gets a document from either an url or markup.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>The parsed HtmlDocument.</returns>
+        public static async Task<HtmlDocument> GetDocument(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return null;
+            }
+
+            if (HttpRequester.ProtocolAndDomain.IsMatch(input))
+            {
+                return await GetDocumentFromUrl(input);
+            }
+
+            return GetDocumentFromMarkup(input);
+        }
+
+        /// <summary>
+        /// Get the file ending from an URL.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>The file ending.</returns>
+        public static string FileEndingFromUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return string.Empty;
+            }
+
+            Regex fileEnding = new Regex(@"^.*?(\.[a-zA-Z0-9]+)$");
+            string output = fileEnding.Replace(url, "$1");
+            return url != output ? output : string.Empty;
+        }
+
+        /// <summary>
         /// Initializes the configuration.
         /// </summary>
         /// <param name="clearFirst">if set to <c>true</c> clear the config before initializing.</param>
@@ -143,13 +228,13 @@ namespace GetThatPic.Parsing
             string imageBaseFileName = await GetImageFileName(url, doc, domain);
 
             IList<string> imageFileNames = new List<string>();
-            if(imageUrls.Count > 1)
+            if (imageUrls.Count > 1)
             {
                 int numImages = imageUrls.Count;
                 int numDigits = (numImages + 1).ToString().Length;
                 for (int i = 1; i <= numImages; i++)
                 {
-                    string fileName = imageBaseFileName + i.ToString().PadLeft(numDigits, '0') + fileEndings.ElementAt(i-1);
+                    string fileName = imageBaseFileName + i.ToString().PadLeft(numDigits, '0') + fileEndings.ElementAt(i - 1);
                     imageFileNames.Add(fileName);
                 }
             }
@@ -158,12 +243,14 @@ namespace GetThatPic.Parsing
                 imageFileNames.Add(imageBaseFileName);
             }
 
-            IList<ImageEntry> entries = imageUrls.Zip(imageFileNames, (imageUrl, name) => new ImageEntry()
-            {
-                Content = HttpRequester.GetImage(imageUrl),
-                Name = name,
-                FileSystemLocation = imageUrl
-            }).ToList();
+            IList<ImageEntry> entries = imageUrls.Zip(
+                imageFileNames, 
+                (imageUrl, name) => new ImageEntry()
+                    {
+                        Content = HttpRequester.GetImage(imageUrl),
+                        Name = name,
+                        FileSystemLocation = imageUrl
+                    }).ToList();
 
             return entries;
         }
@@ -182,7 +269,8 @@ namespace GetThatPic.Parsing
                 return new List<string>();
             }
 
-            if(null == domain) { 
+            if (null == domain)
+            {
                 domain = IdentifyDomain(url);
             }
 
@@ -191,8 +279,8 @@ namespace GetThatPic.Parsing
                 return new List<string>();
             }
 
-            if(null == doc)
-            { 
+            if (null == doc)
+            {
                 doc = await GetDocument(url);
             }
 
@@ -274,85 +362,6 @@ namespace GetThatPic.Parsing
             IList<Domain> matchingDomains = Domains.Where(d => d.Url == domain && d.Path.IsMatch(path)).ToList();
 
             return matchingDomains.FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the http document from an URL.
-        /// </summary>
-        /// <param name="url">The URL.</param>
-        /// <returns>The parsed HtmlDocument.</returns>
-        public static async Task<HtmlDocument> GetDocumentFromUrl(string url)
-        {
-            if (string.IsNullOrEmpty(url))
-            {
-                return null;
-            }
-
-            try
-            {
-                Stream stream = await HttpRequester.GetStream(url);
-                var doc = new HtmlDocument();
-                doc.Load(stream);
-
-                return doc;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the http document from given markup.
-        /// </summary>
-        /// <param name="markup">The markup.</param>
-        /// <returns>The parsed HtmlDocument.</returns>
-        public static HtmlDocument GetDocumentFromMarkup(string markup)
-        {
-            if (string.IsNullOrEmpty(markup))
-            {
-                return null;
-            }
-
-            var doc = new HtmlDocument();
-            doc.LoadHtml(markup);
-            if (doc.ParseErrors.Any())
-            {
-                return null;
-            }
-
-            return doc;
-        }
-
-        /// <summary>
-        /// Gets a document from either an url or markup.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <returns>The parsed HtmlDocument.</returns>
-        public static async Task<HtmlDocument> GetDocument(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                return null;
-            }
-
-            if (HttpRequester.ProtocolAndDomain.IsMatch(input))
-            {
-                return await GetDocumentFromUrl(input);
-            }
-
-            return GetDocumentFromMarkup(input);
-        }
-
-        /// <summary>
-        /// Get the file ending from an URL.
-        /// </summary>
-        /// <param name="url">The URL.</param>
-        /// <returns>The file ending.</returns>
-        public static string FileEndingFromUrl(string url)
-        {
-            Regex fileEnding = new Regex(@"^.*?(\.[a-zA-Z0-9]+)$");
-            return fileEnding.Replace(url, "$1");
         }
     }
 }

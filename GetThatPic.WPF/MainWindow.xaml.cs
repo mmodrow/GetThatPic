@@ -51,7 +51,6 @@ namespace GetThatPic.WPF
             // TODO: Command line Interface?
             // TODO: Login functionality for private/mature content.
             // TODO: Transpile old XML configs to JSON.
-
         }
 
         /// <summary>

@@ -345,7 +345,7 @@ namespace GetThatPic.Test.Parsing
         {
             Link link = new Link();
 
-            Assert.Null(await link.GetImageUrls(url));
+            Assert.Empty(await link.GetImageUrls(url));
         }
 
         /// <summary>
@@ -357,7 +357,7 @@ namespace GetThatPic.Test.Parsing
         {
             Link link = new Link();
 
-            Assert.Null(await link.GetImageUrls("http://this.pageis.not/present"));
+            Assert.Empty(await link.GetImageUrls("http://this.pageis.not/present"));
         }
         
         /// <summary>
@@ -386,7 +386,7 @@ namespace GetThatPic.Test.Parsing
         {
             Link link = new Link();
 
-            Assert.Null(await link.GetImageFileName(url));
+            Assert.Empty(await link.GetImageFileName(url));
         }
 
         /// <summary>
@@ -398,7 +398,46 @@ namespace GetThatPic.Test.Parsing
         {
             Link link = new Link();
 
-            Assert.Null(await link.GetImageFileName("http://this.pageis.not/present"));
+            Assert.Empty(await link.GetImageFileName("http://this.pageis.not/present"));
+        }
+
+        /// <summary>
+        /// Validates correft file name extraction when a single file ending is present.
+        /// </summary>
+        [Fact]
+        public void FileEndingFromUrl_SingleDot()
+        {
+            Assert.Equal(".jpg", Link.FileEndingFromUrl("https://www.schisslaweng.net/wp-content/uploads/sites/2/2017/03/01_Trainingistalles_FINAL_web-980x1386.jpg"));
+        }
+
+        /// <summary>
+        /// Validates correft file name extraction when a double file ending is present (should only get the last one).
+        /// </summary>
+        [Fact]
+        public void FileEndingFromUrl_DoubleDot()
+        {
+            Assert.Equal(".gif", Link.FileEndingFromUrl("https://ljdchost.com/DgKiUtL.big.gif"));
+        }
+
+        /// <summary>
+        /// Validates correft file name extraction when no file ending is present.
+        /// </summary>
+        [Fact]
+        public void FileEndingFromUrl_NoDot()
+        {
+            Assert.Equal(string.Empty, Link.FileEndingFromUrl("http://assets.amuniversal.com/aa0c23f0d6c801350cc9005056a9545d"));
+        }
+
+        /// <summary>
+        /// Validates correft file name extraction when the input is empty.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void FileEndingFromUrl_NoUrl(string url)
+        {
+            Assert.Equal(string.Empty, Link.FileEndingFromUrl(url));
         }
     }
 }
