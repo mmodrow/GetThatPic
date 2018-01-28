@@ -2,8 +2,9 @@
 // Copyright (c) 2018 All Rights Reserved
 // <author>Marc A. Modrow</author>
 // </copyright>
+
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -98,7 +99,7 @@ namespace GetThatPic.Parsing
         /// <summary>
         /// The replacement for illegal characters.
         /// </summary>
-        private const string ReplacementForIllegalCharacters = "_";
+        private const string CharactersNeedingSubstitutionReplacement = "_";
 
         /*------------------------------Swear word Patterns------------------------------*/
 
@@ -183,7 +184,42 @@ namespace GetThatPic.Parsing
         /// The cannot pattern.
         /// </summary>
         private static readonly Regex CannotPattern = new Regex(@"(\s|^)([Cc])an[`´'’‘]t");
-        
+
+        /*------------------------------Misc Patterns------------------------------*/
+
+        /// <summary>
+        /// The illegal character pattern.
+        /// </summary>
+        private static readonly Regex CharactersNeedingSubstitutionPattern = new Regex("[^a-zA-Z0-9_-]");
+
+        /// <summary>
+        /// The characters to drop pattern.
+        /// </summary>
+        private static readonly Regex CharactersToDropPattern = new Regex("[´`'\"’.‘]");
+
+        /// <summary>
+        /// Superfluous replacement character pattern..
+        /// </summary>
+        private static readonly Regex SubstituteGroupsPattern = new Regex(CharactersNeedingSubstitutionReplacement + "{2,}");
+
+        /// <summary>
+        /// The edge substitute pattern.
+        /// </summary>
+        private static readonly Regex EdgeSubstitutePattern = new Regex("^" + CharactersNeedingSubstitutionReplacement + "+|" + CharactersNeedingSubstitutionReplacement + "+$");
+
+        /// <summary>
+        /// The unix epoch point in time.
+        /// </summary>
+        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1);
+
+        /// <summary>
+        /// Gets the current unix time.
+        /// </summary>
+        /// <value>
+        /// The current unix time.
+        /// </value>
+        public static string CurrentUnixTime => DateTime.UtcNow.Subtract(UnixEpoch).TotalSeconds.ToString(CultureInfo.InvariantCulture);
+
         /// <summary>
         /// Sanititzes the specified input.
         /// </summary>
@@ -196,9 +232,18 @@ namespace GetThatPic.Parsing
             {
                 output = input.Trim();
                 output = Whitespace(output);
+                output = RecreateSwearing(output);
+                output = RecreateContractions(output);
+                output = ReplaceUmlauts(output);
+                
+                output = RemoveDiacritics(output);
+
+                output = ReplaceIllegalCharacters(output);
+
+                output = StripSuperfluousReplacementCharacters(output);
             }
 
-            return output;
+            return !string.IsNullOrWhiteSpace(output) ? output : CurrentUnixTime;
         }
 
         /// <summary>
@@ -211,7 +256,7 @@ namespace GetThatPic.Parsing
         public static string Whitespace(string input)
         {
             return !string.IsNullOrWhiteSpace(input)
-                ? WhitespacePattern.Replace(input, ReplacementForIllegalCharacters)
+                ? WhitespacePattern.Replace(input, CharactersNeedingSubstitutionReplacement)
                 : string.Empty;
         }
         
@@ -256,6 +301,95 @@ namespace GetThatPic.Parsing
                 output = NotPattern.Replace(output, NotReplacement);
                 output = WillNotPattern.Replace(output, WillNotReplacement);
                 output = CannotPattern.Replace(output, CannotReplacement);
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// Removes the diacritics.
+        /// Based on code found at https://weblogs.asp.net/fmarguerie/removing-diacritics-accents-from-strings
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>
+        /// Input with all diacritics removed.
+        /// </returns>
+        public static string RemoveDiacritics(string input)
+        {
+            string output = string.Empty;
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                string normalizedString = input.Normalize(NormalizationForm.FormD);
+                StringBuilder stringBuilder = new StringBuilder();
+
+                foreach (var c in normalizedString)
+                {
+                    if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                    { 
+                        stringBuilder.Append(c);
+                    }
+                }
+
+                output = stringBuilder.ToString();
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// Replaces the umlauts by their legal replacement.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>Input with umlauts replaced by corresponding combination of latin letters.</returns>
+        public static string ReplaceUmlauts(string input)
+        {
+            string output = string.Empty;
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                output = input.Replace("ö", "oe")
+                                .Replace("ä", "ae")
+                                .Replace("ü", "ue")
+                                .Replace("Ö", "Oe")
+                                .Replace("Ä", "Ae")
+                                .Replace("Ü", "Ue")
+                                .Replace("Æ", "Ae")
+                                .Replace("æ", "ae")
+                                .Replace("ø", "oe")
+                                .Replace("Ø", "Oe");
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// Replaces and/or drops the illegal characters.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>Input without illegal characters.</returns>
+        public static string ReplaceIllegalCharacters(string input)
+        {
+            string output = string.Empty;
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                output = CharactersToDropPattern.Replace(input, string.Empty);
+                output = CharactersNeedingSubstitutionPattern.Replace(output, CharactersNeedingSubstitutionReplacement);
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// Strips the superfluous replacement characters.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>Input without superfluous substitution characters.</returns>
+        public static string StripSuperfluousReplacementCharacters(string input)
+        {
+            string output = string.Empty;
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                output = SubstituteGroupsPattern.Replace(input, CharactersNeedingSubstitutionReplacement);
+                output = EdgeSubstitutePattern.Replace(output, string.Empty);
             }
 
             return output;

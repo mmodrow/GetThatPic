@@ -167,5 +167,55 @@ breaks";
         {
             Assert.Equal(expectedOutput, FileNameSanitizing.RecreateContractions(input));
         }
+
+        /// <summary>
+        /// Tests RemoveDiacritics.
+        /// </summary>
+        [Fact]
+        public void RemoveDiacritics()
+        {
+            Assert.Equal("aoUcN", FileNameSanitizing.RemoveDiacritics("àôÛçÑ"));
+        }
+
+        /// <summary>
+        /// Tests RemoveDiacritics.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="expectedOutput">The expected output.</param>
+        [Theory]
+        [InlineData("ö", "oe")]
+        [InlineData("ä", "ae")]
+        [InlineData("ü", "ue")]
+        [InlineData("Ö", "Oe")]
+        [InlineData("Ä", "Ae")]
+        [InlineData("Ü", "Ue")]
+        [InlineData("Æ", "Ae")]
+        [InlineData("æ", "ae")]
+        [InlineData("ø", "oe")]
+        [InlineData("Ø", "Oe")]
+        [InlineData("", "")]
+        [InlineData(null, "")]
+        public void ReplaceUmlauts(string input, string expectedOutput)
+        {
+            Assert.Equal(expectedOutput, FileNameSanitizing.ReplaceUmlauts(input));
+        }
+
+        /// <summary>
+        /// Tests ReplaceIllegalCharacters..
+        /// </summary>
+        [Fact]
+        public void ReplaceIllegalCharacters()
+        {
+            Assert.Equal("___-_ab_________________c_", FileNameSanitizing.ReplaceIllegalCharacters("__,-_a´`'b_â__âµ/=&%\"’.‘$<<>µ—_c_"));
+        }
+
+        /// <summary>
+        /// Strips the superfluous replacement characters.
+        /// </summary>
+        [Fact]
+        public void StripSuperfluousReplacementCharacters()
+        {
+            Assert.Equal("-_ab_c", FileNameSanitizing.StripSuperfluousReplacementCharacters("___-_ab_________________c_"));
+        }
     }
 }
