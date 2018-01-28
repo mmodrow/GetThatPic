@@ -14,6 +14,8 @@ namespace GetThatPic.Parsing
     /// </summary>
     public static class FileNameSanitizing
     {
+        /*------------------------------Swear word Replacements------------------------------*/
+
         /// <summary>
         /// The fuck replacement.
         /// </summary>
@@ -49,10 +51,56 @@ namespace GetThatPic.Parsing
         /// </summary>
         private const string BitchCapslockReplacement = "BITCH";
 
+        /*------------------------------Contraction Replacements------------------------------*/
+
+        /// <summary>
+        /// The will replacement.
+        /// </summary>
+        private const string WillReplacement = "$1$2 will";
+
+        /// <summary>
+        /// The is replacement.
+        /// </summary>
+        private const string IsReplacement = "$1$2 is";
+
+        /// <summary>
+        /// The am replacement.
+        /// </summary>
+        private const string AmReplacement = "$1$2 am";
+
+        /// <summary>
+        /// The have replacement.
+        /// </summary>
+        private const string HaveReplacement = "$1$2 have";
+
+        /// <summary>
+        /// The are replacement.
+        /// </summary>
+        private const string AreReplacement = "$1$2 are";
+
+        /// <summary>
+        /// The not replacement.
+        /// </summary>
+        private const string NotReplacement = "$1$2 not";
+
+        /// <summary>
+        /// The will not replacement.
+        /// </summary>
+        private const string WillNotReplacement = "$1$2ill not";
+
+        /// <summary>
+        /// The can not replacement.
+        /// </summary>
+        private const string CannotReplacement = "$1$2annot";
+
+        /*------------------------------Misc Replacements------------------------------*/
+
         /// <summary>
         /// The replacement for illegal characters.
         /// </summary>
         private const string ReplacementForIllegalCharacters = "_";
+
+        /*------------------------------Swear word Patterns------------------------------*/
 
         /// <summary>
         /// The whitespace pattern.
@@ -93,6 +141,48 @@ namespace GetThatPic.Parsing
         /// The bitch capslock pattern.
         /// </summary>
         private static readonly Regex BitchCapslockPattern = new Regex(@"(B|b)[^a-zA-Z]TCH");
+
+        /*------------------------------Contraction Patterns------------------------------*/
+
+        /// <summary>
+        /// The will pattern.
+        /// </summary>
+        private static readonly Regex WillPattern = new Regex(@"(\s|^)((?:[Ss]?[Hh]e|[Tt]hey|[Ww]e|I))[`´'’‘]ll");
+
+        /// <summary>
+        /// The have pattern.
+        /// </summary>
+        private static readonly Regex HavePattern = new Regex(@"(\s|^)((?:[Tt]hey|[Ww]e|I|[Ss]hould))[`´'’‘]ve");
+
+        /// <summary>
+        /// The is pattern.
+        /// </summary>
+        private static readonly Regex IsPattern = new Regex(@"(\s|^)((?:[Ss]?[Hh]e))[`´'’‘]s");
+
+        /// <summary>
+        /// The am pattern.
+        /// </summary>
+        private static readonly Regex AmPattern = new Regex(@"(\s|^)(I)[`´'’‘]m");
+
+        /// <summary>
+        /// The are pattern.
+        /// </summary>
+        private static readonly Regex ArePattern = new Regex(@"(\s|^)([Tt]hey|[Ww]e|[Yy]ou)[`´'’‘]re");
+
+        /// <summary>
+        /// The not pattern.
+        /// </summary>
+        private static readonly Regex NotPattern = new Regex(@"(\s|^)([Ii]s|[Dd]oes|[Dd]o|[Ww]ere|[Ww]ould|[Cc]ould|[Ss]hould)n[`´'’‘]t");
+
+        /// <summary>
+        /// The will not pattern.
+        /// </summary>
+        private static readonly Regex WillNotPattern = new Regex(@"(\s|^)([Ww])on[`´'’‘]t");
+
+        /// <summary>
+        /// The cannot pattern.
+        /// </summary>
+        private static readonly Regex CannotPattern = new Regex(@"(\s|^)([Cc])an[`´'’‘]t");
         
         /// <summary>
         /// Sanititzes the specified input.
@@ -143,6 +233,29 @@ namespace GetThatPic.Parsing
                 output = FuckCapslockPattern.Replace(output, FuckCapslockReplacement);
                 output = BitchPattern.Replace(output, BitchReplacement);
                 output = BitchCapslockPattern.Replace(output, BitchCapslockReplacement);
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// Recreates the contractions in an input string.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>Input with it's contractions recreated.</returns>
+        public static string RecreateContractions(string input)
+        {
+            string output = string.Empty;
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                output = WillPattern.Replace(input, WillReplacement);
+                output = IsPattern.Replace(output, IsReplacement);
+                output = AmPattern.Replace(output, AmReplacement);
+                output = HavePattern.Replace(output, HaveReplacement);
+                output = ArePattern.Replace(output, AreReplacement);
+                output = NotPattern.Replace(output, NotReplacement);
+                output = WillNotPattern.Replace(output, WillNotReplacement);
+                output = CannotPattern.Replace(output, CannotReplacement);
             }
 
             return output;

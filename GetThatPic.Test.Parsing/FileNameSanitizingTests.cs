@@ -101,7 +101,7 @@ breaks";
         }
 
         /// <summary>
-        /// Tests Whitespaces with no whitespaces.
+        /// Tests RecreateSwearing for different inputs.
         /// </summary>
         /// <param name="input">The input.</param>
         /// <param name="expectedOutput">The expected output.</param>
@@ -119,6 +119,53 @@ breaks";
         public void RecreateSwearing(string input, string expectedOutput)
         {
             Assert.Equal(expectedOutput, FileNameSanitizing.RecreateSwearing(input));
+        }
+
+        /// <summary>
+        /// TestsRecreates the contractions.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="expectedOutput">The expected output.</param>
+        [Theory]
+        [InlineData("I'll", "I will")]
+        [InlineData("I'm", "I am")]
+        [InlineData("I've", "I have")]
+        [InlineData("She's", "She is")]
+        [InlineData("she's", "she is")]
+        [InlineData("He's", "He is")]
+        [InlineData("he's", "he is")]
+        [InlineData("we're", "we are")]
+        [InlineData("We're", "We are")]
+        [InlineData("we've", "we have")]
+        [InlineData("We've", "We have")]
+        [InlineData("we'll", "we will")]
+        [InlineData("We'll", "We will")]
+        [InlineData("you're", "you are")]
+        [InlineData("You're", "You are")]
+        [InlineData("they're", "they are")]
+        [InlineData("They're", "They are")]
+        [InlineData("they'll", "they will")]
+        [InlineData("They'll", "They will")]
+        [InlineData("they've", "they have")]
+        [InlineData("They've", "They have")]
+        [InlineData("Isn't", "Is not")]
+        [InlineData("isn't", "is not")]
+        [InlineData("won't", "will not")]
+        [InlineData("wouldn't", "would not")]
+        [InlineData("weren't", "were not")]
+        [InlineData("don't", "do not")]
+        [InlineData("doesn't", "does not")]
+        [InlineData("couldn't", "could not")]
+        [InlineData("Couldn't", "Could not")]
+        [InlineData("shouldn't", "should not")]
+        [InlineData("Shouldn't", "Should not")]
+        [InlineData("should've", "should have")]
+        [InlineData("Should've", "Should have")]
+        [InlineData("can't", "cannot")]
+        [InlineData("Can't", "Cannot")]
+        public void RecreateContractions(string input, string expectedOutput)
+        {
+            Assert.Equal(expectedOutput, FileNameSanitizing.RecreateContractions(input));
         }
     }
 }
