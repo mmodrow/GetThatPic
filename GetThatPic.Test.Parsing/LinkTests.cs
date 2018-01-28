@@ -370,7 +370,7 @@ namespace GetThatPic.Test.Parsing
             Link link = new Link();
 
             Assert.Contains(
-                "2018-01-23_-_User Specifications Are Not Complete",
+                "2018-01-23_-_User_Specifications_Are_Not_Complete",
                 await link.GetImageFileName("http://dilbert.com/strip/2018-01-23"));
         }
 

@@ -342,7 +342,7 @@ namespace GetThatPic.Parsing
                 imageNameFragments.Add(downloadInstruction.GetContent(doc));
             }
 
-            return string.Join(domain.FileNameFragmentDelimiter, imageNameFragments.SelectMany(fragments => fragments));
+            return FileNameSanitizing.Sanititze(string.Join(domain.FileNameFragmentDelimiter, imageNameFragments.SelectMany(fragments => fragments)));
         }
 
         /// <summary>
