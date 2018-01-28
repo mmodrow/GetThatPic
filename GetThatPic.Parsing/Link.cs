@@ -3,7 +3,6 @@
 // <author>Marc A. Modrow</author>
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,8 +10,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GetThatPic.Data.Configuration;
 using GetThatPic.Data.IO;
+using GetThatPic.Parsing.Models;
 using HtmlAgilityPack;
-using HtmlAgilityPack.CssSelectors.NetCore;
 
 namespace GetThatPic.Parsing
 {
@@ -23,11 +22,6 @@ namespace GetThatPic.Parsing
     public class Link
     {
         /// <summary>
-        /// The http requester.
-        /// </summary>
-        private readonly HttpRequester requester;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Link" /> class.
         /// </summary>
         /// <param name="autoInitialize">if set to <c>true</c> the config gets automatically initialized.</param>
@@ -37,8 +31,6 @@ namespace GetThatPic.Parsing
             {
                 InitializeConfig();
             }
-
-            requester = new HttpRequester();
         }
 
         /// <summary>
@@ -136,29 +128,77 @@ namespace GetThatPic.Parsing
         }
 
         /// <summary>
+        /// Gets the images.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>A Listof corresponding ImageEntries.</returns>
+        public async Task<IList<ImageEntry>> GetImages(string url)
+        {
+            Domain domain = IdentifyDomain(url);
+            HtmlDocument doc = await GetDocument(url);
+
+            IList<string> imageUrls = await GetImageUrls(url, doc, domain);
+            IList<string> fileEndings = imageUrls.Select(FileEndingFromUrl).ToList();
+
+            string imageBaseFileName = await GetImageFileName(url, doc, domain);
+
+            IList<string> imageFileNames = new List<string>();
+            if(imageUrls.Count > 1)
+            {
+                int numImages = imageUrls.Count;
+                int numDigits = (numImages + 1).ToString().Length;
+                for (int i = 1; i <= numImages; i++)
+                {
+                    string fileName = imageBaseFileName + i.ToString().PadLeft(numDigits, '0') + fileEndings.ElementAt(i-1);
+                    imageFileNames.Add(fileName);
+                }
+            }
+            else
+            {
+                imageFileNames.Add(imageBaseFileName);
+            }
+
+            IList<ImageEntry> entries = imageUrls.Zip(imageFileNames, (imageUrl, name) => new ImageEntry()
+            {
+                Content = HttpRequester.GetImage(imageUrl),
+                Name = name,
+                FileSystemLocation = imageUrl
+            }).ToList();
+
+            return entries;
+        }
+
+        /// <summary>
         /// Gets the image urls for a given input url.
         /// </summary>
         /// <param name="url">The URL.</param>
+        /// <param name="doc">The document to parse.</param>
+        /// <param name="domain">The domain to parse against.</param>
         /// <returns>List of Image Urls</returns>
-        public async Task<IList<string>> GetImageUrls(string url)
+        public async Task<IList<string>> GetImageUrls(string url, HtmlDocument doc = null, Domain domain = null)
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                return null;
+                return new List<string>();
             }
 
-            Domain domain = IdentifyDomain(url);
+            if(null == domain) { 
+                domain = IdentifyDomain(url);
+            }
 
             if (null == domain || !domain.Images.Any())
             {
-                return null;
+                return new List<string>();
             }
 
-            HtmlDocument doc = await GetDocument(url);
+            if(null == doc)
+            { 
+                doc = await GetDocument(url);
+            }
 
             if (null == doc)
             {
-                return null;
+                return new List<string>();
             }
 
             foreach (IContentAccessor downloadInstruction in domain.Images)
@@ -170,33 +210,41 @@ namespace GetThatPic.Parsing
                 }
             }
 
-            return null;
+            return new List<string>();
         }
 
         /// <summary>
         /// Gets the image file name for a given input url.
         /// </summary>
         /// <param name="url">The URL.</param>
+        /// <param name="doc">The document to parse.</param>
+        /// <param name="domain">The domain to parse against.</param>
         /// <returns>List of Image Urls</returns>
-        public async Task<string> GetImageFileName(string url)
+        public async Task<string> GetImageFileName(string url, HtmlDocument doc = null, Domain domain = null)
         {
             if (string.IsNullOrWhiteSpace(url))
             {
-                return null;
+                return string.Empty;
             }
 
-            Domain domain = IdentifyDomain(url);
+            if (null == domain)
+            {
+                domain = IdentifyDomain(url);
+            }
 
             if (null == domain || !domain.FileNameFragments.Any())
             {
-                return null;
+                return string.Empty;
             }
-
-            HtmlDocument doc = await GetDocument(url);
 
             if (null == doc)
             {
-                return null;
+                doc = await GetDocument(url);
+            }
+
+            if (null == doc)
+            {
+                return string.Empty;
             }
 
             IList<IList<string>> imageNameFragments = new List<IList<string>>();
@@ -233,7 +281,7 @@ namespace GetThatPic.Parsing
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>The parsed HtmlDocument.</returns>
-        public async Task<HtmlDocument> GetDocumentFromUrl(string url)
+        public static async Task<HtmlDocument> GetDocumentFromUrl(string url)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -242,7 +290,7 @@ namespace GetThatPic.Parsing
 
             try
             {
-                Stream stream = await requester.GetStream(url);
+                Stream stream = await HttpRequester.GetStream(url);
                 var doc = new HtmlDocument();
                 doc.Load(stream);
 
@@ -259,7 +307,7 @@ namespace GetThatPic.Parsing
         /// </summary>
         /// <param name="markup">The markup.</param>
         /// <returns>The parsed HtmlDocument.</returns>
-        public HtmlDocument GetDocumentFromMarkup(string markup)
+        public static HtmlDocument GetDocumentFromMarkup(string markup)
         {
             if (string.IsNullOrEmpty(markup))
             {
@@ -281,7 +329,7 @@ namespace GetThatPic.Parsing
         /// </summary>
         /// <param name="input">The input.</param>
         /// <returns>The parsed HtmlDocument.</returns>
-        public async Task<HtmlDocument> GetDocument(string input)
+        public static async Task<HtmlDocument> GetDocument(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -294,6 +342,17 @@ namespace GetThatPic.Parsing
             }
 
             return GetDocumentFromMarkup(input);
+        }
+
+        /// <summary>
+        /// Get the file ending from an URL.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>The file ending.</returns>
+        public static string FileEndingFromUrl(string url)
+        {
+            Regex fileEnding = new Regex(@"^.*?(\.[a-zA-Z0-9]+)$");
+            return fileEnding.Replace(url, "$1");
         }
     }
 }

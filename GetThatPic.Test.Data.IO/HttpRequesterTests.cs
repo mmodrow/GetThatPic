@@ -22,8 +22,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetString_NullAsync()
         {
-            HttpRequester requester = new HttpRequester();
-            Assert.Null(await requester.GetString(null));
+            Assert.Null(await HttpRequester.GetString(null));
         }
 
         /// <summary>
@@ -33,8 +32,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetString_Empty()
         {
-            HttpRequester requester = new HttpRequester();
-            Assert.Null(await requester.GetString(string.Empty));
+            Assert.Null(await HttpRequester.GetString(string.Empty));
         }
 
         /// <summary>
@@ -44,8 +42,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetString_NonUrl()
         {
-            HttpRequester requester = new HttpRequester();
-            Assert.Null(await requester.GetString("this is no path"));
+            Assert.Null(await HttpRequester.GetString("this is no path"));
         }
 
         /// <summary>
@@ -55,8 +52,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetString_Google()
         {
-            HttpRequester requester = new HttpRequester();
-            string response = await requester.GetString("https://google.com/");
+            string response = await HttpRequester.GetString("https://google.com/");
             Assert.Contains("<title>Google</title>", response);
         }
 
@@ -67,8 +63,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetString_404()
         {
-            HttpRequester requester = new HttpRequester();
-            string response = await requester.GetString("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklösdgklöjm/");
+            string response = await HttpRequester.GetString("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklösdgklöjm/");
             Assert.Null(response);
         }
 
@@ -79,8 +74,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetStream_NullAsync()
         {
-            HttpRequester requester = new HttpRequester();
-            Assert.Null(await requester.GetStream(null));
+            Assert.Null(await HttpRequester.GetStream(null));
         }
 
         /// <summary>
@@ -90,8 +84,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetStream_Empty()
         {
-            HttpRequester requester = new HttpRequester();
-            Assert.Null(await requester.GetStream(string.Empty));
+            Assert.Null(await HttpRequester.GetStream(string.Empty));
         }
 
         /// <summary>
@@ -101,8 +94,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetStream_NonUrl()
         {
-            HttpRequester requester = new HttpRequester();
-            Assert.Null(await requester.GetStream("this is no path"));
+            Assert.Null(await HttpRequester.GetStream("this is no path"));
         }
 
         /// <summary>
@@ -112,8 +104,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetStream_Google()
         {
-            HttpRequester requester = new HttpRequester();
-            Stream stream = await requester.GetStream("https://google.com/");
+            Stream stream = await HttpRequester.GetStream("https://google.com/");
             StreamReader reader = new StreamReader(stream);
             Assert.Contains("<title>Google</title>", reader.ReadToEnd());
         }
@@ -125,8 +116,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetStream_404()
         {
-            HttpRequester requester = new HttpRequester();
-            Stream response = await requester.GetStream("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklösdgklöjm/");
+            Stream response = await HttpRequester.GetStream("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklösdgklöjm/");
             Assert.Null(response);
         }
     }

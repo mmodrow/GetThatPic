@@ -190,8 +190,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetDocumentFromUrl_Title()
         {
-            Link link = new Link();
-            HtmlDocument doc = await link.GetDocumentFromUrl("https://google.com/");
+            HtmlDocument doc = await Link.GetDocumentFromUrl("https://google.com/");
             IList<HtmlNode> title = doc.QuerySelectorAll("title");
             Assert.Contains(title, item => "Google" == item.InnerHtml);
         }
@@ -203,8 +202,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetDocumentFromUrl_null()
         {
-            Link link = new Link();
-            HtmlDocument doc = await link.GetDocumentFromUrl(null);
+            HtmlDocument doc = await Link.GetDocumentFromUrl(null);
             Assert.Null(doc);
         }
 
@@ -215,8 +213,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetDocumentFromUrl_empty()
         {
-            Link link = new Link();
-            HtmlDocument doc = await link.GetDocumentFromUrl(string.Empty);
+            HtmlDocument doc = await Link.GetDocumentFromUrl(string.Empty);
             Assert.Null(doc);
         }
 
@@ -226,8 +223,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void GetDocumentFromMarkup_Title()
         {
-            Link link = new Link();
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
             IList<HtmlNode> title = doc.QuerySelectorAll("title");
             Assert.Contains(title, item => "groﬂartig" == item.InnerHtml);
         }
@@ -238,8 +234,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public  void GetDocumentFromMarkup_null()
         {
-            Link link = new Link();
-            HtmlDocument doc = link.GetDocumentFromMarkup(null);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(null);
             Assert.Null(doc);
         }
 
@@ -249,8 +244,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void GetDocumentFromMarkup_Empty()
         {
-            Link link = new Link();
-            HtmlDocument doc = link.GetDocumentFromMarkup(string.Empty);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(string.Empty);
             Assert.Null(doc);
         }
 
@@ -260,8 +254,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void GetDocumentFromMarkup_Invalid()
         {
-            Link link = new Link();
-            HtmlDocument doc = link.GetDocumentFromMarkup(BrokenMarkup);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(BrokenMarkup);
             Assert.Null(doc);
         }
 
@@ -272,8 +265,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetDocument_Url()
         {
-            Link link = new Link();
-            HtmlDocument doc = await link.GetDocument("https://google.com/");
+            HtmlDocument doc = await Link.GetDocument("https://google.com/");
             IList<HtmlNode> title = doc.QuerySelectorAll("title");
             Assert.Contains(title, item => "Google" == item.InnerHtml);
         }
@@ -285,8 +277,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetDocument_ValidMarkup()
         {
-            Link link = new Link();
-            HtmlDocument doc = await link.GetDocument(ValidMarkup);
+            HtmlDocument doc = await Link.GetDocument(ValidMarkup);
             IList<HtmlNode> title = doc.QuerySelectorAll("title");
             Assert.Contains(title, item => "groﬂartig" == item.InnerHtml);
         }
@@ -302,8 +293,7 @@ namespace GetThatPic.Test.Parsing
         [InlineData("")]
         public async Task GetDocument_InvalidString(string input)
         {
-            Link link = new Link();
-            HtmlDocument doc = await link.GetDocument(input);
+            HtmlDocument doc = await Link.GetDocument(input);
             Assert.Null(doc);
         }
 

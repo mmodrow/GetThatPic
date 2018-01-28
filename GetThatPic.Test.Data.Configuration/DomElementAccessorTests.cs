@@ -46,8 +46,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData(null)]
         public void GetContent_InvalidSelector(string selector)
         {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
             DomElementAccessor accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Text,
@@ -68,8 +67,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData(null)]
         public void GetContent_InvalidAttributeName(string name)
         {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
             DomElementAccessor accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
@@ -88,8 +86,7 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_InnerText()
         {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
             DomElementAccessor accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Text,
@@ -107,8 +104,7 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_InnerHtml_Single()
         {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
             DomElementAccessor accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Html,
@@ -130,8 +126,7 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_InnerHtml_Multiple()
         {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
             DomElementAccessor accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Html,
@@ -149,8 +144,7 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_Attribute_Data()
         {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
             DomElementAccessor accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
@@ -169,8 +163,7 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_Pattern_Valid()
         {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
             DomElementAccessor accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
@@ -194,8 +187,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData(null)]
         public void GetContent_Pattern_Invalid(string regexContent)
         {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
             DomElementAccessor accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
@@ -215,8 +207,7 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_Replace_Valid()
         {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
             DomElementAccessor accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
@@ -239,8 +230,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData(null)]
         public void GetContent_Replace_Invalid(string replace)
         {
-            Link link = new Link(false);
-            HtmlDocument doc = link.GetDocumentFromMarkup(ValidMarkup);
+            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
             DomElementAccessor accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,

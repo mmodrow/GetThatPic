@@ -53,19 +53,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <DependsOnNETStandard>true</DependsOnNETStandard>
+  </PropertyGroup>
+  <PropertyGroup>
     <ManifestCertificateThumbprint>51DE72188F168100750D89C758E0995650255E57</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>GetThatPic.WPF_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
+    <StartupObject>GetThatPic.WPF.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
@@ -132,7 +143,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ImageEntry.cs" />
     <Compile Include="Models\MainWindowState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -154,6 +164,7 @@
     </EmbeddedResource>
     <None Include="Assets\download-to-storage-drive.eps" />
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -163,9 +174,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4.7.1 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -175,9 +186,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GetThatPic.Data.IO\GetThatPic.Data.IO.csproj">
+      <Project>{A223D844-643A-4927-97CF-34EB793D90D7}</Project>
+      <Name>GetThatPic.Data.IO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GetThatPic.Data.Structure\GetThatPic.Data.Structure.csproj">
       <Project>{7ef71512-ec77-4c82-83f2-76bd6ca22846}</Project>
       <Name>GetThatPic.Data.Structure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GetThatPic.Parsing\GetThatPic.Parsing.csproj">
+      <Project>{283331B6-2000-4888-B73B-2C7B6508E43A}</Project>
+      <Name>GetThatPic.Parsing</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

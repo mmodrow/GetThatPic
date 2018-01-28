@@ -2,10 +2,16 @@
 // Copyright (c) 2018 All Rights Reserved
 // <author>Marc A. Modrow</author>
 // </copyright>
+
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using GetThatPic.Data.IO;
+using GetThatPic.Parsing;
+using GetThatPic.Parsing.Models;
 using GetThatPic.WPF.Models;
 using WpfAnimatedGif;
 
@@ -40,7 +46,6 @@ namespace GetThatPic.WPF
             // TODO: Configuration loading from JSON.
             // TODO: Async status updates on big downloads.
             // TODO: Error Notification.
-            // TODO: Check if GIF/Video links work (also in preview).
             // TODO: Check download target directory for file before saving copy. (Check by name and/or identity)
             // TODO: File Name sanitizing.
             // TODO: Command line Interface?
@@ -111,23 +116,21 @@ namespace GetThatPic.WPF
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
-        private void DropUrl(object sender, DragEventArgs e)
+        private async void DropUrl(object sender, DragEventArgs e)
         {
             // TODO: Migrate to using Link-Class here
             string droppedUrl = (string)e.Data.GetData(DataFormats.Text);
             LogTextBox.Text += "\n" + droppedUrl;
-            BitmapImage bitmap = state.LoadImageFromUrlToPreview(droppedUrl);
+            BitmapImage bitmap = HttpRequester.GetImage(droppedUrl);
+            Link link = state.LinkParser;
+            IList<ImageEntry> images = await state.LinkParser.GetImages(droppedUrl);
 
-            ImageEntry image = new ImageEntry
+            foreach (ImageEntry image in images)
             {
-                Name = droppedUrl,
-                FileSystemLocation = droppedUrl,
-                Content = bitmap
-            };
+                UpdatePreview(image);
 
-            UpdatePreview(image);
-
-            state.History.Push(image);
+                state.History.Push(image);
+            }
         }
 
         /// <summary>

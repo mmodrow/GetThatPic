@@ -2,16 +2,16 @@
 // Copyright (c) 2018 All Rights Reserved
 // <author>Marc A. Modrow</author>
 // </copyright>
+
 using System.Windows.Media.Imaging;
 
-namespace GetThatPic.WPF.Models
+namespace GetThatPic.Parsing.Models
 {
     /// <summary>
     /// Models all data needed to know about a previously downloaded image.
     /// </summary>
     public class ImageEntry
     {
-        // TODO: Move this to better namespace.
         /// <summary>
         /// Gets or sets the content.
         /// </summary>

@@ -3,18 +3,19 @@
 // <author>Marc A. Modrow</author>
 // </copyright>
 
+using System;
 using System.IO;
 using System.Net.Http;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace GetThatPic.Data.IO
 {
     /// <summary>
     /// Performs Http Requests
     /// </summary>
-    public class HttpRequester
+    public static class HttpRequester
     {
         /// <summary>
         /// The protocol and domain finding Regex.
@@ -31,7 +32,7 @@ namespace GetThatPic.Data.IO
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>The response.</returns>
-        public async Task<string> GetString(string url)
+        public static async Task<string> GetString(string url)
         {
             if (string.IsNullOrWhiteSpace(url) || !ProtocolAndDomain.IsMatch(url))
             {
@@ -56,7 +57,7 @@ namespace GetThatPic.Data.IO
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>A Task.</returns>
-        public async Task<Stream> GetStream(string url)
+        public static async Task<Stream> GetStream(string url)
         {
             if (string.IsNullOrWhiteSpace(url) || !ProtocolAndDomain.IsMatch(url))
             {
@@ -68,6 +69,29 @@ namespace GetThatPic.Data.IO
                 var client = new HttpClient();
                 Stream stream = await client.GetStreamAsync(url);
                 return stream;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
+        /// <summary>
+        /// Loads the image from URL to preview.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>A bitmap of the given url's target image if valid.</returns>
+        public static BitmapImage GetImage(string url)
+        {
+            try
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(url, UriKind.Absolute);
+                bitmap.EndInit();
+
+                return bitmap;
             }
             catch
             {
