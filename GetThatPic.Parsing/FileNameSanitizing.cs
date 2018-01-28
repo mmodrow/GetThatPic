@@ -241,6 +241,8 @@ namespace GetThatPic.Parsing
                 output = ReplaceIllegalCharacters(output);
 
                 output = StripSuperfluousReplacementCharacters(output);
+
+                output = Crop(output);
             }
 
             return !string.IsNullOrWhiteSpace(output) ? output : CurrentUnixTime;
@@ -390,6 +392,28 @@ namespace GetThatPic.Parsing
             {
                 output = SubstituteGroupsPattern.Replace(input, CharactersNeedingSubstitutionReplacement);
                 output = EdgeSubstitutePattern.Replace(output, string.Empty);
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// Crops the specified input.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>The input shortened to the maximum legal length.</returns>
+        public static string Crop(string input)
+        {
+            string output = string.Empty;
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                const int NtfsNameLimit = 255;
+                const int UnixTimeStampWithSeprarator = 11;
+                const int NormalFileEndingLength = 4;
+
+                const int MaxLength = NtfsNameLimit - UnixTimeStampWithSeprarator - NormalFileEndingLength;
+
+                output = input.Substring(0, MaxLength);
             }
 
             return output;
