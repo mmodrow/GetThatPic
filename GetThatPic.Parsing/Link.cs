@@ -12,6 +12,7 @@ using GetThatPic.Data.Configuration;
 using GetThatPic.Data.IO;
 using GetThatPic.Parsing.Models;
 using HtmlAgilityPack;
+using Newtonsoft.Json;
 
 namespace GetThatPic.Parsing
 {
@@ -140,13 +141,26 @@ namespace GetThatPic.Parsing
 
             if (null == domains)
             {
-                domains = DefaultConfig.Domains;
+                /*  * /domains = LoadDomainsFromJsonFile();/*  */
+                /*  */domains = DefaultConfig.Domains;/*  */
             }
 
             foreach (Domain domain in domains)
             {
                 Domains.Add(domain);
             }
+        }
+
+        public IList<Domain> LoadDomainsFromJsonFile()
+        {
+            List<Domain> domains;
+            using (StreamReader r = new StreamReader(@"..\..\..\Domains.json"))
+            {
+                string json = r.ReadToEnd();
+                domains = JsonConvert.DeserializeObject<List<Domain>>(json);
+            }
+
+            return domains;
         }
 
         /// <summary>

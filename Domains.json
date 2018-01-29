@@ -5,7 +5,6 @@
     "Path": "^/strip/((?:[0-9]+-?)+$",
     "Images": [
       {
-        "IContentAccessorImplementation": "DomElementAccessor",
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": ".img-comic"
@@ -13,13 +12,11 @@
     ],
     "FileNameFragments": [
       {
-        "IContentAccessorImplementation": "DomElementAccessor",
         "Type": "Text",
         "Selector": "title",
-        "Pattern": "^.*?-  Dilbert Comic Strip on (\d{4}-\d{2}-\d{2}).*$"
+        "PatternString": "^.*?-  Dilbert Comic Strip on (\\d{4}-\\d{2}-\\d{2}).*$"
       },
       {
-        "IContentAccessorImplementation": "DomElementAccessor",
         "Type": "Text",
         "Selector": ".comic-title-name"
       }
@@ -32,7 +29,6 @@
     "Path": "^/(.*?)/.*$",
     "Images": [
       {
-        "IContentAccessorImplementation": "DomElementAccessor",
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": ".gallery-item img"
@@ -40,14 +36,12 @@
     ],
     "FileNameFragments": [
       {
-        "IContentAccessorImplementation": "DomElementAccessor",
         "Type": "Attribute",
         "AttributeName": "content",
-        "Selector": "meta[name=\"shareaholic:article_published_time/"]",
-        "Pattern": "^(\\d{4}-\\d{2}-\\d{2}).*$
+        "Selector": "meta[name=\"shareaholic:article_published_time\"]",
+        "PatternString": "^(\\d{4}-\\d{2}-\\d{2}).*$"
       },
       {
-        "IContentAccessorImplementation": "DomElementAccessor",
         "Type": "Text",
         "Selector": "h1"
       }

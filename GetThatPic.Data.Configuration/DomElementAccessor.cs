@@ -17,7 +17,7 @@ namespace GetThatPic.Data.Configuration
     /// <summary>
     /// Models a Dom Element's Accessor.
     /// </summary>
-    public class  DomElementAccessor
+    public class  DomElementAccessor : IContentAccessor
     {
         /// <summary>
         /// The valid Target Types
@@ -72,6 +72,10 @@ namespace GetThatPic.Data.Configuration
         /// The pattern.
         /// </value>
         public Regex Pattern { get; set; } = new Regex("^(.*)$");
+        public string PatternString
+        {
+            set => Pattern = new Regex(value);
+        }
 
         /// <summary>
         /// Gets or sets the replacement to manipulate the found string.

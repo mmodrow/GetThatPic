@@ -18,7 +18,7 @@ namespace GetThatPic.Data.Configuration
         /// The download directory.
         /// </summary>
         private string downloadDirectory;
-
+        
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
@@ -43,13 +43,18 @@ namespace GetThatPic.Data.Configuration
         /// </value>
         public Regex Path { get; set; }
 
+        public string PathPatternString
+        {
+            set => Path = new Regex(value);
+        }
+
         /// <summary>
         /// Gets or sets the image download instructions.
         /// </summary>
         /// <value>
         /// The images.
         /// </value>
-        public IEnumerable<IContentAccessor> Images { get; set; } = new List<IContentAccessor>();
+        public IEnumerable<DomElementAccessor> Images { get; set; } = new List<DomElementAccessor>();
 
         /// <summary>
         /// Gets or sets the file name fragments.
@@ -57,7 +62,7 @@ namespace GetThatPic.Data.Configuration
         /// <value>
         /// The file name fragments.
         /// </value>
-        public IEnumerable<IContentAccessor> FileNameFragments { get; set; } = new List<IContentAccessor>();
+        public IEnumerable<DomElementAccessor> FileNameFragments { get; set; } = new List<DomElementAccessor>();
 
         /// <summary>
         /// Gets or sets the file name fragment delimiter.

@@ -28,7 +28,11 @@
             </TabItem>
             <TabItem Header="Legal">
                 <Grid Background="#FFE5E5E5">
-                    <TextBlock Name="IconAttribution" HorizontalAlignment="Stretch" Margin="10,73,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="51" Width="491">
+                    <TextBlock Name="MainDev" HorizontalAlignment="Stretch" Margin="10,43,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="51" Width="491">
+                        <Span xml:space="preserve"><Run>Developed by </Run><Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/MarcAMo" ToolTip="Marc Modrow's GitHub profile">Marc Modrow</Hyperlink>.
+<Run><![CDATA[License, sourcecode feedback & contribution at ]]></Run><Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://github.com/MarcAMo/GetThatPic" ToolTip="GetThatPic's GitHub presence">GitHub</Hyperlink>.</Span>
+                    </TextBlock>
+                    <TextBlock Name="IconAttribution" HorizontalAlignment="Stretch" Margin="10,93,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="51" Width="491">
                         <Span xml:space="preserve"><Run Name="IconAttributionPre">Download-Icon made by </Run><Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://www.flaticon.com/authors/dave-gandy" ToolTip="Dave Gandy Creator's page">Dave Gandy</Hyperlink><Run Name="IconAttributionPost"> from www.flaticon.com</Run>
                         </Span>
                     </TextBlock>

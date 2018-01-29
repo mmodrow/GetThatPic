@@ -23,24 +23,24 @@ namespace GetThatPic.Data.Configuration
                 Name = "dilbert.com",
                 Url = "http://dilbert.com",
                 Path = new Regex("^/strip/((?:[0-9]+-?)+)$"),
-                Images = new List<IContentAccessor>()
+                Images = new List<DomElementAccessor>()
                 {
-                    new ImageDownloadFromMarkup()
+                    new DomElementAccessor()
                     {
                         Type = DomElementAccessor.TargetType.Attribute,
                         AttributeName = "src",
                         Selector = ".img-comic"
                     }
                 },
-                FileNameFragments = new List<IContentAccessor>()
+                FileNameFragments = new List<DomElementAccessor>()
                 {
-                    new ImageDownloadFromMarkup()
+                    new DomElementAccessor()
                     {
                         Type = DomElementAccessor.TargetType.Text,
                         Selector = "title",
                         Pattern = new Regex(@"^.*?-  Dilbert Comic Strip on (\d{4}-\d{2}-\d{2}).*$")
                     },
-                    new ImageDownloadFromMarkup()
+                    new DomElementAccessor()
                     {
                         Type = DomElementAccessor.TargetType.Text,
                         Selector = ".comic-title-name"
@@ -53,25 +53,25 @@ namespace GetThatPic.Data.Configuration
                 Name = "www.schisslaweng.net",
                 Url = "https://www.schisslaweng.net",
                 Path = new Regex("^/(.*?)/.*$"),
-                Images = new List<IContentAccessor>()
+                Images = new List<DomElementAccessor>()
                 {
-                    new ImageDownloadFromMarkup()
+                    new DomElementAccessor()
                     {
                         Type = DomElementAccessor.TargetType.Attribute,
                         AttributeName = "src",
                         Selector = ".gallery-item img"
                     }
                 },
-                FileNameFragments = new List<IContentAccessor>()
+                FileNameFragments = new List<DomElementAccessor>()
                 {
-                    new ImageDownloadFromMarkup()
+                    new DomElementAccessor()
                     {
                         Type = DomElementAccessor.TargetType.Attribute,
                         AttributeName = "content",
                         Selector = @"meta[name=""shareaholic:article_published_time""]",
                         Pattern = new Regex(@"^(\d{4}-\d{2}-\d{2}).*$")
                     },
-                    new ImageDownloadFromMarkup()
+                    new DomElementAccessor()
                     {
                         Type = DomElementAccessor.TargetType.Text,
                         Selector = "h1"
