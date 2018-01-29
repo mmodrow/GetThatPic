@@ -24,6 +24,44 @@
     "FileNameFragmentDelimiter": "_-_"
   },
   {
+    "Name": "www.ohjoysextoy.com",
+    "Url": "https://www.ohjoysextoy.com",
+    "PatternString": "^/([^/]+)/?$",
+    "Images": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": ".comicpane img"
+      }
+    ],
+    "FileNameFragments": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "title",
+        "Selector": ".comicpane > img"
+      }
+    ]
+  },
+  {
+    "Name": "turnoff.us",
+    "Url": "http://turnoff.us",
+    "PatternString": "/geek/(.*?)/?$",
+    "Images": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": ".post-content img",
+        "Replace": "http://turnoff.us$"
+      }
+    ],
+    "FileNameFragments": [
+      {
+        "Type": "Html",
+        "Selector": ".post-title"
+      }
+    ]
+  },
+  {
     "Name": "www.schisslaweng.net",
     "Url": "https://www.schisslaweng.net",
     "Path": "^/(.*?)/.*$",
