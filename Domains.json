@@ -1,0 +1,29 @@
+[
+  {
+    "Name": "dilbert.com",
+    "Url": "http://dilbert.com",
+    "Path": "^/strip/((?:[0-9]+-?)+$",
+    "Images": [
+      {
+        "IContentAccessorImplementation": "DomElementAccessor",
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": ".img-comic"
+      }
+    ],
+    "FileNameFragments": [
+      {
+        "IContentAccessorImplementation": "DomElementAccessor",
+        "Type": "Text",
+        "Selector": "title",
+        "Pattern": "^.*?-  Dilbert Comic Strip on (\d{4}-\d{2}-\d{2}).*$"
+      },
+      {
+        "IContentAccessorImplementation": "DomElementAccessor",
+        "Type": "Text",
+        "Selector": ".comic-title-name"
+      }
+    ],
+    "FileNameFragmentDelimiter": "_-_"
+  }
+] 
