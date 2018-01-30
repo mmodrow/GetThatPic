@@ -139,7 +139,7 @@
   {
     "Name": "giphy.com",
     "Url": "https://giphy.com",
-    "Path": "^/gifs/([a-zA-Z0-9-]+)/?(?:\?.*)?$",
+    "Path": "^/gifs/([a-zA-Z0-9-]+)/?(?:\\?.*)?$",
     "Images": [
       {
         "Type": "Attribute",
@@ -158,5 +158,54 @@
         "Replace": ""
       }
     ]
+  },
+  {
+    "Name": "media.giphy.com",
+    "Url": "https://media.giphy.com",
+    "Path": "^/media/([a-zA-Z0-9-]+)/giphy\\.gif(?:\\?.*)?$",
+    "Images": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "content",
+        "Selector": "meta[property='og:image']",
+        "PatternString": "^.*?\/media\/([^\/]+)\/.*$",
+        "Replace": "https://i.giphy.com/media/$1/giphy.gif"
+      }
+    ],
+    "FileNameFragments": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "content",
+        "Selector": "meta[name='keywords']",
+        "PatternString": "( GIF| Animated|,)",
+        "Replace": ""
+      }
+    ]
+  },
+  {
+    "Name": "www.thegamercat.com",
+    "Url": "http://www.thegamercat.com",
+    "Path": "^/comic/([0-9a-zA-Z-]+)/$",
+    "Images": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": "#comic img"
+      }
+    ],
+    "FileNameFragments": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": "#comic img",
+        "PatternString": "^((?:\\/?[^\\/]+\\/)+(?:[^_]*_)+)(\\d+)(\\.[a-zA-z0-9]{2,4})$",
+        "Replace": "$2"
+      },
+      {
+        "Type": "Html",
+        "Selector": "#content > article > .post-content > .post-info > h2"
+      }
+    ],
+    "FileNameFragmentDelimiter": " "
   }
 ] 
