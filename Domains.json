@@ -20,8 +20,7 @@
         "Type": "Text",
         "Selector": ".comic-title-name"
       }
-    ],
-    "FileNameFragmentDelimiter": "_-_"
+    ]
   },
   {
     "Name": "www.ohjoysextoy.com",
@@ -62,6 +61,58 @@
     ]
   },
   {
+    "Name": "thecodinglove.com",
+    "Url": "http://thecodinglove.com",
+    "Path": "^/post/([0-9]+)(/[^/]+)?$",
+    "Images": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": "#post1 img"
+      }
+    ],
+    "FileNameFragments": [
+      {
+        "Type": "Html",
+        "Selector": "#post1 h3"
+      }
+    ]
+  },
+  {
+    "Name": "xkcd.com",
+    "Url": "http://xkcd.com",
+    "Path": "^/([0-9]+)/$",
+    "Images": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "href",
+        "Selector": "#comic>a"
+      },
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": "#comic img"
+      }
+    ],
+    "FileNameFragments": [
+      {
+        "Type": "Url",
+        "PatternString": "^/([0-9]+)/$"
+      },
+      {
+        "Type": "Html",
+        "Selector": "#ctitle"
+      },
+      {
+        "Type": "Attribute",,
+        "AttributeName": "title",
+        "Selector": "#comic img",
+        "Replace": "- $1"
+      }
+    ],
+    "FileNameFragmentDelimiter": " "
+  },
+  {
     "Name": "www.schisslaweng.net",
     "Url": "https://www.schisslaweng.net",
     "Path": "^/(.*?)/.*$",
@@ -83,7 +134,29 @@
         "Type": "Text",
         "Selector": "h1"
       }
+    ]
+  },
+  {
+    "Name": "giphy.com",
+    "Url": "https://giphy.com",
+    "Path": "^/gifs/([a-zA-Z0-9-]+)/?(?:\?.*)?$",
+    "Images": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "content",
+        "Selector": "meta[property='og:image']",
+        "PatternString": "^.*?\/media\/([^\/]+)\/.*$",
+        "Replace": "https://i.giphy.com/media/$1/giphy.gif"
+      }
     ],
-    "FileNameFragmentDelimiter": "_-_"
+    "FileNameFragments": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "content",
+        "Selector": "meta[name='keywords']",
+        "PatternString": "( GIF| Animated|,)",
+        "Replace": ""
+      }
+    ]
   }
 ] 

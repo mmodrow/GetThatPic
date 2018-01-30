@@ -1,4 +1,4 @@
-﻿// <copyright file="Domain.cs" company="Marc A. Modrow">
+// <copyright file="Domain.cs" company="Marc A. Modrow">
 // Copyright (c) 2018 All Rights Reserved
 // <author>Marc A. Modrow</author>
 // </copyright>
@@ -70,7 +70,7 @@ namespace GetThatPic.Data.Configuration
         /// <value>
         /// The file name fragment delimiter.
         /// </value>
-        public string FileNameFragmentDelimiter { get; set; } = "_";
+        public string FileNameFragmentDelimiter { get; set; } = " - ";
 
         /// <summary>
         /// Gets or sets the download directory.
