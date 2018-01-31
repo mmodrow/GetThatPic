@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using GetThatPic.Data.IO;
 using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
 using Newtonsoft.Json;
@@ -93,35 +94,40 @@ namespace GetThatPic.Data.Configuration
         ///   <c>true</c> if all properties are valid; otherwise, <c>false</c>.
         /// </value>
         public bool IsValid => Enum.IsDefined(typeof(TargetType), Type) && null != Pattern && !string.IsNullOrWhiteSpace(Pattern.ToString()) &&
-                               !string.IsNullOrWhiteSpace(Replace) && !string.IsNullOrWhiteSpace(Selector) &&
+                               null != Replace && (TargetType.Url == Type || !string.IsNullOrWhiteSpace(Selector)) &&
                                !(TargetType.Attribute == Type && string.IsNullOrWhiteSpace(AttributeName));
 
         /// <summary>
         /// Gets the content specified by a DomElementAccessor from a given HtmlDocument.
         /// </summary>
         /// <param name="doc">The document.</param>
-        /// <returns>The desired Content.</returns>
-        public IList<string> GetContent(HtmlDocument doc)
+        /// <param name="url">The URL.</param>
+        /// <returns>
+        /// The desired Content.
+        /// </returns>
+        public IList<string> GetContent(HtmlDocument doc, string url = null)
         {
             if (null == doc || !IsValid)
             {
                 return new List<string>();
             }
 
-            IList<HtmlNode> nodes = doc.QuerySelectorAll(Selector);
+            IList<HtmlNode> nodes = TargetType.Url != Type && !string.IsNullOrWhiteSpace(Selector)
+                ? doc.QuerySelectorAll(Selector)
+                : null;
             IList<string> output = null;
 
             switch (Type)
             {
-                case DomElementAccessor.TargetType.Html:
+                case TargetType.Html:
                     output = nodes.Select(node => node.InnerHtml).ToList<string>();
                     break;
 
-                case DomElementAccessor.TargetType.Text:
+                case TargetType.Text:
                     output = nodes.Select(node => node.InnerText).ToList<string>();
                     break;
 
-                case DomElementAccessor.TargetType.Attribute:
+                case TargetType.Attribute:
                     output = nodes.Select(
                         node => node?.
                             Attributes?.
@@ -129,8 +135,9 @@ namespace GetThatPic.Data.Configuration
                         .ToList<string>();
                     break;
 
-                case DomElementAccessor.TargetType.Url:
-                    throw new NotImplementedException();
+                case TargetType.Url:
+                    output = new List<string>{Pattern.Replace(HttpRequester.PathAfterdomain.Replace(url, "$1"), Replace)};
+                    break;
             }
 
             output = output?.Select(item => Pattern.Replace(item, Replace)).ToList();

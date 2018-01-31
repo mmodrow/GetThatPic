@@ -14,7 +14,7 @@
       {
         "Type": "Text",
         "Selector": "title",
-        "Pattern": "/^.*?-  Dilbert Comic Strip on (\\d{4}-\\d{2}-\\d{2}).*$/"
+        "Pattern": "/^(?:.*?-)? *Dilbert Comic Strip on ([0-9]{4}-[0-9]{2}-[0-9]{2}).*$/"
       },
       {
         "Type": "Text",
@@ -36,6 +36,12 @@
     "FileNameFragments": [
       {
         "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": ".comicpane > img",
+        "Pattern": "/^.*\/([0-9]{4}-[0-9]{2}-[0-9]{2}).*/"
+      },
+      {
+        "Type": "Attribute",
         "AttributeName": "title",
         "Selector": ".comicpane > img"
       }
@@ -50,13 +56,14 @@
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": ".post-content img",
-        "Replace": "http://turnoff.us$"
+        "Replace": "http://turnoff.us$1"
       }
     ],
     "FileNameFragments": [
       {
         "Type": "Html",
-        "Selector": ".post-title"
+        "Selector": ".post-title",
+        "Pattern": "/^(?:\\$ )(.*)$?/"
       }
     ]
   },
@@ -109,32 +116,7 @@
         "Type": "Attribute",
         "AttributeName": "title",
         "Selector": "#comic img",
-        "Replace": "- $1"
-      }
-    ],
-    "FileNameFragmentDelimiter": " "
-  },
-  {
-    "Name": "Schisslaweng",
-    "Url": "/https:\/\/www.schisslaweng.net/",
-    "Path": "/^\/(.*?)\/.*$/",
-    "Images": [
-      {
-        "Type": "Attribute",
-        "AttributeName": "src",
-        "Selector": ".gallery-item img"
-      }
-    ],
-    "FileNameFragments": [
-      {
-        "Type": "Attribute",
-        "AttributeName": "content",
-        "Selector": "meta[name=\"shareaholic:article_published_time\"]",
-        "Pattern": "/^(\\d{4}-\\d{2}-\\d{2}).*$/"
-      },
-      {
-        "Type": "Text",
-        "Selector": "h1"
+        "Replace": "$1"
       }
     ]
   },
@@ -156,7 +138,7 @@
         "Type": "Attribute",
         "AttributeName": "content",
         "Selector": "meta[name='keywords']",
-        "Pattern": "/( GIF| Animated|,)/",
+        "Pattern": "/(?:(?:\\s|^)GIF|(?:\\s|^)Animated|(?:\\s|^)hd|,)/ig",
         "Replace": ""
       }
     ]
@@ -179,8 +161,32 @@
         "Type": "Attribute",
         "AttributeName": "content",
         "Selector": "meta[name='keywords']",
-        "Pattern": "/( GIF| Animated|,)/",
+        "Pattern": "/(?:(?:\\s|^)GIF|(?:\\s|^)Animated|(?:\\s|^)hd|,)/ig",
         "Replace": ""
+      }
+    ]
+  },
+  {
+    "Name": "Schisslaweng",
+    "Url": "/https:\/\/www.schisslaweng.net/",
+    "Path": "/^\/(.*?)\/.*$/",
+    "Images": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": ".gallery-item img"
+      }
+    ],
+    "FileNameFragments": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "content",
+        "Selector": "meta[name=\"shareaholic:article_published_time\"]",
+        "Pattern": "/^(\\d{4}-\\d{2}-\\d{2}).*$/"
+      },
+      {
+        "Type": "Text",
+        "Selector": "h1"
       }
     ]
   },

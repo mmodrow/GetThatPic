@@ -5,6 +5,7 @@
 
 using System;
 using System.Globalization;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -126,7 +127,7 @@ namespace GetThatPic.Parsing
         /// <summary>
         /// The shit full scramble pattern
         /// </summary>
-        private static readonly Regex ShitFullScramblePattern = new Regex(@"(\s|^)(?:[^a-zA-Z\s]{4})(\s|$)");
+        private static readonly Regex ShitFullScramblePattern = new Regex(@"(\s|^)(?!\d{4})(?:[^a-zA-Z\s]{4})(\s|$)");
 
         /// <summary>
         /// The shit capslock pattern.
@@ -173,7 +174,7 @@ namespace GetThatPic.Parsing
         /// <summary>
         /// The not pattern.
         /// </summary>
-        private static readonly Regex NotPattern = new Regex(@"(\s|^)([Ii]s|[Dd]oes|[Dd]o|[Ww]ere|[Ww]ould|[Cc]ould|[Ss]hould)n[`´'’‘]t");
+        private static readonly Regex NotPattern = new Regex(@"(\s|^)([Ii]s|[Dd]oes|[Dd]o|[Dd]id|[Ww]ere|[Ww]ould|[Cc]ould|[Ss]hould)n[`´'’‘]t");
 
         /// <summary>
         /// The will not pattern.
@@ -231,9 +232,12 @@ namespace GetThatPic.Parsing
             if (!string.IsNullOrWhiteSpace(input))
             {
                 output = input.Trim();
-                output = Whitespace(output);
+                output = WebUtility.HtmlDecode(output);
+
                 output = RecreateSwearing(output);
                 output = RecreateContractions(output);
+
+                output = Whitespace(output);
                 output = ReplaceUmlauts(output);
                 
                 output = RemoveDiacritics(output);
@@ -243,6 +247,8 @@ namespace GetThatPic.Parsing
                 output = StripSuperfluousReplacementCharacters(output);
 
                 output = Crop(output);
+
+                output = StripSuperfluousReplacementCharacters(output);
             }
 
             return !string.IsNullOrWhiteSpace(output) ? output : CurrentUnixTime;

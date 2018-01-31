@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GetThatPic.Data.IO\GetThatPic.Data.IO.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="HtmlAgilityPack.CssSelectors.NetCore">
       <HintPath>..\..\..\.nuget\packages\htmlagilitypack.cssselectors.netcore\1.0.0\lib\netstandard1.5\HtmlAgilityPack.CssSelectors.NetCore.dll</HintPath>
       <Private>true</Private>

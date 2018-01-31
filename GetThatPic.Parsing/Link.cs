@@ -252,7 +252,7 @@ namespace GetThatPic.Parsing
 
             foreach (IContentAccessor downloadInstruction in domain.Images)
             {
-                IEnumerable<string> imagePaths = downloadInstruction.GetContent(doc);
+                IEnumerable<string> imagePaths = downloadInstruction.GetContent(doc, url);
                 if (imagePaths.Any())
                 {
                     string protocol = Protocol.Replace(url, "$1");
@@ -302,13 +302,13 @@ namespace GetThatPic.Parsing
 
             foreach (IContentAccessor downloadInstruction in domain.FileNameFragments)
             {
-                imageNameFragments.Add(downloadInstruction.GetContent(doc));
+                imageNameFragments.Add(downloadInstruction.GetContent(doc, url));
             }
 
             return Sanitizing.SanititzeFileName(
                 string.Join(
                     domain.FileNameFragmentDelimiter,
-                    imageNameFragments.SelectMany(fragments => fragments)));
+                    imageNameFragments.SelectMany(fragments => fragments).Where(name => !string.IsNullOrWhiteSpace(name))));
         }
 
         /// <summary>

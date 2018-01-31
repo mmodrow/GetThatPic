@@ -1,10 +1,8 @@
-﻿// <copyright file="FileNameSanitizingTests.cs" company="Marc A. Modrow">
+﻿// <copyright file="SanitizingTests.cs" company="Marc A. Modrow">
 // Copyright (c) 2018 All Rights Reserved
 // <author>Marc A. Modrow</author>
 // </copyright>
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using GetThatPic.Parsing;
 using Xunit;
 
@@ -13,7 +11,7 @@ namespace GetThatPic.Test.Parsing
     /// <summary>
     /// Tests the functionality of the Sanitizing class.
     /// </summary>
-    public class FileNameSanitizingTests
+    public class SanitizingTests
     {
         /// <summary>
         /// Tests Whitespaces with whitespaces in the middle.
@@ -154,6 +152,7 @@ breaks";
         [InlineData("wouldn't", "would not")]
         [InlineData("weren't", "were not")]
         [InlineData("don't", "do not")]
+        [InlineData("didn't", "did not")]
         [InlineData("doesn't", "does not")]
         [InlineData("couldn't", "could not")]
         [InlineData("Couldn't", "Could not")]
