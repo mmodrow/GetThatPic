@@ -207,5 +207,109 @@
       }
     ],
     "FileNameFragmentDelimiter": " "
-  }
+  },
+  {
+    "Name": "www.awkwardzombie.com",
+    "Url": "http://www.awkwardzombie.com,
+    "Path": "^/(?:index\\.php)?\\?(?:page=\\d+&)?comic=((\\d{2})(\\d{2})(\\d{2}))/?$",
+    "Images": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": "#comic img"
+      }
+    ],
+    "FileNameFragments": [
+      {
+        "Type": "Url",
+        "PatternString": "^/(?:index\\.php)?\\?(?:page=\\d+&)?comic=((\\d{2})(\\d{2})(\\d{2}))/?$",
+        "Replace": "20$3-$1-$2"
+      },
+      {
+        "Type": "Html",
+        "Selector": "#blarg > div:last-of-type"
+        "PatternString": "^\s*(.*?)\s*$"
+      },
+      {
+        "Type": "Html",
+        "Selector": "#site_content > .title.centered"
+        "PatternString": "^\s*(.*?)\s*$",
+        "Replace": "- $1"
+      }
+    ],
+    "FileNameFragmentDelimiter": " "
+  },
+  {
+    "Name": "sarahburrini.com",
+    "Url": "http://sarahburrini.com",
+    "Path": "^\\/wordpress\\/comic\\/(.*?)\\/?$",
+    "Images": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": "#comic img"
+      }
+    ],
+    "FileNameFragments": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": "#comic img",
+        "PatternString": "^http:\/\/sarahburrini\.com\/wordpress\/wp-content\/uploads\/\d+\/\d+\/(\d{4}-\d{2}-\d{2}).*$"
+      },
+      {
+        "Attribute": "Html",
+        "Selector": ".post-title"
+      }
+    ],
+    "FileNameFragmentDelimiter": " "
+  },
+  {
+    "Name": "www.phdcomics.com",
+    "Url": "http://www.phdcomics.com",
+    "Path": "^\/comics.php\?f=(\d+)$",
+    "Images": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": "#comic"
+      }
+    ],
+    "FileNameFragments": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": "#comic",
+        "PatternString": "^(?:[^/]+\/+)+(phd)(\d{2})(\d{2})(\d{2})s(\.gif)$",
+        "Replace": "$1$4$2$3"
+      }
+    ]
+  },
+  {
+    "Name": "Cyanide & Happiness",
+    "Url": "http://explosm.net",
+    "Path": "^/comics/(\d+)/?$",
+    "Images": [
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": "#main-comic",
+        "PatternString": "([^?]+).*"
+      }
+    ],
+    "FileNameFragments": [
+      {
+        "Type": "Url",
+        "PatternString": "^/comics/([0-9]+)/?"
+      },
+      {
+        "Type": "Attribute",
+        "AttributeName": "src",
+        "Selector": "#main-comic",
+        "PatternString": ".*\/([^\?$]+)\..*"
+      }
+    ],
+    "FileNameFragmentDelimiter": " "
+  },
+  
 ] 
