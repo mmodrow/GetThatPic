@@ -80,13 +80,15 @@
   },
   {
     "Name": "xkcd.com",
-    "Url": "/http:\/\/xkcd.com/",
-    "Path": "/^\/([0-9]+)\/$/",
+    "Url": "/https?:\/\/xkcd.com/",
+    "Path": "/^\/([0-9]+)\/?$/",
     "Images": [
       {
         "Type": "Attribute",
-        "AttributeName": "href",
-        "Selector": "#comic>a"
+        "AttributeName": "src",
+        "Selector": "#comic > a > img",
+        "Pattern": "/^(.*)(\\.[a-zA-Z0-9]+)$/",
+        "Replace": "$1_large$2"
       },
       {
         "Type": "Attribute",
@@ -113,7 +115,7 @@
     "FileNameFragmentDelimiter": " "
   },
   {
-    "Name": "www.schisslaweng.net",
+    "Name": "Schisslaweng",
     "Url": "/https:\/\/www.schisslaweng.net/",
     "Path": "/^\/(.*?)\/.*$/",
     "Images": [
@@ -183,7 +185,7 @@
     ]
   },
   {
-    "Name": "www.thegamercat.com",
+    "Name": "The Gamer Cat",
     "Url": "/http:\/\/www.thegamercat.com/",
     "Path": "/^\/comic\/([0-9a-zA-Z-]+)\/$/",
     "Images": [

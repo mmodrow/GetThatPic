@@ -11,7 +11,7 @@ using Xunit;
 namespace GetThatPic.Test.Parsing
 {
     /// <summary>
-    /// Tests the functionality of the FileNameSanitizing class.
+    /// Tests the functionality of the Sanitizing class.
     /// </summary>
     public class FileNameSanitizingTests
     {
@@ -21,7 +21,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void Whitespace_Middle()
         {
-            Assert.Equal("There_are_things_in_this_world", FileNameSanitizing.Whitespace("There are things  in this world"));
+            Assert.Equal("There_are_things_in_this_world", Sanitizing.Whitespace("There are things  in this world"));
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void Whitespace_Space_Front()
         {
-            Assert.Equal("_Happiness", FileNameSanitizing.Whitespace(" Happiness"));
+            Assert.Equal("_Happiness", Sanitizing.Whitespace(" Happiness"));
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void Whitespace_Space_End()
         {
-            Assert.Equal("Happiness_", FileNameSanitizing.Whitespace("Happiness "));
+            Assert.Equal("Happiness_", Sanitizing.Whitespace("Happiness "));
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void Whitespace_Tab()
         {
-            Assert.Equal("Some_easily_read_text_for_testing_line_breaks", FileNameSanitizing.Whitespace("Some	easily	read	text	for	testing	line	breaks"));
+            Assert.Equal("Some_easily_read_text_for_testing_line_breaks", Sanitizing.Whitespace("Some	easily	read	text	for	testing	line	breaks"));
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void Whitespace_MixedRepetition()
         {
-            Assert.Equal("Some_easily_read_text_for_testing_line_breaks", FileNameSanitizing.Whitespace("Some	easily  read 	text	 	for	testing		line     breaks"));
+            Assert.Equal("Some_easily_read_text_for_testing_line_breaks", Sanitizing.Whitespace("Some	easily  read 	text	 	for	testing		line     breaks"));
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void Whitespace_None()
         {
-            Assert.Equal("Supercalifragilisticexpialidocious", FileNameSanitizing.Whitespace("Supercalifragilisticexpialidocious"));
+            Assert.Equal("Supercalifragilisticexpialidocious", Sanitizing.Whitespace("Supercalifragilisticexpialidocious"));
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ line
 breaks";
             Assert.Equal(
                 "Some_easily_read_text_for_testing_line_breaks",
-                FileNameSanitizing.Whitespace(input));
+                Sanitizing.Whitespace(input));
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ breaks";
         [InlineData("")]
         public void Whitespace_Empty(string input)
         {
-            Assert.Empty(FileNameSanitizing.Whitespace(input));
+            Assert.Empty(Sanitizing.Whitespace(input));
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ breaks";
         [InlineData("S4!T", "SHIT")]
         public void RecreateSwearing(string input, string expectedOutput)
         {
-            Assert.Equal(expectedOutput, FileNameSanitizing.RecreateSwearing(input));
+            Assert.Equal(expectedOutput, Sanitizing.RecreateSwearing(input));
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ breaks";
         [InlineData("Can't", "Cannot")]
         public void RecreateContractions(string input, string expectedOutput)
         {
-            Assert.Equal(expectedOutput, FileNameSanitizing.RecreateContractions(input));
+            Assert.Equal(expectedOutput, Sanitizing.RecreateContractions(input));
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ breaks";
         [Fact]
         public void RemoveDiacritics()
         {
-            Assert.Equal("aoUcN", FileNameSanitizing.RemoveDiacritics("àôÛçÑ"));
+            Assert.Equal("aoUcN", Sanitizing.RemoveDiacritics("àôÛçÑ"));
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ breaks";
         [InlineData(null, "")]
         public void ReplaceUmlauts(string input, string expectedOutput)
         {
-            Assert.Equal(expectedOutput, FileNameSanitizing.ReplaceUmlauts(input));
+            Assert.Equal(expectedOutput, Sanitizing.ReplaceUmlauts(input));
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ breaks";
         [Fact]
         public void ReplaceIllegalCharacters()
         {
-            Assert.Equal("___-_ab_________________c_", FileNameSanitizing.ReplaceIllegalCharacters("__,-_a´`'b_â__âµ/=&%\"’.‘$<<>µ—_c_"));
+            Assert.Equal("___-_ab_________________c_", Sanitizing.ReplaceIllegalCharacters("__,-_a´`'b_â__âµ/=&%\"’.‘$<<>µ—_c_"));
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ breaks";
         [Fact]
         public void StripSuperfluousReplacementCharacters()
         {
-            Assert.Equal("-_ab_c", FileNameSanitizing.StripSuperfluousReplacementCharacters("___-_ab_________________c_"));
+            Assert.Equal("-_ab_c", Sanitizing.StripSuperfluousReplacementCharacters("___-_ab_________________c_"));
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ breaks";
         {
             string expected = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, ";
             string input = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu.";
-            Assert.Equal(expected, FileNameSanitizing.Crop(input));
+            Assert.Equal(expected, Sanitizing.Crop(input));
         }
 
         /// <summary>
@@ -237,18 +237,19 @@ breaks";
         {
             string expected = "Lorem ipsum";
             string input = "Lorem ipsum";
-            Assert.Equal(expected, FileNameSanitizing.Crop(input));
+            Assert.Equal(expected, Sanitizing.Crop(input));
         }
 
         /// <summary>
         /// Tests Crop for empty input.
         /// </summary>
+        /// <param name="input">The input.</param>
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         public void Crop_Empty(string input)
         {
-            Assert.Equal(string.Empty, FileNameSanitizing.Crop(input));
+            Assert.Equal(string.Empty, Sanitizing.Crop(input));
         }
     }
 }

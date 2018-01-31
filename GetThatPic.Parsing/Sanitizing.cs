@@ -1,4 +1,4 @@
-﻿// <copyright file="FileNameSanitizing.cs" company="Marc A. Modrow">
+﻿// <copyright file="Sanitizing.cs" company="Marc A. Modrow">
 // Copyright (c) 2018 All Rights Reserved
 // <author>Marc A. Modrow</author>
 // </copyright>
@@ -13,7 +13,7 @@ namespace GetThatPic.Parsing
     /// <summary>
     /// Handles sanitization of file names.
     /// </summary>
-    public static class FileNameSanitizing
+    public static class Sanitizing
     {
         /*------------------------------Swear word Replacements------------------------------*/
 
@@ -225,7 +225,7 @@ namespace GetThatPic.Parsing
         /// </summary>
         /// <param name="input">The input.</param>
         /// <returns>Sanitized input.</returns>
-        public static string Sanititze(string input)
+        public static string SanititzeFileName(string input)
         {
             string output = string.Empty;
             if (!string.IsNullOrWhiteSpace(input))

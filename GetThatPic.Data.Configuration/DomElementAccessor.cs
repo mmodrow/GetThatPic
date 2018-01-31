@@ -123,8 +123,10 @@ namespace GetThatPic.Data.Configuration
 
                 case DomElementAccessor.TargetType.Attribute:
                     output = nodes.Select(
-                        node => node.Attributes.First(
-                            attribute => AttributeName == attribute.Name).Value).ToList<string>();
+                        node => node?.
+                            Attributes?.
+                            FirstOrDefault(attribute => AttributeName == attribute?.Name).Value)
+                        .ToList<string>();
                     break;
 
                 case DomElementAccessor.TargetType.Url:

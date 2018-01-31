@@ -23,6 +23,11 @@ namespace GetThatPic.Parsing
     public class Link
     {
         /// <summary>
+        /// The protocol finding pattern.
+        /// </summary>
+        private static readonly Regex Protocol = new Regex("^(http?s:).*?$", RegexOptions.IgnoreCase);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Link" /> class.
         /// </summary>
         /// <param name="autoInitialize">if set to <c>true</c> the config gets automatically initialized.</param>
@@ -150,10 +155,15 @@ namespace GetThatPic.Parsing
             }
         }
 
-        public IList<Domain> LoadDomainsFromJsonFile()
+        /// <summary>
+        /// Loads the domains from json file.
+        /// </summary>
+        /// <param name="inputFile">The input file path.</param>
+        /// <returns>The loaded domains.</returns>
+        public IList<Domain> LoadDomainsFromJsonFile(string inputFile = @"..\..\..\..\Domains.json")
         {
             List<Domain> domains;
-            using (StreamReader r = new StreamReader(@"..\..\..\..\Domains.json"))
+            using (StreamReader r = new StreamReader(inputFile))
             {
                 string json = r.ReadToEnd();
                 domains = JsonConvert.DeserializeObject<List<Domain>>(json);
@@ -172,15 +182,15 @@ namespace GetThatPic.Parsing
             Domain domain = IdentifyDomain(url);
             HtmlDocument doc = await GetDocument(url);
 
-            IList<string> imageUrls = await GetImageUrls(url, doc, domain);
-            IList<string> fileEndings = imageUrls.Select(FileEndingFromUrl).ToList();
+            IEnumerable<string> imageUrls = await GetImageUrls(url, doc, domain);
+            IEnumerable<string> fileEndings = imageUrls.Select(FileEndingFromUrl).ToList();
 
             string imageBaseFileName = await GetImageFileName(url, doc, domain);
 
             IList<string> imageFileNames = new List<string>();
-            if (imageUrls.Count > 1)
+            int numImages = imageUrls.Count();
+            if (numImages > 1)
             {
-                int numImages = imageUrls.Count;
                 int numDigits = (numImages + 1).ToString().Length;
                 for (int i = 1; i <= numImages; i++)
                 {
@@ -213,7 +223,7 @@ namespace GetThatPic.Parsing
         /// <param name="doc">The document to parse.</param>
         /// <param name="domain">The domain to parse against.</param>
         /// <returns>List of Image Urls</returns>
-        public async Task<IList<string>> GetImageUrls(string url, HtmlDocument doc = null, Domain domain = null)
+        public async Task<IEnumerable<string>> GetImageUrls(string url, HtmlDocument doc = null, Domain domain = null)
         {
             if (string.IsNullOrWhiteSpace(url))
             {
@@ -242,9 +252,11 @@ namespace GetThatPic.Parsing
 
             foreach (IContentAccessor downloadInstruction in domain.Images)
             {
-                IList<string> imagePaths = downloadInstruction.GetContent(doc);
+                IEnumerable<string> imagePaths = downloadInstruction.GetContent(doc);
                 if (imagePaths.Any())
                 {
+                    string protocol = Protocol.Replace(url, "$1");
+                    imagePaths = imagePaths.Select(imageUrl => imageUrl.StartsWith("//") ? protocol + imageUrl : imageUrl);
                     return imagePaths;
                 }
             }
@@ -293,7 +305,7 @@ namespace GetThatPic.Parsing
                 imageNameFragments.Add(downloadInstruction.GetContent(doc));
             }
 
-            return FileNameSanitizing.Sanititze(
+            return Sanitizing.SanititzeFileName(
                 string.Join(
                     domain.FileNameFragmentDelimiter,
                     imageNameFragments.SelectMany(fragments => fragments)));
@@ -313,10 +325,10 @@ namespace GetThatPic.Parsing
 
             string domain = HttpRequester.ProtocolAndDomain.Replace(url, "$1");
             string path = HttpRequester.PathAfterdomain.Replace(url, "$1");
+
             IList<Domain> matchingDomains = Domains.Where(
                 d => d.Url.IsMatch(domain) 
-                     && d.Path.IsMatch(path)
-                     ).ToList();
+                     && d.Path.IsMatch(path)).ToList();
 
             return matchingDomains.FirstOrDefault();
         }

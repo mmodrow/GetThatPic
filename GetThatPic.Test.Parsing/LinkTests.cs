@@ -320,8 +320,8 @@ namespace GetThatPic.Test.Parsing
         {
             Link link = new Link();
 
-            IList<string> foundImageUrls = await link.GetImageUrls("https://www.schisslaweng.net/probe/");
-            IList<string> expectedImageUrls = new List<string>
+            IEnumerable<string> foundImageUrls = await link.GetImageUrls("https://www.schisslaweng.net/probe/");
+            IEnumerable<string> expectedImageUrls = new List<string>
             {
                 "https://www.schisslaweng.net/wp-content/uploads/sites/2/2017/03/01_Trainingistalles_FINAL_web-980x1386.jpg",
                 "https://www.schisslaweng.net/wp-content/uploads/sites/2/2017/03/02_Trainingistalles_FINAL_web-980x1386.jpg",
