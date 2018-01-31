@@ -43,11 +43,6 @@ namespace GetThatPic.Data.Configuration
         /// </value>
         public Regex Path { get; set; }
 
-        public string PathPatternString
-        {
-            set => Path = new Regex(value);
-        }
-
         /// <summary>
         /// Gets or sets the image download instructions.
         /// </summary>

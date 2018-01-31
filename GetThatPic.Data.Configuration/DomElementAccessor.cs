@@ -37,7 +37,12 @@ namespace GetThatPic.Data.Configuration
             /// <summary>
             /// The inner text.
             /// </summary>
-            Text
+            Text,
+
+            /// <summary>
+            /// The full request URL.
+            /// </summary>
+            Url
         }
 
         /// <summary>
@@ -72,10 +77,6 @@ namespace GetThatPic.Data.Configuration
         /// The pattern.
         /// </value>
         public Regex Pattern { get; set; } = new Regex("^(.*)$");
-        public string PatternString
-        {
-            set => Pattern = new Regex(value);
-        }
 
         /// <summary>
         /// Gets or sets the replacement to manipulate the found string.
@@ -125,6 +126,9 @@ namespace GetThatPic.Data.Configuration
                         node => node.Attributes.First(
                             attribute => AttributeName == attribute.Name).Value).ToList<string>();
                     break;
+
+                case DomElementAccessor.TargetType.Url:
+                    throw new NotImplementedException();
             }
 
             output = output?.Select(item => Pattern.Replace(item, Replace)).ToList();
