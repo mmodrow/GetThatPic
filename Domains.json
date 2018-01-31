@@ -2,7 +2,7 @@
   {
     "Name": "dilbert.com",
     "Url": "http://dilbert.com",
-    "Path": "^/strip/((?:[0-9]+-?)+$",
+    "Path": "/^\/strip\/((?:[0-9]+-?)+)$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -14,7 +14,7 @@
       {
         "Type": "Text",
         "Selector": "title",
-        "Pattern": "^.*?-  Dilbert Comic Strip on (\\d{4}-\\d{2}-\\d{2}).*$"
+        "Pattern": "/^.*?-  Dilbert Comic Strip on (\\d{4}-\\d{2}-\\d{2}).*$/"
       },
       {
         "Type": "Text",
@@ -25,7 +25,7 @@
   {
     "Name": "www.ohjoysextoy.com",
     "Url": "https://www.ohjoysextoy.com",
-    "Pattern": "^/([^/]+)/?$",
+    "Path": "/^\/([^\/]+)\/?$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -44,7 +44,7 @@
   {
     "Name": "turnoff.us",
     "Url": "http://turnoff.us",
-    "Pattern": "/geek/(.*?)/?$",
+    "Path": "/^\/geek\/(.*?)\/?$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -63,8 +63,8 @@
   {
     "Name": "thecodinglove.com",
     "Url": "http://thecodinglove.com",
-    /*"Path": "^/post/([0-9]+)(?:/[^/]*)?$",*/
-    "Path": "^/post/([0-9]+)$",
+    "Path": "/^\/post\/([0-9]+)$/",
+    /*"Path": "/^\/post\/([0-9]+)(?:\/[^\/]*)?$/",*/
     "Images": [
       {
         "Type": "Attribute",
@@ -82,7 +82,7 @@
   {
     "Name": "xkcd.com",
     "Url": "http://xkcd.com",
-    "Path": "^/([0-9]+)/$",
+    "Path": "/^\/([0-9]+)\/$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -98,7 +98,7 @@
     "FileNameFragments": [
       {
         "Type": "Url",
-        "Pattern": "^/([0-9]+)/$"
+        "Pattern": "/^\/([0-9]+)\/$/"
       },
       {
         "Type": "Html",
@@ -116,7 +116,7 @@
   {
     "Name": "www.schisslaweng.net",
     "Url": "https://www.schisslaweng.net",
-    "Path": "^/(.*?)/.*$",
+    "Path": "/^\/(.*?)\/.*$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -129,7 +129,7 @@
         "Type": "Attribute",
         "AttributeName": "content",
         "Selector": "meta[name=\"shareaholic:article_published_time\"]",
-        "Pattern": "^(\\d{4}-\\d{2}-\\d{2}).*$"
+        "Pattern": "/^(\\d{4}-\\d{2}-\\d{2}).*$/"
       },
       {
         "Type": "Text",
@@ -140,13 +140,13 @@
   {
     "Name": "giphy.com",
     "Url": "https://giphy.com",
-    "Path": "^/gifs/([a-zA-Z0-9-]+)/?(?:\\?.*)?$",
+    "Path": "/^/gifs/([a-zA-Z0-9-]+)/?(?:\\?.*)?$/",
     "Images": [
       {
         "Type": "Attribute",
         "AttributeName": "content",
         "Selector": "meta[property='og:image']",
-        "Pattern": "^.*?\/media\/([^\/]+)\/.*$",
+        "Pattern": "/^.*?\/media\/([^\/]+)\/.*$/",
         "Replace": "https://i.giphy.com/media/$1/giphy.gif"
       }
     ],
@@ -155,7 +155,7 @@
         "Type": "Attribute",
         "AttributeName": "content",
         "Selector": "meta[name='keywords']",
-        "Pattern": "( GIF| Animated|,)",
+        "Pattern": "/( GIF| Animated|,)/",
         "Replace": ""
       }
     ]
@@ -163,13 +163,13 @@
   {
     "Name": "media.giphy.com",
     "Url": "https://media.giphy.com",
-    "Path": "^/media/([a-zA-Z0-9-]+)/giphy\\.gif(?:\\?.*)?$",
+    "Path": "/^/media/([a-zA-Z0-9-]+)/giphy\\.gif(?:\\?.*)?$/",
     "Images": [
       {
         "Type": "Attribute",
         "AttributeName": "content",
         "Selector": "meta[property='og:image']",
-        "Pattern": "^.*?\/media\/([^\/]+)\/.*$",
+        "Pattern": "/^.*?\/media\/([^\/]+)\/.*$/",
         "Replace": "https://i.giphy.com/media/$1/giphy.gif"
       }
     ],
@@ -178,7 +178,7 @@
         "Type": "Attribute",
         "AttributeName": "content",
         "Selector": "meta[name='keywords']",
-        "Pattern": "( GIF| Animated|,)",
+        "Pattern": "/( GIF| Animated|,)/",
         "Replace": ""
       }
     ]
@@ -186,7 +186,7 @@
   {
     "Name": "www.thegamercat.com",
     "Url": "http://www.thegamercat.com",
-    "Path": "^/comic/([0-9a-zA-Z-]+)/$",
+    "Path": "/^\/comic\/([0-9a-zA-Z-]+)\/$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -199,7 +199,7 @@
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": "#comic img",
-        "Pattern": "^((?:\\/?[^\\/]+\\/)+(?:[^_]*_)+)(\\d+)(\\.[a-zA-z0-9]{2,4})$",
+        "Pattern": "/^((?:\\/?[^\\/]+\\/)+(?:[^_]*_)+)(\\d+)(\\.[a-zA-z0-9]{2,4})$/",
         "Replace": "$2"
       },
       {
@@ -212,7 +212,7 @@
   {
     "Name": "www.awkwardzombie.com",
     "Url": "http://www.awkwardzombie.com",
-    "Path": "^/(?:index\\.php)?\\?(?:page=\\d+&)?comic=((\\d{2})(\\d{2})(\\d{2}))/?$",
+    "Path": "/^/(?:index\\.php)?\\?(?:page=\\d+&)?comic=((\\d{2})(\\d{2})(\\d{2}))/?$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -223,18 +223,18 @@
     "FileNameFragments": [
       {
         "Type": "Url",
-        "Pattern": "^/(?:index\\.php)?\\?(?:page=\\d+&)?comic=((\\d{2})(\\d{2})(\\d{2}))/?$",
+        "Pattern": "/^/(?:index\\.php)?\\?(?:page=\\d+&)?comic=((\\d{2})(\\d{2})(\\d{2}))/?$/",
         "Replace": "20$3-$1-$2"
       },
       {
         "Type": "Html",
         "Selector": "#blarg > div:last-of-type",
-        "Pattern": "^\\s*(.*?)\\s*$"
+        "Pattern": "/^\\s*(.*?)\\s*$/"
       },
       {
         "Type": "Html",
         "Selector": "#site_content > .title.centered",
-        "Pattern": "^\\s*(.*?)\\s*$",
+        "Pattern": "/^\\s*(.*?)\\s*$/",
         "Replace": "- $1"
       }
     ],
@@ -243,7 +243,7 @@
   {
     "Name": "sarahburrini.com",
     "Url": "http://sarahburrini.com",
-    "Path": "^/wordpress/comic/(.*?)/?$",
+    "Path": "/^\/wordpress\/comic\/(.*?)\/?$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -256,7 +256,7 @@
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": "#comic img",
-        "Pattern": "^http:\/\/sarahburrini\\.com\/wordpress\/wp-content\/uploads\/\\d+\/\\d+\/(\\d{4}-\\d{2}-\\d{2}).*$"
+        "Pattern": "/^http:\/\/sarahburrini\\.com\/wordpress\/wp-content\/uploads\/\\d+\/\\d+\/(\\d{4}-\\d{2}-\\d{2}).*$/"
       },
       {
         "Attribute": "Html",
@@ -268,7 +268,7 @@
   {
     "Name": "www.phdcomics.com",
     "Url": "http://www.phdcomics.com",
-    "Path": "^\/comics.php\\?f=(\\d+)$",
+    "Path": "/^\/comics.php\\?f=(\\d+)$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -281,7 +281,7 @@
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": "#comic",
-        "Pattern": "^(?:[^/]+\/+)+(phd)(\\d{2})(\\d{2})(\\d{2})s(\\.gif)$",
+        "Pattern": "/^(?:[^/]+\/+)+(phd)(\\d{2})(\\d{2})(\\d{2})s(\\.gif)$/",
         "Replace": "$1$4$2$3"
       }
     ]
@@ -289,25 +289,25 @@
   {
     "Name": "Cyanide & Happiness",
     "Url": "http://explosm.net",
-    "Path": "^/comics/(\\d+)/?$",
+    "Path": "/^/comics/(\\d+)/?$/",
     "Images": [
       {
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": "#main-comic",
-        "Pattern": "([^?]+).*"
+        "Pattern": "/([^?]+).*/"
       }
     ],
     "FileNameFragments": [
       {
         "Type": "Url",
-        "Pattern": "^/comics/([0-9]+)/?"
+        "Pattern": "/^\/comics\/([0-9]+)\/?/"
       },
       {
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": "#main-comic",
-        "Pattern": ".*\/([^\\?$]+)\\..*"
+        "Pattern": "/.*\/([^\\?$]+)\\..*/"
       }
     ],
     "FileNameFragmentDelimiter": " "
@@ -315,7 +315,7 @@
   {
     "Name": "nichtlustig.de",
     "Url": "http://static.nichtlustig.de",
-    "Path": "^/toondb/([0-9]+)\\.html$",
+    "Path": "/^/toondb/([0-9]+)\\.html$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -326,13 +326,13 @@
     "FileNameFragments": [
       {
         "Type": "Url",
-        "Pattern": "^/toondb/([0-9]+)\\.html$"
+        "Pattern": "/^/toondb/([0-9]+)\\.html$/"
       },
       {
         "Type": "Attribute",
         "AttributeName": "content",
         "Selector": "meta[name=\"title\"]",
-        "Pattern": "^NICHTLUSTIG Cartoon - (.+)$"
+        "Pattern": "/^NICHTLUSTIG Cartoon - (.+)$/"
       }
     ],
     "FileNameFragmentDelimiter": " "
@@ -345,7 +345,7 @@
       {
         "Type": "Attribute",
         "AttributeName": "content",
-        "Pattern": "^/",
+        "Pattern": "/^\//",
         "Replace": "http://ruthe.de/"
       }
     ],
@@ -353,14 +353,14 @@
       {
         "Type": "Attribute",
         "AttributeName": "content",
-        "Pattern": "^.*?/cartoons/strip_(\\d+)\\.[a-z]+$"
+        "Pattern": "/^.*?/cartoons/strip_(\\d+)\\.[a-z]+$/"
       }
     ]
   },
   {
     "Name": "totaberlustig.com",
     "Url": "http://www.totaberlustig.com",
-    "Path": "^\/([^\/]*)\/?$",
+    "Path": "/^\/([^\/]*)\/?$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -372,7 +372,7 @@
       {
         "Type": "Html",
         "Selector": ".post-text small",
-        "Pattern": "^.*?<\\/a> am ([0-9]+)\\/([0-9]+)\\/([0-9]+).*$",
+        "Pattern": "/^.*?<\\/a> am ([0-9]+)\\/([0-9]+)\\/([0-9]+).*$/",
         "Replace": "20$3-$2-$1"
       },
       {
@@ -386,25 +386,25 @@
   {
     "Name": "www.marvcomics.com",
     "Url": "http://www.marvcomics.com",
-    "Path": "^\/comics\/(?:mittenmang\/)?([^\/]*)\/?$",
+    "Path": "/^\/comics\/(?:mittenmang\/)?([^\/]*)\/?$/",
     "Images": [
       {
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": ".singlecomic img",
-        "Pattern": "^([^?]+).*$"
+        "Pattern": "/^([^?]+).*$/"
       }
     ],
     "FileNameFragments": [
       {
         "Type": "Attribute",
         "AttributeName": "alt",
-        "Pattern": "^[^#]+#([0-9]+).*$"
+        "Pattern": "/^[^#]+#([0-9]+).*$/"
       },
       {
         "Type": "Attribute",
         "AttributeName": "href",
-        "Pattern": "^[^_]+_(.+?)_FINAL.*$"
+        "Pattern": "/^[^_]+_(.+?)_FINAL.*$/"
       }
     ],
     "FileNameFragmentDelimiter": " "
@@ -412,13 +412,13 @@
   {
     "Name": "www.questionablecontent.net",
     "Url": "http://www.questionablecontent.net",
-    "Path": "^\/view.php\\?comic=([0-9]+)$",
+    "Path": "/^\/view.php\\?comic=([0-9]+)$/",
     "Images": [
       {
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": "#strip",
-        "Pattern": "^\\.",
+        "Pattern": "/^\\./",
         "Replace": "http://www.questionablecontent.net"
       }
     ],
@@ -427,14 +427,14 @@
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": "#strip",
-        "Pattern": "^(?:[^\/]*\/)*([0-9]+)(\\.[a-z]+)$"
+        "Pattern": "/^(?:[^\/]*\/)*([0-9]+)(\\.[a-z]+)$/"
       }
     ]
   },
   {
     "Name": "userfriendly.org",
     "Url": "http://ars.userfriendly.org",
-    "Path": "^\/cartoons\/?\\?id=([0-9]+)$",
+    "Path": "/^\/cartoons\/?\\?id=([0-9]+)$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -447,7 +447,7 @@
         "Type": "Attribute",
         "AttributeName": "href",
         "Selector": "a[href^=\"/cartoons/?id=\"]",
-        "Pattern": "^\\/cartoons\\/\\?id=([0-9]{4,4})([0-9]{2,2})([0-9]{2,2})$",
+        "Pattern": "/^\\/cartoons\\/\\?id=([0-9]{4,4})([0-9]{2,2})([0-9]{2,2})$/",
         "Replace": "$1-$2-$3"
       }
     ]
@@ -455,7 +455,7 @@
   {
     "Name": "www.graphitti-blog.de",
     "Url": "http://www.graphitti-blog.de",
-    "Path": "^/[0-9]{4}/[0-9]{2}/[0-9]{2}/[0-9a-zA-Z-]+/?$",
+    "Path": "/^\/[0-9]{4}\/[0-9]{2}\/[0-9]{2}\/[0-9a-zA-Z-]+\/?$/",
     "Images": [
       {
         "Type": "Attribute",

@@ -141,8 +141,7 @@ namespace GetThatPic.Parsing
 
             if (null == domains)
             {
-                /*  * /domains = LoadDomainsFromJsonFile();/*  */
-                /*  */domains = DefaultConfig.Domains;/*  */
+                domains = LoadDomainsFromJsonFile();
             }
 
             foreach (Domain domain in domains)
@@ -154,7 +153,7 @@ namespace GetThatPic.Parsing
         public IList<Domain> LoadDomainsFromJsonFile()
         {
             List<Domain> domains;
-            using (StreamReader r = new StreamReader(@"..\..\..\Domains.json"))
+            using (StreamReader r = new StreamReader(@"..\..\..\..\Domains.json"))
             {
                 string json = r.ReadToEnd();
                 domains = JsonConvert.DeserializeObject<List<Domain>>(json);
