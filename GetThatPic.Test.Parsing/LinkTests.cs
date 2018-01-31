@@ -47,7 +47,7 @@ namespace GetThatPic.Test.Parsing
         {
             Link link = new Link(true);
 
-            Assert.Contains(link.Domains, domain => "http://dilbert.com" == domain.Url);
+            Assert.Contains(link.Domains, domain => domain.Url.IsMatch("http://dilbert.com"));
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace GetThatPic.Test.Parsing
         {
             Link link = new Link(false);
 
-            Assert.DoesNotContain(link.Domains, domain => "http://dilbert.com" == domain.Url);
+            Assert.DoesNotContain(link.Domains, domain => domain.Url.IsMatch("http://dilbert.com"));
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace GetThatPic.Test.Parsing
             link.Domains.Add(new Domain
             {
                 Name = "dilbert.com",
-                Url = "http://dilbert.com",
+                Url = new Regex("http://dilbert.com"),
                 Path = new Regex("^/strip/((?:[0-9]+-?)+)$")
             });
 
@@ -112,11 +112,11 @@ namespace GetThatPic.Test.Parsing
             link.Domains.Add(new Domain
             {
                 Name = "dilbert.com",
-                Url = "http://dilbert.com",
+                Url = new Regex("http://dilbert.com"),
                 Path = new Regex("^/strip/((?:[0-9]+-?)+)$")
             });
 
-            Assert.Equal("http://dilbert.com", link.IdentifyDomain("http://dilbert.com/strip/2018-01-22")?.Url);
+            Assert.True(link.IdentifyDomain("http://dilbert.com/strip/2018-01-22")?.Url.IsMatch("http://dilbert.com"));
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace GetThatPic.Test.Parsing
             link.Domains.Add(new Domain
             {
                 Name = "dilbert.com",
-                Url = "http://dilbert.com",
+                Url = new Regex("http://dilbert.com"),
                 Path = new Regex("^/strip/((?:[0-9]+-?)+)$")
             });
 
@@ -151,12 +151,12 @@ namespace GetThatPic.Test.Parsing
                     new Domain
                     {
                         Name = "dilbert.com",
-                        Url = "http://dilbert.com",
+                        Url = new Regex("http://dilbert.com"),
                         Path = new Regex("^/strip/((?:[0-9]+-?)+)$")
                     }
                 });
 
-            Assert.Contains(link.Domains, domain => "http://dilbert.com" == domain.Url);
+            Assert.Contains(link.Domains, domain => domain.Url.IsMatch("http://dilbert.com"));
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace GetThatPic.Test.Parsing
             Link link = new Link(false);
             link.InitializeConfig();
 
-            Assert.Contains(link.Domains, domain => "http://dilbert.com" == domain.Url);
+            Assert.Contains(link.Domains, domain => domain.Url.IsMatch("http://dilbert.com"));
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace GetThatPic.Test.Parsing
             Link link = new Link(false);
             link.InitializeConfig(true, new List<Domain>());
 
-            Assert.DoesNotContain(link.Domains, domain => "http://dilbert.com" == domain.Url);
+            Assert.DoesNotContain(link.Domains, domain => domain.Url.IsMatch("http://dilbert.com"));
         }
 
         /// <summary>

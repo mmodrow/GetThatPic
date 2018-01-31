@@ -313,7 +313,10 @@ namespace GetThatPic.Parsing
 
             string domain = HttpRequester.ProtocolAndDomain.Replace(url, "$1");
             string path = HttpRequester.PathAfterdomain.Replace(url, "$1");
-            IList<Domain> matchingDomains = Domains.Where(d => d.Url == domain && d.Path.IsMatch(path)).ToList();
+            IList<Domain> matchingDomains = Domains.Where(
+                d => d.Url.IsMatch(domain) 
+                     && d.Path.IsMatch(path)
+                     ).ToList();
 
             return matchingDomains.FirstOrDefault();
         }

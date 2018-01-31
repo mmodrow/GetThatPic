@@ -1,7 +1,7 @@
 [
   {
     "Name": "dilbert.com",
-    "Url": "http://dilbert.com",
+    "Url": "/http:\/\/dilbert.com/",
     "Path": "/^\/strip\/((?:[0-9]+-?)+)$/",
     "Images": [
       {
@@ -23,8 +23,8 @@
     ]
   },
   {
-    "Name": "www.ohjoysextoy.com",
-    "Url": "https://www.ohjoysextoy.com",
+    "Name": "ohjoysextoy.com",
+    "Url": "/https:\/\/www.ohjoysextoy.com/",
     "Path": "/^\/([^\/]+)\/?$/",
     "Images": [
       {
@@ -43,7 +43,7 @@
   },
   {
     "Name": "turnoff.us",
-    "Url": "http://turnoff.us",
+    "Url": "/http:\/\/turnoff.us/",
     "Path": "/^\/geek\/(.*?)\/?$/",
     "Images": [
       {
@@ -62,9 +62,8 @@
   },
   {
     "Name": "thecodinglove.com",
-    "Url": "http://thecodinglove.com",
-    "Path": "/^\/post\/([0-9]+)$/",
-    /*"Path": "/^\/post\/([0-9]+)(?:\/[^\/]*)?$/",*/
+    "Url": "/http:\/\/thecodinglove.com/",
+    "Path": "/^\/post\/([0-9]+)((?:\/[^\/]*\/?)?)$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -81,7 +80,7 @@
   },
   {
     "Name": "xkcd.com",
-    "Url": "http://xkcd.com",
+    "Url": "/http:\/\/xkcd.com/",
     "Path": "/^\/([0-9]+)\/$/",
     "Images": [
       {
@@ -115,7 +114,7 @@
   },
   {
     "Name": "www.schisslaweng.net",
-    "Url": "https://www.schisslaweng.net",
+    "Url": "/https:\/\/www.schisslaweng.net/",
     "Path": "/^\/(.*?)\/.*$/",
     "Images": [
       {
@@ -139,7 +138,7 @@
   },
   {
     "Name": "giphy.com",
-    "Url": "https://giphy.com",
+    "Url": "/https:\/\/giphy.com/",
     "Path": "/^/gifs/([a-zA-Z0-9-]+)/?(?:\\?.*)?$/",
     "Images": [
       {
@@ -162,7 +161,7 @@
   },
   {
     "Name": "media.giphy.com",
-    "Url": "https://media.giphy.com",
+    "Url": "/https:\/\/media\\d*.giphy.com/",
     "Path": "/^/media/([a-zA-Z0-9-]+)/giphy\\.gif(?:\\?.*)?$/",
     "Images": [
       {
@@ -185,7 +184,7 @@
   },
   {
     "Name": "www.thegamercat.com",
-    "Url": "http://www.thegamercat.com",
+    "Url": "/http:\/\/www.thegamercat.com/",
     "Path": "/^\/comic\/([0-9a-zA-Z-]+)\/$/",
     "Images": [
       {
@@ -211,7 +210,7 @@
   },
   {
     "Name": "www.awkwardzombie.com",
-    "Url": "http://www.awkwardzombie.com",
+    "Url": "/http:\/\/www.awkwardzombie.com/",
     "Path": "/^/(?:index\\.php)?\\?(?:page=\\d+&)?comic=((\\d{2})(\\d{2})(\\d{2}))/?$/",
     "Images": [
       {
@@ -242,7 +241,7 @@
   },
   {
     "Name": "sarahburrini.com",
-    "Url": "http://sarahburrini.com",
+    "Url": "/http:\/\/sarahburrini.com/",
     "Path": "/^\/wordpress\/comic\/(.*?)\/?$/",
     "Images": [
       {
@@ -267,7 +266,7 @@
   },
   {
     "Name": "www.phdcomics.com",
-    "Url": "http://www.phdcomics.com",
+    "Url": "/http:\/\/www.phdcomics.com/",
     "Path": "/^\/comics.php\\?f=(\\d+)$/",
     "Images": [
       {
@@ -288,7 +287,7 @@
   },
   {
     "Name": "Cyanide & Happiness",
-    "Url": "http://explosm.net",
+    "Url": "/http:\/\/explosm.net/",
     "Path": "/^/comics/(\\d+)/?$/",
     "Images": [
       {
@@ -314,7 +313,7 @@
   },
   {
     "Name": "nichtlustig.de",
-    "Url": "http://static.nichtlustig.de",
+    "Url": "/http:\/\/static.nichtlustig.de/",
     "Path": "/^/toondb/([0-9]+)\\.html$/",
     "Images": [
       {
@@ -339,7 +338,7 @@
   },
   {
     "Name": "ruthe.de",
-    "Url": "http://ruthe.de",
+    "Url": "/http:\/\/ruthe.de/",
     "Path": "/cartoon/$1",
     "Images": [
       {
@@ -359,7 +358,7 @@
   },
   {
     "Name": "totaberlustig.com",
-    "Url": "http://www.totaberlustig.com",
+    "Url": "/http:\/\/www.totaberlustig.com/",
     "Path": "/^\/([^\/]*)\/?$/",
     "Images": [
       {
@@ -385,7 +384,7 @@
   },
   {
     "Name": "www.marvcomics.com",
-    "Url": "http://www.marvcomics.com",
+    "Url": "/http:\/\/www.marvcomics.com/",
     "Path": "/^\/comics\/(?:mittenmang\/)?([^\/]*)\/?$/",
     "Images": [
       {
@@ -411,7 +410,7 @@
   },
   {
     "Name": "www.questionablecontent.net",
-    "Url": "http://www.questionablecontent.net",
+    "Url": "/http:\/\/www.questionablecontent.net/",
     "Path": "/^\/view.php\\?comic=([0-9]+)$/",
     "Images": [
       {
@@ -433,7 +432,7 @@
   },
   {
     "Name": "userfriendly.org",
-    "Url": "http://ars.userfriendly.org",
+    "Url": "/http:\/\/ars.userfriendly.org/",
     "Path": "/^\/cartoons\/?\\?id=([0-9]+)$/",
     "Images": [
       {
@@ -454,7 +453,7 @@
   },
   {
     "Name": "www.graphitti-blog.de",
-    "Url": "http://www.graphitti-blog.de",
+    "Url": "/http:\/\/www.graphitti-blog.de/",
     "Path": "/^\/[0-9]{4}\/[0-9]{2}\/[0-9]{2}\/[0-9a-zA-Z-]+\/?$/",
     "Images": [
       {
