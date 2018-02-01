@@ -87,7 +87,7 @@
   },
   {
     "Name": "xkcd.com",
-    "Url": "/https?:\/\/xkcd.com/",
+    "Url": "/https?:\/\/(?:www\\.)?xkcd.com/",
     "Path": "/^\/([0-9]+)\/?$/",
     "Images": [
       {
@@ -168,7 +168,7 @@
   },
   {
     "Name": "Schisslaweng",
-    "Url": "/https:\/\/www.schisslaweng.net/",
+    "Url": "/https:\/\/(?:www\\.)?schisslaweng\\.net/",
     "Path": "/^\/(.*?)\/.*$/",
     "Images": [
       {
@@ -192,7 +192,7 @@
   },
   {
     "Name": "The Gamer Cat",
-    "Url": "/http:\/\/www.thegamercat.com/",
+    "Url": "/http:\/\/(?:www\\.)?thegamercat\\.com/",
     "Path": "/^\/comic\/([0-9a-zA-Z-]+)\/$/",
     "Images": [
       {
@@ -249,7 +249,7 @@
   },
   {
     "Name": "sarahburrini.com",
-    "Url": "/http:\/\/sarahburrini.com/",
+    "Url": "/http:\/\/(?:www\\.)?sarahburrini\\.com/",
     "Path": "/^\/wordpress\/comic\/(.*?)\/?$/",
     "Images": [
       {
@@ -274,7 +274,7 @@
   },
   {
     "Name": "www.phdcomics.com",
-    "Url": "/http:\/\/www.phdcomics.com/",
+    "Url": "/http:\/\/(?:www\\.)?phdcomics.com/",
     "Path": "/^\/comics.php\\?f=(\\d+)$/",
     "Images": [
       {
@@ -321,7 +321,7 @@
   },
   {
     "Name": "nichtlustig.de",
-    "Url": "/http:\/\/static.nichtlustig.de/",
+    "Url": "/http:\/\/(?:static\\.)?nichtlustig\\.de/",
     "Path": "/^/toondb/([0-9]+)\\.html$/",
     "Images": [
       {
@@ -346,7 +346,7 @@
   },
   {
     "Name": "ruthe.de",
-    "Url": "/http:\/\/ruthe.de/",
+    "Url": "/http:\/\/(?www\\.)?ruthe\\.de/",
     "Path": "/cartoon/$1",
     "Images": [
       {
@@ -366,7 +366,7 @@
   },
   {
     "Name": "totaberlustig.com",
-    "Url": "/http:\/\/www.totaberlustig.com/",
+    "Url": "/http:\/\/(?:www\\.)?totaberlustig\\.com/",
     "Path": "/^\/([^\/]*)\/?$/",
     "Images": [
       {
@@ -418,7 +418,7 @@
   },
   {
     "Name": "www.questionablecontent.net",
-    "Url": "/http:\/\/www.questionablecontent.net/",
+    "Url": "/http:\/\/(?:www\\.)?questionablecontent\\.net/",
     "Path": "/^\/view.php\\?comic=([0-9]+)$/",
     "Images": [
       {
@@ -440,7 +440,7 @@
   },
   {
     "Name": "userfriendly.org",
-    "Url": "/http:\/\/ars.userfriendly.org/",
+    "Url": "/http:\/\/(?:ars\\.|www\\.)?userfriendly\\.org/",
     "Path": "/^\/cartoons\/?\\?id=([0-9]+)$/",
     "Images": [
       {
