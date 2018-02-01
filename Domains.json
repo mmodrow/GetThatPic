@@ -217,8 +217,8 @@
     "FileNameFragmentDelimiter": " "
   },
   {
-    "Name": "www.awkwardzombie.com",
-    "Url": "/http:\/\/www.awkwardzombie.com/",
+    "Name": "awkwardzombie.com",
+    "Url": "/https?:\/\/(?:www\\.)?awkwardzombie.com/",
     "Path": "/^/(?:index\\.php)?\\?(?:page=\\d+&)?comic=((\\d{2})(\\d{2})(\\d{2}))/?$/",
     "Images": [
       {
