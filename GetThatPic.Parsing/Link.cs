@@ -160,8 +160,14 @@ namespace GetThatPic.Parsing
         /// </summary>
         /// <param name="inputFile">The input file path.</param>
         /// <returns>The loaded domains.</returns>
-        public IList<Domain> LoadDomainsFromJsonFile(string inputFile = @"..\..\..\..\Domains.json")
+        public IList<Domain> LoadDomainsFromJsonFile(string inputFile = null)
         {
+            if(null == inputFile && File.Exists(@"..\..\..\..\Domains.json")) { 
+                inputFile = @"..\..\..\..\Domains.json";
+            }
+            if(null == inputFile && File.Exists(@"..\..\..\Domains.json")) { 
+                inputFile = @"..\..\..\Domains.json";
+            }
             List<Domain> domains;
             using (StreamReader r = new StreamReader(inputFile))
             {
@@ -305,10 +311,10 @@ namespace GetThatPic.Parsing
                 imageNameFragments.Add(downloadInstruction.GetContent(doc, url));
             }
 
-            return Sanitizing.SanititzeFileName(
-                string.Join(
-                    domain.FileNameFragmentDelimiter,
-                    imageNameFragments.SelectMany(fragments => fragments).Where(name => !string.IsNullOrWhiteSpace(name))));
+            IEnumerable<string> nonEmptyNameParts = imageNameFragments.SelectMany(fragments => fragments)
+                .Where(fragment => !string.IsNullOrWhiteSpace(fragment));
+            string joinedFragments = string.Join(domain.FileNameFragmentDelimiter, nonEmptyNameParts);
+            return Sanitizing.SanititzeFileName(joinedFragments);
         }
 
         /// <summary>

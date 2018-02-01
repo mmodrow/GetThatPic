@@ -20,7 +20,7 @@
                 <Grid Background="#FFE5E5E5">
                     <Button Name="PreviousPreviewImageButton" Content="&lt;" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="18" Click="PreviewPreviousImage"/>
                     <Button Name="NextPreviewImageButton" Content="&gt;" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="18" Click="PreviewNextImage"/>
-                    <Label Name="PreviewImageName" Content="File Name" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="41,10,40,0" VerticalAlignment="Top"/>
+                    <TextBlock Name="PreviewImageName" Text="File Name" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,10,40,0" VerticalAlignment="Top"/>
                     <StackPanel AllowDrop="True" Drop="DropUrl" PreviewDragOver="EnableDropping" Margin="10,41,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Image x:Name="PreviewImage" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Assets/download-to-storage-drive512.png" Height="380"/>
                     </StackPanel>

@@ -43,11 +43,9 @@ namespace GetThatPic.WPF
 
             // TODO: Click image to open it in the file system.
             // TODO: Download.
-            // TODO: Configuration loading from JSON.
             // TODO: Async status updates on big downloads.
             // TODO: Error Notification.
             // TODO: Check download target directory for file before saving copy. (Check by name and/or identity)
-            // TODO: File Name sanitizing.
             // TODO: Command line Interface?
             // TODO: Login functionality for private/mature content.
             // TODO: Transpile old XML configs to JSON.
@@ -88,7 +86,7 @@ namespace GetThatPic.WPF
 
             state.PreviewItem = newPreviewItem;
 
-            PreviewImageName.Content = newPreviewItem.Name;
+            PreviewImageName.Text = newPreviewItem.Name;
             if (newPreviewItem.FileSystemLocation?.EndsWith(".gif") ?? false)
             {
                 ImageBehavior.SetAnimatedSource(PreviewImage, newPreviewItem.Content);
