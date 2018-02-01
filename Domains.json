@@ -346,7 +346,7 @@
   },
   {
     "Name": "ruthe.de",
-    "Url": "/http:\/\/(?www\\.)?ruthe\\.de/",
+    "Url": "/http:\/\/(?:www\\.)?ruthe\\.de/",
     "Path": "/cartoon/$1",
     "Images": [
       {
