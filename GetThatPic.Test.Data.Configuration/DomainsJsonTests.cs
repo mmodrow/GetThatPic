@@ -39,6 +39,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedName">The exptected file name.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("http://dilbert.com/strip/2011-03-24", "2011-03-24")]
         [InlineData("http://dilbert.com/strip/2015-01-05", "2015-01-05_-_Dating_Is_A_B_Testing")]
@@ -55,6 +56,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedImageUrl">The expected Image Url.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("http://dilbert.com/strip/2011-03-24", "http://assets.amuniversal.com/64a5e1b036e9012ea5cb00163e41dd5b")]
         public async Task Dilbert_ImageUrl(string url, string expectedImageUrl)
@@ -84,6 +86,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedName">The exptected file name.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("https://www.ohjoysextoy.com/hitachi/", "2013-04-30_-_Hitachi_Magic_Wand")]
         public async Task OhJoy_FileName(string url, string expectedName)
@@ -99,6 +102,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedImageUrl">The expected Image Url.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("https://www.ohjoysextoy.com/hitachi/", "https://www.ohjoysextoy.com/comics/2013-04-30-hitachi.jpg")]
         public async Task OhJoy_ImageUrl(string url, string expectedImageUrl)
@@ -128,6 +132,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedName">The exptected file name.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("http://turnoff.us/geek/software-test/", "Software_Testing")]
         public async Task TurnoffUs_FileName(string url, string expectedName)
@@ -143,6 +148,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedImageUrl">The expected Image Url.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("http://turnoff.us/geek/software-test/", "http://turnoff.us/image/en/test.png")]
         public async Task TurnoffUs_ImageUrl(string url, string expectedImageUrl)
@@ -172,6 +178,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedName">The exptected file name.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("http://thecodinglove.com/post/170032454677/when-i-commit-without-testing", "When_I_commit_without_testing")]
         public async Task TheCodingLove_FileName(string url, string expectedName)
@@ -187,6 +194,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedImageUrl">The expected Image Url.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("http://thecodinglove.com/post/170032454677/when-i-commit-without-testing", "https://ljdchost.com/hVkEriQ.gif")]
         public async Task TheCodingLove_ImageUrl(string url, string expectedImageUrl)
@@ -216,7 +224,9 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="dropUrl">The drop URL.</param>
         /// <param name="imageUrl">The image URL.</param>
-        /// <returns>A Task.</returns>
+        /// <returns>
+        /// A Task.
+        /// </returns>
         [Theory]
         [InlineData("https://xkcd.com/681/", "https://imgs.xkcd.com/comics/gravity_wells_large.png")]
         [InlineData("https://xkcd.com/1513/", "https://imgs.xkcd.com/comics/code_quality.png")]
@@ -232,6 +242,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedName">The exptected file name.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("https://xkcd.com/1513/", "1513_-_Code_Quality_-_I_honestly_did_not_think_you_could_even_USE_emoji_in_variable_names_Or_that_there_were_so_many_different_crying_ones")]
         [InlineData("https://xkcd.com/1518/", "1518_-_Typical_Morning_Routine_-_Hang_on_I_have_heard_this_problem_We_need_to_pour_water_into_the_duct_until_the_phone_floats_up_and_wait_phones_sink_in_water_Mercury_We_need_a_vat_of_mercury_to_pour_down_the_vent_That_will_definitely_make")]
@@ -262,6 +273,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedName">The exptected file name.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("https://giphy.com/gifs/fury-kung-hackerman-QbumCX9HFFDQA", "fury_kung_fury_kung_hackerman")]
         public async Task Giphy_FileName(string url, string expectedName)
@@ -277,6 +289,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedImageUrl">The expected Image Url.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("https://giphy.com/gifs/fury-kung-hackerman-QbumCX9HFFDQA", "https://i.giphy.com/media/QbumCX9HFFDQA/giphy.gif")]
         public async Task Giphy_ImageUrl(string url, string expectedImageUrl)
@@ -323,7 +336,9 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="imageCount">Number of expected images.</param>
-        /// <returns>A Task.</returns>
+        /// <returns>
+        /// A Task.
+        /// </returns>
         [Theory]
         [InlineData("https://www.schisslaweng.net/probe/", 3)]
         [InlineData("https://www.schisslaweng.net/koerperklaus/", 1)]
@@ -340,6 +355,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedName">The exptected file name.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("https://www.schisslaweng.net/probe/", "2017-03-29_-_Probe")]
         public async Task Schisslaweng_FileName(string url, string expectedName)
@@ -355,6 +371,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="expectedImageUrl">The expected Image Url.</param>
+        /// <returns>A Task.</returns>
         [Theory]
         [InlineData("https://www.schisslaweng.net/probe/", "https://www.schisslaweng.net/wp-content/uploads/sites/2/2017/03/02_Trainingistalles_FINAL_web-980x1386.jpg")]
         public async Task Schisslaweng_ImageUrl(string url, string expectedImageUrl)

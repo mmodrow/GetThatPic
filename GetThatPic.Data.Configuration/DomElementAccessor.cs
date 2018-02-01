@@ -136,7 +136,10 @@ namespace GetThatPic.Data.Configuration
                     break;
 
                 case TargetType.Url:
-                    output = new List<string>{Pattern.Replace(HttpRequester.PathAfterdomain.Replace(url, "$1"), Replace)};
+                    output = new List<string>
+                    {
+                        Pattern.Replace(HttpRequester.PathAfterdomain.Replace(url, "$1"), Replace)
+                    };
                     break;
             }
 
