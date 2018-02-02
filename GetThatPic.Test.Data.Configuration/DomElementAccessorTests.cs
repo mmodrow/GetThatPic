@@ -241,7 +241,7 @@ namespace GetThatPic.Test.Data.Configuration
 
             string content = accessor.GetContent(doc)?.FirstOrDefault();
 
-            Assert.Empty(content);
+            Assert.Equal(replace, content);
         }
     }
 }

@@ -391,8 +391,8 @@
     "FileNameFragmentDelimiter": " "
   },
   {
-    "Name": "www.marvcomics.com",
-    "Url": "/http:\/\/www.marvcomics.com/",
+    "Name": "marvcomics.com",
+    "Url": "/http:\/\/www.marvcomics\\.com/",
     "Path": "/^\/comics\/(?:mittenmang\/)?([^\/]*)\/?$/",
     "Images": [
       {
@@ -417,7 +417,7 @@
     "FileNameFragmentDelimiter": " "
   },
   {
-    "Name": "www.questionablecontent.net",
+    "Name": "questionablecontent.net",
     "Url": "/http:\/\/(?:www\\.)?questionablecontent\\.net/",
     "Path": "/^\/view.php\\?comic=([0-9]+)$/",
     "Images": [

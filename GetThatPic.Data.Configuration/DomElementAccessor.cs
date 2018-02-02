@@ -93,9 +93,12 @@ namespace GetThatPic.Data.Configuration
         /// <value>
         ///   <c>true</c> if all properties are valid; otherwise, <c>false</c>.
         /// </value>
-        public bool IsValid => Enum.IsDefined(typeof(TargetType), Type) && null != Pattern && !string.IsNullOrWhiteSpace(Pattern.ToString()) &&
-                               null != Replace && (TargetType.Url == Type || !string.IsNullOrWhiteSpace(Selector)) &&
-                               !(TargetType.Attribute == Type && string.IsNullOrWhiteSpace(AttributeName));
+        public bool IsValid => Enum.IsDefined(typeof(TargetType), Type) 
+                               && null != Pattern 
+                               && !string.IsNullOrWhiteSpace(Pattern.ToString()) 
+                               && null != Replace 
+                               && (TargetType.Url == Type || !string.IsNullOrWhiteSpace(Selector)) 
+                               && !(TargetType.Attribute == Type && string.IsNullOrWhiteSpace(AttributeName));
 
         /// <summary>
         /// Gets the content specified by a DomElementAccessor from a given HtmlDocument.
@@ -132,7 +135,7 @@ namespace GetThatPic.Data.Configuration
                         node => node?.
                             Attributes?.
                             FirstOrDefault(attribute => AttributeName == attribute?.Name).Value)
-                        .ToList<string>();
+                        .ToList();
                     break;
 
                 case TargetType.Url:
