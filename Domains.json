@@ -279,10 +279,10 @@
       }
     ]
   },
-  {
-    "Name": "www.phdcomics.com",
-    "Url": "/http:\/\/(?:www\\.)?phdcomics.com/",
-    "Path": "/^\/comics.php\\?f=(\\d+)$/",
+  { /* http://phdcomics.com/comics/archive.php?comicid=1993 */
+    "Name": "phdcomics.com",
+    "Url": "/https?:\/\/(?:www\\.)?phdcomics\\.com/",
+    "Path": "/^\/?comics(?:\/archive)?\\.php\\?(?:comicid|f)=([0-9]+)$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -295,22 +295,22 @@
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": "#comic",
-        "Pattern": "/^(?:[^/]+\/+)+(phd)(\\d{2})(\\d{2})(\\d{2})s(\\.gif)$/",
-        "Replace": "$1$4$2$3"
+        "Pattern": "/^(?:.*?/)phd([0-9]{2})([0-9]{2})([0-9]{2})s?(\\.gif)$/",
+        "Replace": "20$3$1$2"
       }
     ]
   },
   {
     "Name": "Cyanide & Happiness",
     "Url": "/http:\/\/explosm.net/",
-    "Path": "/^/comics/(\\d+)/?$/",
+    "Path": "/^\/comics\/(\\d+)\/?$/",
     "Images": [
       {
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": "#main-comic",
         "Pattern": "/([^?]+).*/"
-      }
+  }
     ],
     "FileNameFragments": [
       {

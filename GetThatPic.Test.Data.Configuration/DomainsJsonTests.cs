@@ -40,6 +40,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("http://thegamercat.com/comic/fancy-footwork/", "The Gamer Cat")]
         [InlineData("http://awkwardzombie.com/index.php?page=0&comic=011711", "awkwardzombie.com")]
         [InlineData("http://sarahburrini.com/wordpress/comic/protestpirat/", "Das Leben ist kein Ponyhof")]
+        [InlineData("http://phdcomics.com/comics/archive.php?comicid=1993", "phdcomics.com")]
         public void Name(string url, string expectedName)
         {
             Link link = new Link();
@@ -67,6 +68,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("http://thegamercat.com/comic/fancy-footwork/", "260_-_2017-12-04_-_Fancy_Footwork_-_Skillz_that_pay_the_billz")]
         [InlineData("http://awkwardzombie.com/index.php?page=0&comic=011711", "2011-01-17_-_Recettear_an_Item_Shop_s_Tale_-_To_The_Victims_Go_The_Spoileds")]
         [InlineData("http://sarahburrini.com/wordpress/comic/protestpirat/", "2012-01-26_-_Protestpirat")]
+        [InlineData("http://phdcomics.com/comics/archive.php?comicid=1993", "2018-01-22_-_Psych")]
         
         // Currently this is broken in some way.
         ////[InlineData("https://media1.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "fury_kung_fury_kung_hackerman")]
