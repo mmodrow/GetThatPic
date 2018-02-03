@@ -219,7 +219,8 @@ namespace GetThatPic.Parsing
         /// <value>
         /// The current unix time.
         /// </value>
-        public static string CurrentUnixTime => DateTime.UtcNow.Subtract(UnixEpoch).TotalSeconds.ToString(CultureInfo.InvariantCulture).Substring(0,10);
+        public static string CurrentUnixTime => DateTime.UtcNow.Subtract(UnixEpoch).TotalSeconds
+            .ToString(CultureInfo.InvariantCulture).Substring(0, 10);
 
         /// <summary>
         /// Sanititzes the specified input.

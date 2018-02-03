@@ -75,13 +75,13 @@
       {
         "Type": "Attribute",
         "AttributeName": "src",
-        "Selector": "#post1 img"
+        "Selector": ".post img"
       }
     ],
     "FileNameFragments": [
       {
         "Type": "Html",
-        "Selector": "#post1 h3"
+        "Selector": ".post h3"
       }
     ]
   },
@@ -210,16 +210,25 @@
         "Replace": "$2"
       },
       {
-        "Type": "Html",
+        "Type": "Attribute",
+        "AttributeName": "content",
+        "Selector": "meta[property='article:published_time']",
+        "Pattern": "/^([0-9]{4}-[0-9]{2}-[0-9]{2}).*$/"
+      },
+      {
+        "Type": "Text",
         "Selector": "#content > article > .post-content > .post-info > h2"
+      },
+      {
+        "Type": "Text",
+        "Selector": ".entry > p:first-child"
       }
-    ],
-    "FileNameFragmentDelimiter": " "
+    ]
   },
   {
     "Name": "awkwardzombie.com",
-    "Url": "/https?:\/\/(?:www\\.)?awkwardzombie.com/",
-    "Path": "/^/(?:index\\.php)?\\?(?:page=\\d+&)?comic=((\\d{2})(\\d{2})(\\d{2}))/?$/",
+    "Url": "/https?:\/\/(?:www\\.)?awkwardzombie\\.com/",
+    "Path": "/^\/?(?:index\\.php)?\\?(?:page=[0-9]+&)?comic=([0-9]{2})([0-9]{2})([0-9]{2})$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -230,22 +239,20 @@
     "FileNameFragments": [
       {
         "Type": "Url",
-        "Pattern": "/^/(?:index\\.php)?\\?(?:page=\\d+&)?comic=((\\d{2})(\\d{2})(\\d{2}))/?$/",
+        "Pattern": "/^\/?(?:index\\.php)?\\?(?:page=[0-9]+&)?comic=([0-9]{2})([0-9]{2})([0-9]{2})\/?$/",
         "Replace": "20$3-$1-$2"
       },
       {
-        "Type": "Html",
-        "Selector": "#blarg > div:last-of-type",
+        "Type": "Text",
+        "Selector": "#blarg > div:nth-child(3)",
         "Pattern": "/^\\s*(.*?)\\s*$/"
       },
       {
-        "Type": "Html",
+        "Type": "Text",
         "Selector": "#site_content > .title.centered",
-        "Pattern": "/^\\s*(.*?)\\s*$/",
-        "Replace": "- $1"
+        "Pattern": "/^\\s*(.*?)\\s*$/"
       }
-    ],
-    "FileNameFragmentDelimiter": " "
+    ]
   },
   {
     "Name": "sarahburrini.com",

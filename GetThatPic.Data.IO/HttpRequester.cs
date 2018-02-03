@@ -5,6 +5,7 @@
 
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -28,6 +29,19 @@ namespace GetThatPic.Data.IO
         public static readonly Regex PathAfterdomain = new Regex("^https?://.*?(/.*)$");
 
         /// <summary>
+        /// The HTTP de-zip handler.
+        /// </summary>
+        private static readonly HttpClientHandler Handler = new HttpClientHandler()
+        {
+            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+        };
+
+        /// <summary>
+        /// The HTTP client.
+        /// </summary>
+        private static readonly HttpClient Client = new HttpClient(Handler);
+
+        /// <summary>
         /// Gets a string response.
         /// </summary>
         /// <param name="url">The URL.</param>
@@ -41,10 +55,11 @@ namespace GetThatPic.Data.IO
 
             try
             {
-                var client = new HttpClient();
-                var stringTask = client.GetStringAsync(url);
-                string response = await stringTask;
-                return response;
+                Client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml");
+                Client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate");
+                Client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0");
+                Client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
+                return await Client.GetStringAsync(url);
             }
             catch
             {
@@ -66,12 +81,17 @@ namespace GetThatPic.Data.IO
 
             try
             {
-                var client = new HttpClient();
-                Stream stream = await client.GetStreamAsync(url);
+                Client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml");
+                Client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate");
+                Client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0");
+                Client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
+                Stream stream = await Client.GetStreamAsync(url);
                 return stream;
             }
             catch
             {
+                ////(Exception e)
+                // TODO: Log e.Message.
                 return null;
             }
         }

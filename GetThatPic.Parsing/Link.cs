@@ -28,6 +28,11 @@ namespace GetThatPic.Parsing
         private static readonly Regex Protocol = new Regex("^(http?s:).*?$", RegexOptions.IgnoreCase);
 
         /// <summary>
+        /// The HTML comment pattern to drop them.
+        /// </summary>
+        private static readonly Regex HtmlCommentPattern = new Regex("<!--(.|\n)*?-->", RegexOptions.Multiline);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Link" /> class.
         /// </summary>
         /// <param name="autoInitialize">if set to <c>true</c> the config gets automatically initialized.</param>
@@ -62,11 +67,9 @@ namespace GetThatPic.Parsing
 
             try
             {
-                Stream stream = await HttpRequester.GetStream(url);
-                var doc = new HtmlDocument();
-                doc.Load(stream);
-
-                return doc;
+                string markup = await HttpRequester.GetString(url);
+                markup = HtmlCommentPattern.Replace(markup, string.Empty);
+                return GetDocumentFromMarkup(markup);
             }
             catch
             {
@@ -88,7 +91,7 @@ namespace GetThatPic.Parsing
 
             var doc = new HtmlDocument();
             doc.LoadHtml(markup);
-            if (doc.ParseErrors.Any())
+            if (doc.ParseErrors.Any(error => HtmlParseErrorCode.TagNotOpened != error.Code && HtmlParseErrorCode.EndTagNotRequired != error.Code))
             {
                 return null;
             }

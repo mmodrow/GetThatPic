@@ -37,6 +37,8 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("https://media5.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "media.giphy.com")]
         [InlineData("https://media12.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "media.giphy.com")]
         [InlineData("https://www.schisslaweng.net/probe/", "Schisslaweng")]
+        [InlineData("http://thegamercat.com/comic/fancy-footwork/", "The Gamer Cat")]
+        [InlineData("http://awkwardzombie.com/index.php?page=0&comic=011711", "awkwardzombie.com")]
         public void Name(string url, string expectedName)
         {
             Link link = new Link();
@@ -61,6 +63,8 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("https://xkcd.com/1518/", "1518_-_Typical_Morning_Routine_-_Hang_on_I_have_heard_this_problem_We_need_to_pour_water_into_the_duct_until_the_phone_floats_up_and_wait_phones_sink_in_water_Mercury_We_need_a_vat_of_mercury_to_pour_down_the_vent_That_will_definitely_make")]
         [InlineData("https://giphy.com/gifs/fury-kung-hackerman-QbumCX9HFFDQA", "fury_kung_fury_kung_hackerman")]
         [InlineData("https://www.schisslaweng.net/probe/", "2017-03-29_-_Probe")]
+        [InlineData("http://thegamercat.com/comic/fancy-footwork/", "260_-_2017-12-04_-_Fancy_Footwork_-_Skillz_that_pay_the_billz")]
+        [InlineData("http://awkwardzombie.com/index.php?page=0&comic=011711", "2011-01-17_-_Recettear_an_Item_Shop_s_Tale_-_To_The_Victims_Go_The_Spoileds")]
         
         // Currently this is broken in some way.
         ////[InlineData("https://media1.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "fury_kung_fury_kung_hackerman")]
@@ -87,6 +91,8 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("https://xkcd.com/1513/", "https://imgs.xkcd.com/comics/code_quality.png")]
         [InlineData("https://giphy.com/gifs/fury-kung-hackerman-QbumCX9HFFDQA", "https://i.giphy.com/media/QbumCX9HFFDQA/giphy.gif")]
         [InlineData("https://www.schisslaweng.net/probe/", "https://www.schisslaweng.net/wp-content/uploads/sites/2/2017/03/02_Trainingistalles_FINAL_web-980x1386.jpg")]
+        [InlineData("http://thegamercat.com/comic/fancy-footwork/", "http://thegamercat.com/wp-content/uploads/2017/11/gamercat_260.jpg")]
+        [InlineData("http://awkwardzombie.com/index.php?page=0&comic=011711", "http://i49.photobucket.com/albums/f278/katietiedrich/comic182.png")]
 
         // Currently this is broken in some way.
         ////[InlineData("https://media1.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "https://i.giphy.com/media/QbumCX9HFFDQA/giphy.gif")]
