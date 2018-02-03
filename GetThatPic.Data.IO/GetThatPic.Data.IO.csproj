@@ -6,10 +6,10 @@
 
   <ItemGroup>
     <Reference Include="PresentationCore">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.0\PresentationCore.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.0\PresentationCore.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.0\WindowsBase.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\v3.0\WindowsBase.dll</HintPath>
     </Reference>
   </ItemGroup>
 

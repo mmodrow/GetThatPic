@@ -123,7 +123,7 @@
   {
     "Name": "giphy.com",
     "Url": "/https:\/\/giphy.com/",
-    "Path": "/^/gifs/([a-zA-Z0-9-]+)/?(?:\\?.*)?$/",
+    "Path": "/^\/?gifs/([a-zA-Z0-9-]+)/?(?:\\?.*)?$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -145,8 +145,8 @@
   },
   {
     "Name": "media.giphy.com",
-    "Url": "/https:\/\/media\\d*.giphy.com/",
-    "Path": "/^/media/([a-zA-Z0-9-]+)/giphy\\.gif(?:\\?.*)?$/",
+    "Url": "/https?:\/\/media[0-9]*\\.giphy\\.com/",
+    "Path": "/^\/?media/([a-zA-Z0-9-]+)\/giphy\\.gif(?:\\?.*)?$/",
     "Images": [
       {
         "Type": "Attribute",
