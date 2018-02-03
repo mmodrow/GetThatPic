@@ -39,6 +39,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("https://www.schisslaweng.net/probe/", "Schisslaweng")]
         [InlineData("http://thegamercat.com/comic/fancy-footwork/", "The Gamer Cat")]
         [InlineData("http://awkwardzombie.com/index.php?page=0&comic=011711", "awkwardzombie.com")]
+        [InlineData("http://sarahburrini.com/wordpress/comic/protestpirat/", "Das Leben ist kein Ponyhof")]
         public void Name(string url, string expectedName)
         {
             Link link = new Link();
@@ -65,6 +66,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("https://www.schisslaweng.net/probe/", "2017-03-29_-_Probe")]
         [InlineData("http://thegamercat.com/comic/fancy-footwork/", "260_-_2017-12-04_-_Fancy_Footwork_-_Skillz_that_pay_the_billz")]
         [InlineData("http://awkwardzombie.com/index.php?page=0&comic=011711", "2011-01-17_-_Recettear_an_Item_Shop_s_Tale_-_To_The_Victims_Go_The_Spoileds")]
+        [InlineData("http://sarahburrini.com/wordpress/comic/protestpirat/", "2012-01-26_-_Protestpirat")]
         
         // Currently this is broken in some way.
         ////[InlineData("https://media1.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "fury_kung_fury_kung_hackerman")]
@@ -93,6 +95,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("https://www.schisslaweng.net/probe/", "https://www.schisslaweng.net/wp-content/uploads/sites/2/2017/03/02_Trainingistalles_FINAL_web-980x1386.jpg")]
         [InlineData("http://thegamercat.com/comic/fancy-footwork/", "http://thegamercat.com/wp-content/uploads/2017/11/gamercat_260.jpg")]
         [InlineData("http://awkwardzombie.com/index.php?page=0&comic=011711", "http://i49.photobucket.com/albums/f278/katietiedrich/comic182.png")]
+        [InlineData("http://sarahburrini.com/wordpress/comic/protestpirat/", "http://sarahburrini.com/wordpress/wp-content/uploads/2012/01/2012-01-26-protestpirat.png")]
 
         // Currently this is broken in some way.
         ////[InlineData("https://media1.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "https://i.giphy.com/media/QbumCX9HFFDQA/giphy.gif")]
