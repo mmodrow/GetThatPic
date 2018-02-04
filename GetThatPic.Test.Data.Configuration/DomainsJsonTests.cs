@@ -98,6 +98,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("http://thegamercat.com/comic/fancy-footwork/", "http://thegamercat.com/wp-content/uploads/2017/11/gamercat_260.jpg")]
         [InlineData("http://awkwardzombie.com/index.php?page=0&comic=011711", "http://i49.photobucket.com/albums/f278/katietiedrich/comic182.png")]
         [InlineData("http://sarahburrini.com/wordpress/comic/protestpirat/", "http://sarahburrini.com/wordpress/wp-content/uploads/2012/01/2012-01-26-protestpirat.png")]
+        [InlineData("http://phdcomics.com/comics/archive.php?comicid=1993", "http://phdcomics.com/comics/archive/phd012218s.gif")]
 
         // Currently this is broken in some way.
         ////[InlineData("https://media1.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "https://i.giphy.com/media/QbumCX9HFFDQA/giphy.gif")]

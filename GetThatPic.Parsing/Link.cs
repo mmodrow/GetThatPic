@@ -30,7 +30,7 @@ namespace GetThatPic.Parsing
         /// <summary>
         /// The HTML comment pattern to drop them.
         /// </summary>
-        private static readonly Regex HtmlCommentPattern = new Regex("<!--(.|\n)*?-->", RegexOptions.Multiline);
+        private static readonly Regex HtmlCommentPattern = new Regex("<!--(.|\n)*?--!?>", RegexOptions.Multiline);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Link" /> class.

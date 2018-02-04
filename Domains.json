@@ -279,24 +279,29 @@
       }
     ]
   },
-  { /* http://phdcomics.com/comics/archive.php?comicid=1993 */
+  {
     "Name": "phdcomics.com",
     "Url": "/https?:\/\/(?:www\\.)?phdcomics\\.com/",
     "Path": "/^\/?comics(?:\/archive)?\\.php\\?(?:comicid|f)=([0-9]+)$/",
     "Images": [
       {
         "Type": "Attribute",
-        "AttributeName": "src",
-        "Selector": "#comic"
+        "AttributeName": "content",
+        "Selector": "meta[name='twitter:image']"
       }
     ],
     "FileNameFragments": [
       {
         "Type": "Attribute",
-        "AttributeName": "src",
-        "Selector": "#comic",
-        "Pattern": "/^(?:.*?/)phd([0-9]{2})([0-9]{2})([0-9]{2})s?(\\.gif)$/",
-        "Replace": "20$3$1$2"
+        "AttributeName": "content",
+        "Selector": "meta[name=\"twitter:image\"]",
+        "Pattern": "/^(?:.*\/)*phd([0-9]{2})([0-9]{2})([0-9]{0,2})s?(?:\\..*)$/",
+        "Replace": "20$3-$1-$2"
+      },
+      {
+        "Type": "Text",
+        "Selector": "title",
+        "Pattern": "/^(?:(?:\\t|\\r|\\n|.)*?: )(.*)$/"
       }
     ]
   },
