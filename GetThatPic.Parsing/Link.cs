@@ -64,17 +64,10 @@ namespace GetThatPic.Parsing
             {
                 return null;
             }
-
-            try
-            {
-                string markup = await HttpRequester.GetString(url);
-                markup = HtmlCommentPattern.Replace(markup, string.Empty);
-                return GetDocumentFromMarkup(markup);
-            }
-            catch
-            {
-                return null;
-            }
+            
+            string markup = await HttpRequester.GetString(url);
+            markup = HtmlCommentPattern.Replace(markup, string.Empty);
+            return GetDocumentFromMarkup(markup);
         }
 
         /// <summary>
