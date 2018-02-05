@@ -355,9 +355,15 @@ namespace GetThatPic.Parsing
             string output = string.Empty;
             if (!string.IsNullOrWhiteSpace(input))
             {
+                Regex AE = new Regex("Ä([^a-zäöü])");
+                Regex OE = new Regex("Ö([^a-zäöü])");
+                Regex UE = new Regex("Ü([^a-zäöü])");
                 output = input.Replace("ö", "oe")
                                 .Replace("ä", "ae")
-                                .Replace("ü", "ue")
+                                .Replace("ü", "ue");
+                output = AE.Replace(output, "AE$1");
+                output = OE.Replace(output, "OE$1");
+                output = UE.Replace(output, "UE$1")
                                 .Replace("Ö", "Oe")
                                 .Replace("Ä", "Ae")
                                 .Replace("Ü", "Ue")

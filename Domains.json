@@ -314,22 +314,32 @@
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": "#main-comic",
-        "Pattern": "/([^?]+).*/"
-  }
+        "Pattern": "/^([^\\?]+).*$/"
+      }
     ],
     "FileNameFragments": [
       {
         "Type": "Url",
-        "Pattern": "/^\/comics\/([0-9]+)\/?/"
+        "Pattern": "/^/comics/([0-9]+)/?/"
+      },
+      {
+        "Type": "Text",
+        "Selector": ".meta-data h3.past-week-comic-title a",
+        "Pattern": "/^([0-9]{4})\\.([0-9]{2})\\.([0-9]{2})$/",
+        "Replace": "$1-$2-$3"
+      },
+      {
+        "Type": "Text",
+        "Selector": ".author-credit-name",
+        "Pattern": "/^by (.*?)$/"
       },
       {
         "Type": "Attribute",
         "AttributeName": "src",
         "Selector": "#main-comic",
-        "Pattern": "/.*\/([^\\?$]+)\\..*/"
+        "Pattern": "/.*/([^\\?$]+)\\..*/"
       }
-    ],
-    "FileNameFragmentDelimiter": " "
+    ]
   },
   {
     "Name": "nichtlustig.de",
@@ -345,7 +355,8 @@
     "FileNameFragments": [
       {
         "Type": "Url",
-        "Pattern": "/^/toondb/([0-9]+)\\.html$/"
+        "Pattern": "/^/toondb/([0-9]{2})([0-9]{2})([0-9]{2})\\.html$/",
+        "Replace": "20$1-$2-$3"
       },
       {
         "Type": "Attribute",
@@ -353,33 +364,32 @@
         "Selector": "meta[name=\"title\"]",
         "Pattern": "/^NICHTLUSTIG Cartoon - (.+)$/"
       }
-    ],
-    "FileNameFragmentDelimiter": " "
+    ]
   },
   {
     "Name": "ruthe.de",
-    "Url": "/http:\/\/(?:www\\.)?ruthe\\.de/",
-    "Path": "/cartoon/$1",
+    "Url": "/http://(?:www\\.)?ruthe\\.de/",
+    "Path": "//?cartoon/([0-9]+)(?:/datum(?:/(?:asc|desc))?)?/?/",
     "Images": [
       {
         "Type": "Attribute",
-        "AttributeName": "content",
-        "Pattern": "/^\//",
-        "Replace": "http://ruthe.de/"
+        "AttributeName": "href",
+        "Selector": "link[rel=\"image_src\"]"
       }
     ],
     "FileNameFragments": [
       {
         "Type": "Attribute",
-        "AttributeName": "content",
-        "Pattern": "/^.*?/cartoons/strip_(\\d+)\\.[a-z]+$/"
+        "AttributeName": "href",
+        "Selector": "link[rel=\"image_src\"]",
+        "Pattern":  "/^.*\/strip_([0-9]+)\\..*$/" 
       }
     ]
   },
   {
     "Name": "totaberlustig.com",
-    "Url": "/http:\/\/(?:www\\.)?totaberlustig\\.com/",
-    "Path": "/^\/([^\/]*)\/?$/",
+    "Url": "/https?:\/\/(?:www\\.)?totaberlustig\\.com/",
+    "Path": "/^\/?([^\\\/]+)\/?$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -389,23 +399,26 @@
     ],
     "FileNameFragments": [
       {
-        "Type": "Html",
+        "Type": "Text",
         "Selector": ".post-text small",
-        "Pattern": "/^.*?<\\/a> am ([0-9]+)\\/([0-9]+)\\/([0-9]+).*$/",
+        "Pattern": "/^.*? am ([0-9]+)/([0-9]+)/([0-9]+).*$/",
         "Replace": "20$3-$2-$1"
+      },
+      {
+        "Type": "Text",
+        "Selector": ".post-text a[rel=\"author\"]"
       },
       {
         "Type": "Attribute",
         "AttributeName": "title",
         "Selector": "#comic img"
       }
-    ],
-    "FileNameFragmentDelimiter": " "
+    ]
   },
   {
-    "Name": "marvcomics.com",
-    "Url": "/http:\/\/www.marvcomics\\.com/",
-    "Path": "/^\/comics\/(?:mittenmang\/)?([^\/]*)\/?$/",
+    "Name": "Marvin Cliffords Mittenmang",
+    "Url": "/https?:\/\/www\\.marvcomics\\.com/",
+    "Path": "/^\/?comics\/mittenmang\/([^\\\/]*)\/?$/",
     "Images": [
       {
         "Type": "Attribute",
@@ -416,17 +429,23 @@
     ],
     "FileNameFragments": [
       {
-        "Type": "Attribute",
-        "AttributeName": "alt",
+        "Type": "Text",
+        "Selector": "title", 
         "Pattern": "/^[^#]+#([0-9]+).*$/"
       },
       {
         "Type": "Attribute",
+        "AttributeName": "content",
+        "Selector": "meta[name='shareaholic:article_published_time']",
+        "Pattern": "/^([0-9]{4}-[0-9]{2}-[0-9]{2}).*$/"
+      },
+      {
+        "Type": "Attribute",
         "AttributeName": "href",
-        "Pattern": "/^[^_]+_(.+?)_FINAL.*$/"
+        "Selector": ".singlecomic > a",
+        "Pattern": "/^[^_]+_(.+?)_(?:FINAL|web).*$/"
       }
-    ],
-    "FileNameFragmentDelimiter": " "
+    ]
   },
   {
     "Name": "questionablecontent.net",

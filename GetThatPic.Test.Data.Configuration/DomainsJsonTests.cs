@@ -41,6 +41,11 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("http://awkwardzombie.com/index.php?page=0&comic=011711", "awkwardzombie.com")]
         [InlineData("http://sarahburrini.com/wordpress/comic/protestpirat/", "Das Leben ist kein Ponyhof")]
         [InlineData("http://phdcomics.com/comics/archive.php?comicid=1993", "phdcomics.com")]
+        [InlineData("http://explosm.net/comics/4833/", "Cyanide & Happiness")]
+        [InlineData("http://static.nichtlustig.de/toondb/150422.html", "nichtlustig.de")]
+        [InlineData("http://ruthe.de/cartoon/3145/datum/asc/", "ruthe.de")]
+        [InlineData("http://www.totaberlustig.com/erster-cartoonist/", "totaberlustig.com")]
+        [InlineData("https://www.marvcomics.com/comics/mittenmang/1515-mittenmang-23", "Marvin Cliffords Mittenmang")]
         public void Name(string url, string expectedName)
         {
             Link link = new Link();
@@ -69,7 +74,12 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("http://awkwardzombie.com/index.php?page=0&comic=011711", "2011-01-17_-_Recettear_an_Item_Shop_s_Tale_-_To_The_Victims_Go_The_Spoileds")]
         [InlineData("http://sarahburrini.com/wordpress/comic/protestpirat/", "2012-01-26_-_Protestpirat")]
         [InlineData("http://phdcomics.com/comics/archive.php?comicid=1993", "2018-01-22_-_Psych")]
-        
+        [InlineData("http://explosm.net/comics/4833/", "4833_-_2018-01-21_-_Kris_Wilson_-_lifespan")]
+        [InlineData("http://static.nichtlustig.de/toondb/150422.html", "2015-04-22_-_MOERDER")]
+        [InlineData("http://ruthe.de/cartoon/2232/datum/asc/", "1563")]
+        [InlineData("http://www.totaberlustig.com/erster-cartoonist/", "2017-01-17_-_Michael_-_Erster_Cartoonist")]
+        [InlineData("https://www.marvcomics.com/comics/mittenmang/1515-mittenmang-23", "23_-_2017-08-21_-_Vergangenheit")]
+
         // Currently this is broken in some way.
         ////[InlineData("https://media1.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "fury_kung_fury_kung_hackerman")]
         public async Task FileName(string url, string expectedName)
@@ -99,6 +109,11 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("http://awkwardzombie.com/index.php?page=0&comic=011711", "http://i49.photobucket.com/albums/f278/katietiedrich/comic182.png")]
         [InlineData("http://sarahburrini.com/wordpress/comic/protestpirat/", "http://sarahburrini.com/wordpress/wp-content/uploads/2012/01/2012-01-26-protestpirat.png")]
         [InlineData("http://phdcomics.com/comics/archive.php?comicid=1993", "http://phdcomics.com/comics/archive/phd012218s.gif")]
+        [InlineData("http://explosm.net/comics/4833/", "http://files.explosm.net/comics/Kris/lifespan.png")]
+        [InlineData("http://static.nichtlustig.de/toondb/150422.html", "http://static.nichtlustig.de/comics/full/150422.jpg")]
+        [InlineData("http://ruthe.de/cartoon/2232/datum/asc/", "http://ruthe.de/cartoons/strip_1563.jpg")]
+        [InlineData("http://www.totaberlustig.com/erster-cartoonist/", "http://www.totaberlustig.com/comics/2017-01-17-Erster Cartoonist.jpg")]
+        [InlineData("https://www.marvcomics.com/comics/mittenmang/1515-mittenmang-23", "https://www.marvcomics.com/wp-content/uploads/sites/3/2017/08/023_Vergangenheit_web.jpg")]
 
         // Currently this is broken in some way.
         ////[InlineData("https://media1.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "https://i.giphy.com/media/QbumCX9HFFDQA/giphy.gif")]
@@ -106,7 +121,7 @@ namespace GetThatPic.Test.Data.Configuration
         {
             Link link = new Link();
 
-            IEnumerable<string> fileName = await link.GetImageUrls(url);
+            IEnumerable<string> fileName = (await link.GetImageUrls(url)).ToList();
             Assert.Contains(expectedImageUrl, fileName);
         }
 

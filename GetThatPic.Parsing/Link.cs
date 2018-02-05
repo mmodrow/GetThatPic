@@ -25,7 +25,7 @@ namespace GetThatPic.Parsing
         /// <summary>
         /// The protocol finding pattern.
         /// </summary>
-        private static readonly Regex Protocol = new Regex("^(http?s:).*?$", RegexOptions.IgnoreCase);
+        private static readonly Regex Protocol = new Regex("^(https?:).*?$", RegexOptions.IgnoreCase);
 
         /// <summary>
         /// The HTML comment pattern to drop them.
@@ -84,7 +84,7 @@ namespace GetThatPic.Parsing
 
             var doc = new HtmlDocument();
             doc.LoadHtml(markup);
-            if (doc.ParseErrors.Any(error => HtmlParseErrorCode.TagNotOpened != error.Code && HtmlParseErrorCode.EndTagNotRequired != error.Code))
+            if (doc.ParseErrors.Any(error => HtmlParseErrorCode.TagNotOpened != error.Code && HtmlParseErrorCode.TagNotClosed != error.Code && HtmlParseErrorCode.EndTagNotRequired != error.Code))
             {
                 return null;
             }
