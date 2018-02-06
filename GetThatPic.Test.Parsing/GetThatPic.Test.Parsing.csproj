@@ -7,21 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack.CssSelectors.NetCore" Version="1.0.0" />
-    <PackageReference Include="HtmlAgilityPack.NetCore" Version="1.5.0.1" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.6.16" />
+    <PackageReference Include="HtmlAgilityPack.CssSelectors.NetCore" Version="1.1.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.core" Version="2.3.1" />
     <PackageReference Include="xunit.extensibility.core" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GetThatPic.Parsing\GetThatPic.Parsing.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="xunit.core">
-      <HintPath>..\packages\xunit.extensibility.core.2.3.1\lib\netstandard1.1\xunit.core.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

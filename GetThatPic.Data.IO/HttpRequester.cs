@@ -9,7 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
+using SixLabors.ImageSharp;
 
 namespace GetThatPic.Data.IO
 {
@@ -101,16 +101,11 @@ namespace GetThatPic.Data.IO
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>A bitmap of the given url's target image if valid.</returns>
-        public static BitmapImage GetImage(string url)
+        public static Image<Rgba32> GetImage(string url)
         {
             try
             {
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(url, UriKind.Absolute);
-                bitmap.EndInit();
-
-                return bitmap;
+                return Image.Load(url);
             }
             catch
             {

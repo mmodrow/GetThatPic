@@ -3,7 +3,9 @@
 // <author>Marc A. Modrow</author>
 // </copyright>
 
-using System.Windows.Media.Imaging;
+
+using System.Drawing;
+using SixLabors.ImageSharp;
 
 namespace GetThatPic.Parsing.Models
 {
@@ -18,7 +20,7 @@ namespace GetThatPic.Parsing.Models
         /// <value>
         /// The content.
         /// </value>
-        public BitmapImage Content { get; set; }
+        public Image<Rgba32> Content { get; set; }
 
         /// <summary>
         /// Gets or sets the name.

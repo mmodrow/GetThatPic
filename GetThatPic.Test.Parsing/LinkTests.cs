@@ -24,7 +24,7 @@ namespace GetThatPic.Test.Parsing
         /// </summary>
         private const string ValidMarkup            = @"<html>
     <head>
-        <title>großartig</title>
+        <title>groï¿½artig</title>
     </head>
     <body>
         <h1>toll!</h1>
@@ -37,7 +37,7 @@ namespace GetThatPic.Test.Parsing
         /// <summary>
         /// The broken markup example.
         /// </summary>
-        private const string BrokenMarkup            = "<html<head><title>großartig</title>";
+        private const string BrokenMarkup            = "<html<head><title>groï¿½artig</title>";
 
         /// <summary>
         /// Tests the constructor behaviour when passing true.
@@ -225,7 +225,7 @@ namespace GetThatPic.Test.Parsing
         {
             HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
             IList<HtmlNode> title = doc.QuerySelectorAll("title");
-            Assert.Contains(title, item => "großartig" == item.InnerHtml);
+            Assert.Contains(title, item => "groï¿½artig" == item.InnerHtml);
         }
 
         /// <summary>
@@ -251,12 +251,12 @@ namespace GetThatPic.Test.Parsing
         /// <summary>
         /// Gets an empty string.
         /// </summary>
-        [Fact]
-        public void GetDocumentFromMarkup_Invalid()
-        {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(BrokenMarkup);
-            Assert.Null(doc);
-        }
+        ////[Fact]
+        ////public void GetDocumentFromMarkup_Invalid()
+        ////{
+        ////HtmlDocument doc = Link.GetDocumentFromMarkup(BrokenMarkup);
+        ////Assert.Null(doc);
+        ////}
 
         /// <summary>
         /// Gets the document URL.
@@ -279,7 +279,7 @@ namespace GetThatPic.Test.Parsing
         {
             HtmlDocument doc = await Link.GetDocument(ValidMarkup);
             IList<HtmlNode> title = doc.QuerySelectorAll("title");
-            Assert.Contains(title, item => "großartig" == item.InnerHtml);
+            Assert.Contains(title, item => "groï¿½artig" == item.InnerHtml);
         }
 
         /// <summary>
@@ -288,8 +288,10 @@ namespace GetThatPic.Test.Parsing
         /// <param name="input">The input.</param>
         /// <returns>A Task.</returns>
         [Theory]
+
+        // Deactivated - this is now allowed.
+        ////[InlineData(BrokenMarkup)]
         [InlineData(null)]
-        [InlineData(BrokenMarkup)]
         [InlineData("")]
         public async Task GetDocument_InvalidString(string input)
         {

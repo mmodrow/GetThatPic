@@ -5,15 +5,18 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows;
-using System.Windows.Media.Imaging;
+using System.Windows.Forms;
 using System.Windows.Navigation;
 using GetThatPic.Data.IO;
 using GetThatPic.Parsing;
 using GetThatPic.Parsing.Models;
 using GetThatPic.WPF.Models;
+using SixLabors.ImageSharp;
 using WpfAnimatedGif;
+using Clipboard = System.Windows.Clipboard;
+using DragEventArgs = System.Windows.DragEventArgs;
 
 namespace GetThatPic.WPF
 {
@@ -89,12 +92,14 @@ namespace GetThatPic.WPF
             PreviewImageName.Text = newPreviewItem.Name;
             if (newPreviewItem.FileSystemLocation?.EndsWith(".gif") ?? false)
             {
-                ImageBehavior.SetAnimatedSource(PreviewImage, newPreviewItem.Content);
+                // FIXME: find out how to bind Image to Image.
+                ////ImageBehavior.SetAnimatedSource(PreviewImage, newPreviewItem.Content);
             }
             else
             {
                 ImageBehavior.SetAnimatedSource(PreviewImage, null);
-                PreviewImage.Source = newPreviewItem.Content;
+                // FIXME: find out how to bind Image to Image.
+                ////PreviewImage.Source = newPreviewItem.Content;
             }
         }
 
@@ -113,13 +118,11 @@ namespace GetThatPic.WPF
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
-        private async void DropUrl(object sender, DragEventArgs e)
+        private async void DropUrl(object sender, System.Windows.DragEventArgs e)
         {
             // TODO: Migrate to using Link-Class here
-            string droppedUrl = (string)e.Data.GetData(DataFormats.Text);
+            string droppedUrl = (string)e.Data.GetData(System.Windows.DataFormats.Text);
             LogTextBox.Text += "\n" + droppedUrl;
-            BitmapImage bitmap = HttpRequester.GetImage(droppedUrl);
-            Link link = state.LinkParser;
             IList<ImageEntry> images = await state.LinkParser.GetImages(droppedUrl);
 
             foreach (ImageEntry image in images)
@@ -147,7 +150,7 @@ namespace GetThatPic.WPF
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
-        private void LogTextBox_DragLeave(object sender, DragEventArgs e)
+        private void LogTextBox_DragLeave(object sender, System.Windows.DragEventArgs e)
         {
             // Method intentionally left empty - for now.
         }
