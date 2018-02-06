@@ -491,22 +491,27 @@
     ]
   },
   {
-    "Name": "www.graphitti-blog.de",
-    "Url": "/http:\/\/www.graphitti-blog.de/",
+    "Name": "graphitti-blog.de",
+    "Url": "/https?:\/\/(?:www\\.)?graphitti-blog\\.de/",
     "Path": "/^\/[0-9]{4}\/[0-9]{2}\/[0-9]{2}\/[0-9a-zA-Z-]+\/?$/",
     "Images": [
       {
         "Type": "Attribute",
         "AttributeName": "href",
-        "Selector": "#dslc-theme-content-inner a[href$=\".jpg\"]"
+        "Selector": ".entry-content > p > a"
       },
       {
         "Type": "Attribute",
         "AttributeName": "src",
-        "Selector": "#dslc-theme-content-inner img"
+        "Selector": ".entry-content > p > img"
       }
     ],
     "FileNameFragments": [
+      {
+        "Type": "Url",
+        "Pattern": "/^.*?\/([0-9]{4})\/([0-9]{2})\/([0-9]{2})\/.*$/",
+        "Replace":  "$1-$2-$3" 
+      },
       {
         "Type": "Html",
         "Selector": ".entry-title"

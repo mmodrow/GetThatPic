@@ -46,6 +46,9 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("http://ruthe.de/cartoon/3145/datum/asc/", "ruthe.de")]
         [InlineData("http://www.totaberlustig.com/erster-cartoonist/", "totaberlustig.com")]
         [InlineData("https://www.marvcomics.com/comics/mittenmang/1515-mittenmang-23", "Marvin Cliffords Mittenmang")]
+        [InlineData("http://www.questionablecontent.net/view.php?comic=1324", "questionablecontent.net")]
+        [InlineData("http://ars.userfriendly.org/cartoons/?id=20130719", "userfriendly.org")]
+        [InlineData("https://www.graphitti-blog.de/2017/11/12/mein-biorhythmus/", "graphitti-blog.de")]
         public void Name(string url, string expectedName)
         {
             Link link = new Link();
@@ -79,6 +82,9 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("http://ruthe.de/cartoon/2232/datum/asc/", "1563")]
         [InlineData("http://www.totaberlustig.com/erster-cartoonist/", "2017-01-17_-_Michael_-_Erster_Cartoonist")]
         [InlineData("https://www.marvcomics.com/comics/mittenmang/1515-mittenmang-23", "23_-_2017-08-21_-_Vergangenheit")]
+        [InlineData("http://www.questionablecontent.net/view.php?comic=1324", "1324")]
+        [InlineData("http://ars.userfriendly.org/cartoons/?id=20130719", "2013-07-19")]
+        [InlineData("https://www.graphitti-blog.de/2017/11/12/mein-biorhythmus/", "2017-11-12_-_Mein_Biorhythmus")]
 
         // Currently this is broken in some way.
         ////[InlineData("https://media1.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "fury_kung_fury_kung_hackerman")]
@@ -114,6 +120,10 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("http://ruthe.de/cartoon/2232/datum/asc/", "http://ruthe.de/cartoons/strip_1563.jpg")]
         [InlineData("http://www.totaberlustig.com/erster-cartoonist/", "http://www.totaberlustig.com/comics/2017-01-17-Erster Cartoonist.jpg")]
         [InlineData("https://www.marvcomics.com/comics/mittenmang/1515-mittenmang-23", "https://www.marvcomics.com/wp-content/uploads/sites/3/2017/08/023_Vergangenheit_web.jpg")]
+        [InlineData("http://www.questionablecontent.net/view.php?comic=1324", "http://www.questionablecontent.net/comics/1324.png")]
+        [InlineData("http://ars.userfriendly.org/cartoons/?id=20130719", "http://www.userfriendly.org/cartoons/archives/13jul/uf004449.gif")]
+        [InlineData("https://www.graphitti-blog.de/2017/11/12/mein-biorhythmus/", "http://www.graphitti-blog.de/wp-content/uploads/2017/11/179_Biorhythmus_Kreis-01.jpg")]
+        [InlineData("https://www.graphitti-blog.de/2018/01/04/wahlperiode/", "http://www.graphitti-blog.de/wp-content/uploads/2018/01/Wahlperiode-300x274.png")]
 
         // Currently this is broken in some way.
         ////[InlineData("https://media1.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "https://i.giphy.com/media/QbumCX9HFFDQA/giphy.gif")]
