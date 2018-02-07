@@ -3,8 +3,6 @@
 // <author>Marc A. Modrow</author>
 // </copyright>
 
-
-using System.Drawing;
 using SixLabors.ImageSharp;
 
 namespace GetThatPic.Parsing.Models

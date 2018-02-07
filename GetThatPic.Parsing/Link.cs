@@ -3,6 +3,7 @@
 // <author>Marc A. Modrow</author>
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -191,7 +192,7 @@ namespace GetThatPic.Parsing
             HtmlDocument doc = await GetDocument(url);
 
             IEnumerable<string> imageUrls = await GetImageUrls(url, doc, domain);
-            IEnumerable<string> fileEndings = imageUrls.Select(FileEndingFromUrl).ToList();
+            IEnumerable<string> fileEndings = imageUrls.Select(FileEndingFromUrl);
 
             string imageBaseFileName = await GetImageFileName(url, doc, domain);
 
@@ -207,19 +208,25 @@ namespace GetThatPic.Parsing
                     imageFileNames.Add(fileName);
                 }
             }
-            else
+            else if(numImages == 1)
             {
-                imageFileNames.Add(imageBaseFileName);
+                imageFileNames.Add(imageBaseFileName + fileEndings.ElementAt(0));
             }
 
-            IList<ImageEntry> entries = imageUrls.Zip(
-                imageFileNames,
-                (imageUrl, name) => new ImageEntry()
+            IList<ImageEntry> entries = new List<ImageEntry>();
+            IEnumerable<Tuple<string, string>> paired = imageUrls.Zip(
+                imageFileNames, (imageUrl, name) => new Tuple<string,string>(imageUrl, name)).ToList();
+
+            foreach (Tuple<string, string> pair in paired)
+            {
+                entries.Add(new ImageEntry()
                 {
-                    Content = HttpRequester.GetImage(imageUrl),
-                    Name = name,
-                    FileSystemLocation = imageUrl
-                }).ToList();
+                    Content = await HttpRequester.GetImage(pair.Item1),
+                    Name = pair.Item2,
+                    FileSystemLocation = pair.Item1
+                });
+            }
+            
 
             return entries;
         }

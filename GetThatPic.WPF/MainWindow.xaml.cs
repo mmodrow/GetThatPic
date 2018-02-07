@@ -8,6 +8,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using GetThatPic.Data.IO;
 using GetThatPic.Parsing;
@@ -98,8 +100,18 @@ namespace GetThatPic.WPF
             else
             {
                 ImageBehavior.SetAnimatedSource(PreviewImage, null);
-                // FIXME: find out how to bind Image to Image.
-                ////PreviewImage.Source = newPreviewItem.Content;
+
+                // FIXME: Determine correct colour format/palette and other values from Image.
+                BitmapSource source = BitmapSource.Create(
+                    newPreviewItem.Content.Width, 
+                    newPreviewItem.Content.Height,
+                    72.0, 
+                    72.0, 
+                    PixelFormats.Bgra32, 
+                    BitmapPalettes.WebPalette, 
+                    newPreviewItem.Content.SavePixelData(), 
+                    newPreviewItem.Content.Width*4);
+                    PreviewImage.Source = source;
             }
         }
 
