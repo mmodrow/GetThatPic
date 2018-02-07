@@ -30,6 +30,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{20FD9224-2879-48D1-A805-A06C3538D53D}"
 	ProjectSection(SolutionItems) = preProject
 		Domains.json = Domains.json
+		DownloadDirectories.json = DownloadDirectories.json
 	EndProjectSection
 EndProject
 Global

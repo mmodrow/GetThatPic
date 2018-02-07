@@ -181,7 +181,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// <summary>
         /// Gets the content andtries to replace it with an invalid regex.
         /// </summary>
-        /// <param name="regexContent">Content of the regex.</param>
+        /// <param name="regexContent">ImageUrl of the regex.</param>
         [Theory]
         [InlineData("")]
         [InlineData(null)]

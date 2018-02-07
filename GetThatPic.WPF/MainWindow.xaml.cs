@@ -5,17 +5,11 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
+using System.Linq;
 using System.Windows;
-using System.Windows.Forms;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using GetThatPic.Data.IO;
-using GetThatPic.Parsing;
-using GetThatPic.Parsing.Models;
 using GetThatPic.WPF.Models;
-using SixLabors.ImageSharp;
 using WpfAnimatedGif;
 using Clipboard = System.Windows.Clipboard;
 using DragEventArgs = System.Windows.DragEventArgs;
@@ -91,27 +85,21 @@ namespace GetThatPic.WPF
 
             state.PreviewItem = newPreviewItem;
 
-            PreviewImageName.Text = newPreviewItem.Name;
-            if (newPreviewItem.FileSystemLocation?.EndsWith(".gif") ?? false)
+            PreviewImageName.Text = newPreviewItem.MetaData.Name;
+            PreviewImageUrl.Text = newPreviewItem.MetaData.ImageUrl;
+            PreviewImageDownloadPath.Text = newPreviewItem.MetaData.TargetFileSystemLocation;
+            // FIXME: Determine correct colour format/palette and other values from Image.
+
+            if (newPreviewItem.MetaData.TargetFileSystemLocation?.EndsWith(".gif") ?? false)
             {
                 // FIXME: find out how to bind Image to Image.
-                ////ImageBehavior.SetAnimatedSource(PreviewImage, newPreviewItem.Content);
+                BitmapSource source = newPreviewItem.Bitmap;
+                ImageBehavior.SetAnimatedSource(PreviewImage, source);
             }
             else
             {
                 ImageBehavior.SetAnimatedSource(PreviewImage, null);
-
-                // FIXME: Determine correct colour format/palette and other values from Image.
-                BitmapSource source = BitmapSource.Create(
-                    newPreviewItem.Content.Width, 
-                    newPreviewItem.Content.Height,
-                    72.0, 
-                    72.0, 
-                    PixelFormats.Bgra32, 
-                    BitmapPalettes.WebPalette, 
-                    newPreviewItem.Content.SavePixelData(), 
-                    newPreviewItem.Content.Width*4);
-                    PreviewImage.Source = source;
+                PreviewImage.Source = newPreviewItem.Bitmap;
             }
         }
 
@@ -135,7 +123,8 @@ namespace GetThatPic.WPF
             // TODO: Migrate to using Link-Class here
             string droppedUrl = (string)e.Data.GetData(System.Windows.DataFormats.Text);
             LogTextBox.Text += "\n" + droppedUrl;
-            IList<ImageEntry> images = await state.LinkParser.GetImages(droppedUrl);
+            IList<ImageEntry> images = (await state.LinkParser.GetImages(droppedUrl))
+                .Select(image => new ImageEntry(){MetaData = image}).ToList();
 
             foreach (ImageEntry image in images)
             {
@@ -186,12 +175,12 @@ namespace GetThatPic.WPF
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void CopyLastFilePathButton_Click(object sender, RoutedEventArgs e)
         {
-            if (null == state.History?.LastWritten?.FileSystemLocation)
+            if (null == state.History?.LastWritten?.MetaData.TargetFileSystemLocation)
             {
                 return;
             }
 
-            Clipboard.SetText(state.History.LastWritten.FileSystemLocation);
+            Clipboard.SetText(state.History.LastWritten.MetaData.TargetFileSystemLocation);
         }
 
         /// <summary>
@@ -202,12 +191,12 @@ namespace GetThatPic.WPF
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void OpenLastFileButton_Click(object sender, RoutedEventArgs e)
         {
-            if (null == state.History?.LastWritten?.FileSystemLocation)
+            if (null == state.History?.LastWritten?.MetaData.TargetFileSystemLocation)
             {
                 return;
             }
 
-            System.Diagnostics.Process.Start((string)state.History.LastWritten.FileSystemLocation);
+            System.Diagnostics.Process.Start(state.History.LastWritten.MetaData.TargetFileSystemLocation);
         }
 
         /// <summary>

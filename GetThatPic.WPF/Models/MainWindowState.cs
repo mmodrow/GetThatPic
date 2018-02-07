@@ -3,6 +3,7 @@
 // <author>Marc A. Modrow</author>
 // </copyright>
 using System;
+using System.Drawing;
 using System.Windows.Media.Imaging;
 using GetThatPic.Data.Structure;
 using GetThatPic.Parsing;

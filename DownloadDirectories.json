@@ -1,6 +1,12 @@
  [
   {
     "Name": "dilbert.com",
-    "Directory": "Dilbert"
+    "Directory": "Dilbert",
+    "IsPathRelative": true
+  },
+  {
+    "Name": "thecodinglove.com",
+    "Directory": "H:\\Bild\\einfach witzig\\animated_gif",
+    "IsPathRelative": false
   }
  ]

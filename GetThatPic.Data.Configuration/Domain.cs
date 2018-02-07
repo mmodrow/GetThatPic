@@ -80,15 +80,23 @@ namespace GetThatPic.Data.Configuration
             {
                 if (string.IsNullOrWhiteSpace(downloadDirectory))
                 {
-                    DownloadDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) +
-                                      @"\GetThatPic\" + Name;
+                    DownloadDirectory = Name;
                 }
 
-                return downloadDirectory;
+                if (IsPathRelative) { 
+                    return Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) +
+                       @"\GetThatPic\" + downloadDirectory + @"\";
+                }
+
+                return downloadDirectory + @"\";
             }
 
             set => downloadDirectory = value;
         }
+
+        public bool IsPathRelative { get; set; } = true;
+
+        public string DefaultFileEnding { get; set; } = string.Empty;
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

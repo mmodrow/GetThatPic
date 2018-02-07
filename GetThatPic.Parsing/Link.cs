@@ -42,7 +42,7 @@ namespace GetThatPic.Parsing
         {
             if (autoInitialize)
             {
-                InitializeConfig(inputFile: inputFile);
+                InitializeConfig();
             }
         }
 
@@ -135,21 +135,29 @@ namespace GetThatPic.Parsing
         /// </summary>
         /// <param name="clearFirst">if set to <c>true</c> clear the config before initializing.</param>
         /// <param name="domains">The domains.</param>
-        /// <param name="inputFile">The input file.</param>
-        public void InitializeConfig(bool clearFirst = true, IList<Domain> domains = null, string inputFile = null)
+        public void InitializeConfig(bool clearFirst = true)
         {
             if (clearFirst)
             {
                 Domains.Clear();
             }
-
-            if (null == domains)
-            {
-                domains = LoadDomainsFromJsonFile(inputFile);
-            }
+            IList<Domain> domains = LoadDomainsFromJsonFile("Domains");
+            IList<DownloadDirectory> downloadDirectories = LoadDomainDirectoriesFromJsonFile("DownloadDirectories");
 
             foreach (Domain domain in domains)
             {
+                DownloadDirectory directoryConfig = downloadDirectories
+                    .FirstOrDefault(downloadDirectory => downloadDirectory.Name == domain.Name);
+                string directory = directoryConfig?.Directory;
+                if (!string.IsNullOrWhiteSpace(directory))
+                {
+                    domain.DownloadDirectory = directory;
+                }
+
+                if (null != directoryConfig?.IsPathRelative) { 
+                    domain.IsPathRelative = directoryConfig.IsPathRelative;
+                }
+
                 Domains.Add(domain);
             }
         }
@@ -157,19 +165,11 @@ namespace GetThatPic.Parsing
         /// <summary>
         /// Loads the domains from json file.
         /// </summary>
-        /// <param name="inputFile">The input file path.</param>
+        /// <param name="fileName"></param>
         /// <returns>The loaded domains.</returns>
-        public IList<Domain> LoadDomainsFromJsonFile(string inputFile = null)
+        public IList<Domain> LoadDomainsFromJsonFile(string fileName = null)
         {
-            if (null == inputFile && File.Exists(@"..\..\..\..\Domains.json"))
-            {
-                inputFile = @"..\..\..\..\Domains.json";
-            }
-
-            if (null == inputFile && File.Exists(@"..\..\..\Domains.json"))
-            {
-                inputFile = @"..\..\..\Domains.json";
-            }
+            string inputFile = FindJsonFile(fileName);
 
             List<Domain> domains;
             using (StreamReader r = new StreamReader(inputFile))
@@ -182,17 +182,68 @@ namespace GetThatPic.Parsing
         }
 
         /// <summary>
+        /// Loads the domains from json file.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns>The loaded domains.</returns>
+        public IList<DownloadDirectory> LoadDomainDirectoriesFromJsonFile(string fileName = null)
+        {
+            string inputFile = FindJsonFile(fileName);
+            string customInputFile = FindJsonFile(fileName);
+
+            List<DownloadDirectory> downloadDirectories;
+            using (StreamReader r = new StreamReader(inputFile))
+            {
+                string json = r.ReadToEnd();
+                downloadDirectories = JsonConvert.DeserializeObject<List<DownloadDirectory>>(json);
+            }
+
+            return downloadDirectories;
+        }
+
+        /// <summary>
+        /// Finds the json file.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns></returns>
+        private static string FindJsonFile(string fileName)
+        {
+            if (File.Exists(@"..\..\..\..\" + fileName + ".json"))
+            {
+                return @"..\..\..\..\" + fileName + ".json";
+            }
+
+            if (File.Exists(@"..\..\..\" + fileName + ".json"))
+            {
+                return @"..\..\..\" + fileName + ".json";
+            }
+
+            if (File.Exists(fileName + ".json"))
+            {
+                return fileName + ".json";
+            }
+
+            if (File.Exists(fileName))
+            {
+                return fileName;
+            }
+
+            return fileName;
+        }
+
+        /// <summary>
         /// Gets the images.
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <returns>A Listof corresponding ImageEntries.</returns>
-        public async Task<IList<ImageEntry>> GetImages(string url)
+        public async Task<IList<ImageMetaData>> GetImages(string url)
         {
             Domain domain = IdentifyDomain(url);
             HtmlDocument doc = await GetDocument(url);
 
-            IEnumerable<string> imageUrls = await GetImageUrls(url, doc, domain);
-            IEnumerable<string> fileEndings = imageUrls.Select(FileEndingFromUrl);
+            IEnumerable<string> imageUrls = (await GetImageUrls(url, doc, domain)).ToList();
+            IEnumerable<string> fileEndings = imageUrls.Select(FileEndingFromUrl)
+                .Select(ending => !string.IsNullOrWhiteSpace(ending) ? ending : domain.DefaultFileEnding).ToList();
 
             string imageBaseFileName = await GetImageFileName(url, doc, domain);
 
@@ -213,19 +264,13 @@ namespace GetThatPic.Parsing
                 imageFileNames.Add(imageBaseFileName + fileEndings.ElementAt(0));
             }
 
-            IList<ImageEntry> entries = new List<ImageEntry>();
-            IEnumerable<Tuple<string, string>> paired = imageUrls.Zip(
-                imageFileNames, (imageUrl, name) => new Tuple<string,string>(imageUrl, name)).ToList();
-
-            foreach (Tuple<string, string> pair in paired)
-            {
-                entries.Add(new ImageEntry()
+            IList<ImageMetaData> entries = imageUrls.Zip(
+                imageFileNames, (imageUrl, name) => new ImageMetaData()
                 {
-                    Content = await HttpRequester.GetImage(pair.Item1),
-                    Name = pair.Item2,
-                    FileSystemLocation = pair.Item1
-                });
-            }
+                    ImageUrl = imageUrl,
+                    Name = name,
+                    TargetFileSystemLocation = domain.DownloadDirectory + name
+                }).ToList();
             
 
             return entries;

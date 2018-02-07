@@ -142,6 +142,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\ImageEntry.cs" />
     <Compile Include="Models\MainWindowState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -200,9 +201,6 @@
   <ItemGroup>
     <PackageReference Include="NETStandard.Library">
       <Version>2.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="SixLabors.ImageSharp">
-      <Version>1.0.0-beta0002</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

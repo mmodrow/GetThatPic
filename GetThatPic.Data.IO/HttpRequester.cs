@@ -3,14 +3,11 @@
 // <author>Marc A. Modrow</author>
 // </copyright>
 
-using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats;
 
 namespace GetThatPic.Data.IO
 {
@@ -93,24 +90,6 @@ namespace GetThatPic.Data.IO
             {
                 ////(Exception e)
                 // TODO: Log e.Message.
-                return null;
-            }
-        }
-        
-        /// <summary>
-        /// Loads the image from URL to preview.
-        /// </summary>
-        /// <param name="url">The URL.</param>
-        /// <returns>A bitmap of the given url's target image if valid.</returns>
-        public static async Task<Image<Rgba32>> GetImage(string url)
-        {
-            try
-            {
-
-                return Image.Load(await GetStream(url), out IImageFormat format);
-            }
-            catch
-            {
                 return null;
             }
         }

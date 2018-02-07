@@ -1,24 +1,22 @@
-﻿// <copyright file="ImageEntry.cs" company="Marc A. Modrow">
+﻿// <copyright file="ImageMetaData.cs" company="Marc A. Modrow">
 // Copyright (c) 2018 All Rights Reserved
 // <author>Marc A. Modrow</author>
 // </copyright>
-
-using SixLabors.ImageSharp;
 
 namespace GetThatPic.Parsing.Models
 {
     /// <summary>
     /// Models all data needed to know about a previously downloaded image.
     /// </summary>
-    public class ImageEntry
+    public class ImageMetaData
     {
         /// <summary>
-        /// Gets or sets the content.
+        /// Gets or sets the image url.
         /// </summary>
         /// <value>
         /// The content.
         /// </value>
-        public Image<Rgba32> Content { get; set; }
+        public string ImageUrl { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
@@ -34,6 +32,6 @@ namespace GetThatPic.Parsing.Models
         /// <value>
         /// The file system location.
         /// </value>
-        public string FileSystemLocation { get; set; }
+        public string TargetFileSystemLocation { get; set; }
     }
 }

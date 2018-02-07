@@ -1,8 +1,9 @@
 [
   {
     "Name": "dilbert.com",
-    "Url": "/http:\/\/dilbert.com/",
-    "Path": "/^\/strip\/((?:[0-9]+-?)+)$/",
+    "Url": "/http://dilbert.com/",
+    "Path": "/^/strip/((?:[0-9]+-?)+)$/",
+    "DefaultFileEnding": ".gif",
     "Images": [
       {
         "Type": "Attribute",

@@ -138,28 +138,6 @@ namespace GetThatPic.Test.Parsing
         }
 
         /// <summary>
-        /// Tests the functionality of InitializeConfig with an element given.
-        /// </summary>
-        [Fact]
-        public void InitializeConfig_ElementAdded()
-        {
-            Link link = new Link(false);
-            link.InitializeConfig(
-                true,
-                new List<Domain>
-                {
-                    new Domain
-                    {
-                        Name = "dilbert.com",
-                        Url = new Regex("http://dilbert.com"),
-                        Path = new Regex("^/strip/((?:[0-9]+-?)+)$")
-                    }
-                });
-
-            Assert.Contains(link.Domains, domain => domain.Url.IsMatch("http://dilbert.com"));
-        }
-
-        /// <summary>
         /// Tests the functionality of InitializeConfig with no element given.
         /// </summary>
         [Fact]
@@ -169,18 +147,6 @@ namespace GetThatPic.Test.Parsing
             link.InitializeConfig();
 
             Assert.Contains(link.Domains, domain => domain.Url.IsMatch("http://dilbert.com"));
-        }
-
-        /// <summary>
-        /// Tests the functionality of InitializeConfig with an empty list given.
-        /// </summary>
-        [Fact]
-        public void InitializeConfig_EmptyListAdded()
-        {
-            Link link = new Link(false);
-            link.InitializeConfig(true, new List<Domain>());
-
-            Assert.DoesNotContain(link.Domains, domain => domain.Url.IsMatch("http://dilbert.com"));
         }
 
         /// <summary>
