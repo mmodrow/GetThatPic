@@ -83,7 +83,8 @@ namespace GetThatPic.Data.Configuration
                     DownloadDirectory = Name;
                 }
 
-                if (IsPathRelative) { 
+                if (IsPathRelative)
+                {
                     return Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) +
                        @"\GetThatPic\" + downloadDirectory + @"\";
                 }
@@ -94,8 +95,20 @@ namespace GetThatPic.Data.Configuration
             set => downloadDirectory = value;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is path relative.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is path relative; otherwise, <c>false</c>.
+        /// </value>
         public bool IsPathRelative { get; set; } = true;
 
+        /// <summary>
+        /// Gets or sets the default file ending.
+        /// </summary>
+        /// <value>
+        /// The default file ending.
+        /// </value>
         public string DefaultFileEnding { get; set; } = string.Empty;
 
         /// <summary>

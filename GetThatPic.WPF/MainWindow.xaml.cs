@@ -88,11 +88,9 @@ namespace GetThatPic.WPF
             PreviewImageName.Text = newPreviewItem.MetaData.Name;
             PreviewImageUrl.Text = newPreviewItem.MetaData.ImageUrl;
             PreviewImageDownloadPath.Text = newPreviewItem.MetaData.TargetFileSystemLocation;
-            // FIXME: Determine correct colour format/palette and other values from Image.
 
             if (newPreviewItem.MetaData.TargetFileSystemLocation?.EndsWith(".gif") ?? false)
             {
-                // FIXME: find out how to bind Image to Image.
                 BitmapSource source = newPreviewItem.Bitmap;
                 ImageBehavior.SetAnimatedSource(PreviewImage, source);
             }
@@ -124,7 +122,7 @@ namespace GetThatPic.WPF
             string droppedUrl = (string)e.Data.GetData(System.Windows.DataFormats.Text);
             LogTextBox.Text += "\n" + droppedUrl;
             IList<ImageEntry> images = (await state.LinkParser.GetImages(droppedUrl))
-                .Select(image => new ImageEntry(){MetaData = image}).ToList();
+                .Select(image => new ImageEntry() { MetaData = image }).ToList();
 
             foreach (ImageEntry image in images)
             {

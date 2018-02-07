@@ -14,6 +14,7 @@ using GetThatPic.Data.IO;
 using GetThatPic.Parsing.Models;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace GetThatPic.Parsing
 {
@@ -37,12 +38,12 @@ namespace GetThatPic.Parsing
         /// Initializes a new instance of the <see cref="Link" /> class.
         /// </summary>
         /// <param name="autoInitialize">if set to <c>true</c> the config gets automatically initialized.</param>
-        /// <param name="inputFile">The input file.</param>
-        public Link(bool autoInitialize = true, string inputFile = null)
+        /// <param name="loadCustomConfigs">if set to <c>true</c> [load custom configs].</param>
+        public Link(bool autoInitialize = true, bool loadCustomConfigs = true)
         {
             if (autoInitialize)
             {
-                InitializeConfig();
+                InitializeConfig(loadCustomConfigs: loadCustomConfigs);
             }
         }
 
@@ -134,16 +135,17 @@ namespace GetThatPic.Parsing
         /// Initializes the configuration.
         /// </summary>
         /// <param name="clearFirst">if set to <c>true</c> clear the config before initializing.</param>
-        /// <param name="domains">The domains.</param>
-        public void InitializeConfig(bool clearFirst = true)
+        /// <param name="loadCustomConfigs">if set to <c>true</c> [load custom configs].</param>
+        public void InitializeConfig(bool clearFirst = true, bool loadCustomConfigs = true)
         {
             if (clearFirst)
             {
                 Domains.Clear();
             }
-            IList<Domain> domains = LoadDomainsFromJsonFile("Domains");
-            IList<DownloadDirectory> downloadDirectories = LoadDomainDirectoriesFromJsonFile("DownloadDirectories");
 
+            IList<Domain> domains = LoadDomainsFromJsonFile("Domains", loadCustomConfigs);
+            IList<DownloadDirectory> downloadDirectories = LoadDomainDirectoriesFromJsonFile("DownloadDirectories", loadCustomConfigs);
+            
             foreach (Domain domain in domains)
             {
                 DownloadDirectory directoryConfig = downloadDirectories
@@ -154,81 +156,13 @@ namespace GetThatPic.Parsing
                     domain.DownloadDirectory = directory;
                 }
 
-                if (null != directoryConfig?.IsPathRelative) { 
+                if (null != directoryConfig?.IsPathRelative)
+                {
                     domain.IsPathRelative = directoryConfig.IsPathRelative;
                 }
 
                 Domains.Add(domain);
             }
-        }
-
-        /// <summary>
-        /// Loads the domains from json file.
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns>The loaded domains.</returns>
-        public IList<Domain> LoadDomainsFromJsonFile(string fileName = null)
-        {
-            string inputFile = FindJsonFile(fileName);
-
-            List<Domain> domains;
-            using (StreamReader r = new StreamReader(inputFile))
-            {
-                string json = r.ReadToEnd();
-                domains = JsonConvert.DeserializeObject<List<Domain>>(json);
-            }
-
-            return domains;
-        }
-
-        /// <summary>
-        /// Loads the domains from json file.
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns>The loaded domains.</returns>
-        public IList<DownloadDirectory> LoadDomainDirectoriesFromJsonFile(string fileName = null)
-        {
-            string inputFile = FindJsonFile(fileName);
-            string customInputFile = FindJsonFile(fileName);
-
-            List<DownloadDirectory> downloadDirectories;
-            using (StreamReader r = new StreamReader(inputFile))
-            {
-                string json = r.ReadToEnd();
-                downloadDirectories = JsonConvert.DeserializeObject<List<DownloadDirectory>>(json);
-            }
-
-            return downloadDirectories;
-        }
-
-        /// <summary>
-        /// Finds the json file.
-        /// </summary>
-        /// <param name="fileName">Name of the file.</param>
-        /// <returns></returns>
-        private static string FindJsonFile(string fileName)
-        {
-            if (File.Exists(@"..\..\..\..\" + fileName + ".json"))
-            {
-                return @"..\..\..\..\" + fileName + ".json";
-            }
-
-            if (File.Exists(@"..\..\..\" + fileName + ".json"))
-            {
-                return @"..\..\..\" + fileName + ".json";
-            }
-
-            if (File.Exists(fileName + ".json"))
-            {
-                return fileName + ".json";
-            }
-
-            if (File.Exists(fileName))
-            {
-                return fileName;
-            }
-
-            return fileName;
         }
 
         /// <summary>
@@ -259,20 +193,20 @@ namespace GetThatPic.Parsing
                     imageFileNames.Add(fileName);
                 }
             }
-            else if(numImages == 1)
+            else if (numImages == 1)
             {
                 imageFileNames.Add(imageBaseFileName + fileEndings.ElementAt(0));
             }
 
             IList<ImageMetaData> entries = imageUrls.Zip(
-                imageFileNames, (imageUrl, name) => new ImageMetaData()
+                imageFileNames,
+                (imageUrl, name) => new ImageMetaData()
                 {
                     ImageUrl = imageUrl,
                     Name = name,
                     TargetFileSystemLocation = domain.DownloadDirectory + name
                 }).ToList();
             
-
             return entries;
         }
 
@@ -391,6 +325,109 @@ namespace GetThatPic.Parsing
                      && d.Path.IsMatch(path)).ToList();
 
             return matchingDomains.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Parses the configuration json.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="loadCustomConfigs">if set to <c>true</c> [load custom configs].</param>
+        /// <returns>The JSON-string for the config.</returns>
+        private static string ParseConfigJson(string fileName, bool loadCustomConfigs)
+        {
+            string inputFile = FindJsonFile(fileName);
+            string json;
+            using (StreamReader r = new StreamReader(inputFile))
+            {
+                json = r.ReadToEnd();
+            }
+
+            var jsonData = JArray.Parse(json);
+            
+            if (loadCustomConfigs)
+            {
+                string customInputFile = FindJsonFile(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) +
+                                                      @"\GetThatPic\Config\" + fileName);
+                if (!string.IsNullOrWhiteSpace(customInputFile))
+                {
+                    string customJson;
+                    using (StreamReader r = new StreamReader(customInputFile))
+                    {
+                        customJson = r.ReadToEnd();
+                    }
+
+                    var customJsonData = JArray.Parse(customJson);
+                    var mergeSettings = new JsonMergeSettings
+                    {
+                        MergeArrayHandling = MergeArrayHandling.Union
+                    };
+
+                    customJsonData.Merge(jsonData, mergeSettings);
+                    jsonData = customJsonData;
+                }
+            }
+
+            return JsonConvert.SerializeObject(jsonData);
+        }
+
+        /// <summary>
+        /// Finds the json file.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns>The identified file name.</returns>
+        private static string FindJsonFile(string fileName)
+        {
+            if (File.Exists(@"..\..\..\..\" + fileName + ".json"))
+            {
+                return @"..\..\..\..\" + fileName + ".json";
+            }
+
+            if (File.Exists(@"..\..\..\" + fileName + ".json"))
+            {
+                return @"..\..\..\" + fileName + ".json";
+            }
+
+            if (File.Exists(fileName + ".json"))
+            {
+                return fileName + ".json";
+            }
+
+            if (File.Exists(fileName))
+            {
+                return fileName;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Loads the domains from json file.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="loadCustomConfigs">if set to <c>true</c> load custom configs.</param>
+        /// <returns>
+        /// The loaded domains.
+        /// </returns>
+        private IList<Domain> LoadDomainsFromJsonFile(string fileName = null, bool loadCustomConfigs = true)
+        {
+            string json = ParseConfigJson(fileName, loadCustomConfigs);
+            var domains = JsonConvert.DeserializeObject<List<Domain>>(json);
+            return domains;
+        }
+
+        /// <summary>
+        /// Loads the domains from json file.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="loadCustomConfigs">if set to <c>true</c> [load custom configs].</param>
+        /// <returns>
+        /// The loaded domains.
+        /// </returns>
+        private IList<DownloadDirectory> LoadDomainDirectoriesFromJsonFile(string fileName = null, bool loadCustomConfigs = true)
+        {
+            string json = ParseConfigJson(fileName, loadCustomConfigs);
+            var downloadDirectories = JsonConvert.DeserializeObject<List<DownloadDirectory>>(json);
+            return downloadDirectories;
         }
     }
 }
