@@ -3,7 +3,10 @@
 // <author>Marc A. Modrow</author>
 // </copyright>
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 using GetThatPic.Data.IO;
@@ -50,7 +53,7 @@ namespace GetThatPic.WPF.Models
         /// Saves this image to the specified target path.
         /// </summary>
         /// <param name="targetPath">The target path.</param>
-        public void Save(string targetPath = null)
+        public void Save(string targetPath = null, bool askIfEqual = true)
         {
             if (string.IsNullOrWhiteSpace(targetPath))
             {
@@ -58,16 +61,42 @@ namespace GetThatPic.WPF.Models
             }
 
             // Create missing directory.
-            string targetDirectory = Path.GetDirectoryName(targetPath);
+            string targetDirectory = Path.GetDirectoryName(targetPath) ?? String.Empty;
             if (!string.IsNullOrWhiteSpace(targetDirectory) && !Directory.Exists(targetDirectory))
             {
                 // TODO: Log directory creation.
                 Directory.CreateDirectory(targetDirectory);
             }
 
-            if (File.Exists(targetPath))
+
+            string searchPattern = BeforeFileEnding.Replace(Path.GetFileName(targetPath) ?? string.Empty, "$1*$2");
+
+            string[] possibleFallbackNames = Directory.EnumerateFiles(targetDirectory, searchPattern).ToArray();
+            bool sameNameExists = File.Exists(targetPath);
+            if (sameNameExists || possibleFallbackNames.Any())
             {
-                BitmapImage diskImage = new BitmapImage(new Uri(targetPath));
+                string diskPath;
+                if (sameNameExists)
+                {
+                    Logger.Log("1 direct match found.");
+                    diskPath = targetPath;
+                    possibleFallbackNames = new[] {targetPath};
+                }
+                else
+                {
+                    if (possibleFallbackNames.Length > 1)
+                    {
+                        Logger.Log(possibleFallbackNames.Length + " indirect matches found.");
+                    }
+                    else
+                    {
+                        Logger.Log("1 indirect match found.");
+                    }
+
+                    diskPath = possibleFallbackNames.First() ?? string.Empty;
+                }
+
+                BitmapImage diskImage = new BitmapImage(new Uri(diskPath));
 
                 bool equal = Bitmap.IsEqual(diskImage);
                 if (equal && !diskImage.IsLossless())
@@ -76,12 +105,20 @@ namespace GetThatPic.WPF.Models
                     equal = similarity > 0.9;
                 }
 
-                if (!equal)
+                Logger.Log("Existing image " + targetPath + "is " + (equal ? string.Empty : "not ") +
+                           "equal to the new one.");
+
+                if (!equal || !askIfEqual)
                 {
                     targetPath = BeforeFileEnding.Replace(targetPath, "$1_" + Sanitizing.CurrentUnixTime + "$2");
                 }
-
-                Logger.Log("Existing image is " + (equal ? string.Empty : "not ") + "equal to the new one.");
+                
+                if (askIfEqual)
+                {
+                    ImageComparisonWindow compare = new ImageComparisonWindow(this, possibleFallbackNames, targetPath);
+                    compare.Show();
+                    return;
+                }
             }
 
             SaveImageToDisk(targetPath);

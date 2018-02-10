@@ -1,10 +1,10 @@
-﻿<Window x:Class="GetThatPic.WPF.MainWindow"
+﻿<Window x:Name="GetThatPic" x:Class="GetThatPic.WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="GetThatPic" Height="584.853" Width="525" VerticalAlignment="Center" HorizontalAlignment="Center" Icon="Assets/download-to-storage-drive128.png">
+        Title="GetThatPic" Height="584.853" Width="525" VerticalAlignment="Center" HorizontalAlignment="Center" Icon="Assets/download-to-storage-drive128_backplate.png">
     <Grid>
         <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TabItem Header="Load">
@@ -18,17 +18,19 @@
             </TabItem>
             <TabItem Header="Preview">
                 <Grid Background="#FFE5E5E5">
-                    <Button Name="PreviousPreviewImageButton" Content="&lt;" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="18" Click="PreviewPreviousImage"/>
-                    <Button Name="DownloadImageButton" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="18" Click="DownloadImageButton_Click">
-                        <Image x:Name="DownloadButtonImage" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Assets/download-to-storage-drive128.png"/>
-                    </Button>
-                        <Button Name="NextPreviewImageButton" Content="&gt;" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="18" Click="PreviewNextImage"/>
-                    <TextBlock Name="PreviewImageName" Text="File Name" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,10,40,0" VerticalAlignment="Top"/>
-                    <TextBlock Name="PreviewImageUrl" Text="File Url" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,26,40,0" VerticalAlignment="Top"/>
-                    <TextBlock Name="PreviewImageDownloadPath" Text="File Download Path" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,42,40,0" VerticalAlignment="Top"/>
-                    <StackPanel AllowDrop="True" Drop="DropUrl" PreviewDragOver="EnableDropping" Margin="10,63,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <Image x:Name="PreviewImage" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Assets/download-to-storage-drive512.png" Height="380"/>
-                    </StackPanel>
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,0,0,0">
+                        <Button Name="PreviousPreviewImageButton" Content="&lt;" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="18" Click="PreviewPreviousImage"/>
+                        <Button Name="DownloadImageButton" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="18" Click="DownloadImageButton_Click">
+                            <Image x:Name="DownloadButtonImage" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Assets/download-to-storage-drive128.png"/>
+                        </Button>
+                            <Button Name="NextPreviewImageButton" Content="&gt;" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="18" Click="PreviewNextImage"/>
+                        <TextBlock Name="PreviewImageName" Text="File Name" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,10,40,0" VerticalAlignment="Top"/>
+                        <TextBlock Name="PreviewImageUrl" Text="File Url" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,26,40,0" VerticalAlignment="Top"/>
+                        <TextBlock Name="PreviewImageDownloadPath" Text="File Download Path" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,42,40,0" VerticalAlignment="Top"/>
+                    </Grid>
+                    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10,70,10,10" AllowDrop="True" Drop="DropUrl" PreviewDragOver="EnableDropping">
+                        <Image x:Name="PreviewImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Assets/download-to-storage-drive512.png" />
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Legal">
