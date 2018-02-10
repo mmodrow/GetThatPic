@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="ImageComparisonWindow.xaml.cs" company="Marc A. Modrow">
+// Copyright (c) 2018 All Rights Reserved
+// <author>Marc A. Modrow</author>
+// </copyright>
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -10,11 +14,26 @@ namespace GetThatPic.WPF
     /// <summary>
     /// Interaction logic for ImageComparisonWindow.xaml
     /// </summary>
+    /// <seealso cref="System.Windows.Window" />
+    /// <seealso cref="System.Windows.Markup.IComponentConnector" />
     public partial class ImageComparisonWindow : Window
     {
+        /// <summary>
+        /// The new image.
+        /// </summary>
         private readonly ImageEntry newImage;
+        
+        /// <summary>
+        /// The target path.
+        /// </summary>
         private readonly string targetPath;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImageComparisonWindow"/> class.
+        /// </summary>
+        /// <param name="newImage">The new image.</param>
+        /// <param name="diskImagePathes">The disk image pathes.</param>
+        /// <param name="targetPath">The target path.</param>
         public ImageComparisonWindow(ImageEntry newImage, string[] diskImagePathes, string targetPath)
         {
             InitializeComponent();

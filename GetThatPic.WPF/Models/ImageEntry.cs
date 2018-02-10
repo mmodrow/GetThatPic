@@ -53,6 +53,7 @@ namespace GetThatPic.WPF.Models
         /// Saves this image to the specified target path.
         /// </summary>
         /// <param name="targetPath">The target path.</param>
+        /// <param name="askIfEqual">if set to <c>true</c> prompting for approval before downloading possibly identical image.</param>
         public void Save(string targetPath = null, bool askIfEqual = true)
         {
             if (string.IsNullOrWhiteSpace(targetPath))
@@ -61,14 +62,13 @@ namespace GetThatPic.WPF.Models
             }
 
             // Create missing directory.
-            string targetDirectory = Path.GetDirectoryName(targetPath) ?? String.Empty;
+            string targetDirectory = Path.GetDirectoryName(targetPath) ?? string.Empty;
             if (!string.IsNullOrWhiteSpace(targetDirectory) && !Directory.Exists(targetDirectory))
             {
                 // TODO: Log directory creation.
                 Directory.CreateDirectory(targetDirectory);
             }
-
-
+            
             string searchPattern = BeforeFileEnding.Replace(Path.GetFileName(targetPath) ?? string.Empty, "$1*$2");
 
             string[] possibleFallbackNames = Directory.EnumerateFiles(targetDirectory, searchPattern).ToArray();
@@ -80,7 +80,7 @@ namespace GetThatPic.WPF.Models
                 {
                     Logger.Log("1 direct match found.");
                     diskPath = targetPath;
-                    possibleFallbackNames = new[] {targetPath};
+                    possibleFallbackNames = new[] { targetPath };
                 }
                 else
                 {
