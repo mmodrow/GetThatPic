@@ -1,19 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿// <copyright file="Logger.cs" company="Marc A. Modrow">
+// Copyright (c) 2018 All Rights Reserved
+// <author>Marc A. Modrow</author>
+// </copyright>
 namespace GetThatPic.Data.IO
 {
+    /// <summary>
+    /// Global logger.
+    /// </summary>
     public static class Logger
     {
-        public static void Log(string input)
+        /// <summary>
+        /// Logs the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public static void Log(string message)
         {
-            System.Console.WriteLine(input);
+            System.Console.WriteLine(message);
         }
 
-        public static void Error(string input)
+        /// <summary>
+        /// Logs the specified message as error.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public static void Error(string message)
         {
-            System.Console.WriteLine("Error: " + input);
+            System.Console.WriteLine("Error: " + message);
         }
     }
 }

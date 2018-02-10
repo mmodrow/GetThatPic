@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="BitmapImageExtensions.cs" company="Marc A. Modrow">
+// Copyright (c) 2018 All Rights Reserved
+// <author>Marc A. Modrow</author>
+// </copyright>
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Imaging;
@@ -7,8 +11,19 @@ using GetThatPic.Parsing;
 
 namespace GetThatPic.WPF.Extensions
 {
+    /// <summary>
+    /// New functionality for the BitmapImage class.
+    /// </summary>
     public static class BitmapImageExtensions
     {
+        /// <summary>
+        /// Determines whether the image1 is equal to image1.
+        /// </summary>
+        /// <param name="image1">The image1.</param>
+        /// <param name="image2">The image2.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified image2 is equal; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsEqual(this BitmapImage image1, BitmapImage image2)
         {
             if (image1 == null || image2 == null)
@@ -34,6 +49,11 @@ namespace GetThatPic.WPF.Extensions
             return false;
         }
 
+        /// <summary>
+        /// Transforms the specfied image's content to a byte array.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <returns>The pixel bytes.</returns>
         public static byte[] ToBytes(this BitmapImage image)
         {
             byte[] data = { };
@@ -48,16 +68,25 @@ namespace GetThatPic.WPF.Extensions
                         encoder.Save(ms);
                         data = ms.ToArray();
                     }
+
                     return data;
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Bitmap could not be read");
+                    Logger.Error("Bitmap could not be read. >> " + ex.Message);
                 }
             }
+
             return data;
         }
 
+        /// <summary>
+        /// Similarities the specified and image2 as a fraction of 1.
+        /// </summary>
+        /// <param name="image1">The image1.</param>
+        /// <param name="image2">The image2.</param>
+        /// <param name="threshold">The threshold.</param>
+        /// <returns>Similarity as a fraction of 1.</returns>
         public static float Similarity(this BitmapImage image1, BitmapImage image2, double threshold = 0)
         {
             byte[] image1Bytes = image1.ToBytes();
@@ -75,10 +104,19 @@ namespace GetThatPic.WPF.Extensions
                 }
             }
 
-            float totalDifference =  differentBytes == 0 ? 1 : 1 - (float)differentBytes / (float)smallerSize;
+            float totalDifference =  differentBytes == 0 ? 1 : 1 - ((float)differentBytes / (float)smallerSize);
             return totalDifference * smallerSize / biggerSize;
         }
 
+        /// <summary>
+        /// Determines whether this instance is lossless.
+        /// The dicision is based on the UriSource file ending.Y
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified image is lossless; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="NotImplementedException">Unknown image type</exception>
         public static bool IsLossless(this BitmapImage image)
         {
             string extension = Link.FileEndingFromUrl(image.UriSource.ToString(), false).ToLowerInvariant();
@@ -86,15 +124,16 @@ namespace GetThatPic.WPF.Extensions
             {
                 case "jpg":
                     return false;
+
                 case "png":
                 case "gif":
                 case "bmp":
                 case "tif":
                 case "tiff":
                     return true;
+
                 default:
                     throw new NotImplementedException("Unknown image type");
-
             }
         }
     }

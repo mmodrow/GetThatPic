@@ -34,6 +34,9 @@ namespace GetThatPic.Parsing
         /// </summary>
         private static readonly Regex HtmlCommentPattern = new Regex("<!--(.|\n)*?--!?>", RegexOptions.Multiline);
 
+        /// <summary>
+        /// Pattern to drop a leading period.
+        /// </summary>
         private static readonly Regex DropLeadingPeriod = new Regex(@"^\.(.*)");
 
         /// <summary>

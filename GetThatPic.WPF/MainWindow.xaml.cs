@@ -208,7 +208,12 @@ namespace GetThatPic.WPF
             e.Handled = true;
         }
 
-        private void DownloadImage(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Handles the Click event of the DownloadImageButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
+        private void DownloadImageButton_Click(object sender, RoutedEventArgs e)
         {
             state.History?.Current?.Save();
         }

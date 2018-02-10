@@ -7,9 +7,9 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 using GetThatPic.Data.IO;
-using GetThatPic.WPF.Extensions;
 using GetThatPic.Parsing;
 using GetThatPic.Parsing.Models;
+using GetThatPic.WPF.Extensions;
 
 namespace GetThatPic.WPF.Models
 {
@@ -18,6 +18,11 @@ namespace GetThatPic.WPF.Models
     /// </summary>
     public class ImageEntry
     {
+        /// <summary>
+        /// Pattern to insert text before a file ending.
+        /// </summary>
+        private static readonly Regex BeforeFileEnding = new Regex(@"^(.+)(\..+)$");
+
         /// <summary>
         /// The bitmap.
         /// </summary>
@@ -41,6 +46,10 @@ namespace GetThatPic.WPF.Models
         /// </value>
         public BitmapImage Bitmap => bitmap ?? (bitmap = new BitmapImage(new Uri(MetaData.ImageUrl)));
 
+        /// <summary>
+        /// Saves this image to the specified target path.
+        /// </summary>
+        /// <param name="targetPath">The target path.</param>
         public void Save(string targetPath = null)
         {
             if (string.IsNullOrWhiteSpace(targetPath))
@@ -69,7 +78,7 @@ namespace GetThatPic.WPF.Models
 
                 if (!equal)
                 {
-                    targetPath = new Regex(@"^.+\..+").Replace(targetPath, "$1" + Sanitizing.CurrentUnixTime + "$2");
+                    targetPath = BeforeFileEnding.Replace(targetPath, "$1_" + Sanitizing.CurrentUnixTime + "$2");
                 }
 
                 Logger.Log("Existing image is " + (equal ? string.Empty : "not ") + "equal to the new one.");
@@ -78,6 +87,11 @@ namespace GetThatPic.WPF.Models
             SaveImageToDisk(targetPath);
         }
 
+        /// <summary>
+        /// Saves the image to disk.
+        /// </summary>
+        /// <param name="targetPath">The target path.</param>
+        /// <exception cref="NotImplementedException">Unknown image type</exception>
         private void SaveImageToDisk(string targetPath)
         {
             string ending = Link.FileEndingFromUrl(targetPath, false).Trim().ToLowerInvariant();
