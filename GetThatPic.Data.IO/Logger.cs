@@ -13,9 +13,16 @@ namespace GetThatPic.Data.IO
         /// Logs the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
-        public static void Log(string message)
+        public static void Log(string message, bool newLine = true)
         {
-            System.Console.WriteLine(message);
+            if (newLine) { 
+                System.Console.WriteLine(message);
+            }
+            else
+            {
+                System.Console.Write(message);
+            }
+
         }
 
         /// <summary>

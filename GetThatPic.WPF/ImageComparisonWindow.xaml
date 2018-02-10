@@ -11,7 +11,7 @@
             <TextBlock Name="NewImageLabel" Text="New Image" HorizontalAlignment="Left" TextAlignment="Center" Margin="40,10,40,0" VerticalAlignment="Top"/>
             <TextBlock Name="OldImageLabel" Text="Old Image" HorizontalAlignment="Right" TextAlignment="Center" Margin="40,10,40,0" VerticalAlignment="Top"/>
         </Grid>
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,10,0">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,40,10,40">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*" />

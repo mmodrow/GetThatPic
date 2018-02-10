@@ -7,7 +7,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using GetThatPic.Data.IO;
 using GetThatPic.Parsing;
@@ -47,7 +49,46 @@ namespace GetThatPic.WPF.Models
         /// <value>
         /// The bitmap.
         /// </value>
-        public BitmapImage Bitmap => bitmap ?? (bitmap = new BitmapImage(new Uri(MetaData.ImageUrl)));
+        public BitmapImage Bitmap {
+            get
+            {
+                if (null == bitmap)
+                {
+                    bitmap = new BitmapImage();
+
+                    bitmap.BeginInit();
+                    bitmap.DownloadCompleted += ImagEntry_ImageDownloadComplete;
+                    bitmap.DownloadFailed += ImagEntry_ImageDownloadFailed;
+                    bitmap.DownloadProgress += ImagEntry_ImageDownloadProgress;
+                    bitmap.UriSource = new Uri(MetaData.ImageUrl);
+                    bitmap.EndInit();
+
+                    Logger.Log("Download-Progress: ", false);
+                }
+
+                return bitmap;
+            }
+        }
+
+        private void ImagEntry_ImageDownloadProgress(object sender, DownloadProgressEventArgs e)
+        {
+            Logger.Log(".", false);
+            if (e.ToString() == "100")
+            {
+                Logger.Log(@" - Finshed!\n");
+            }
+        }
+
+        private void ImagEntry_ImageDownloadFailed(object sender, ExceptionEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ImagEntry_ImageDownloadComplete(object sender, EventArgs e)
+        {
+            Save();
+        }
+
 
         /// <summary>
         /// Saves this image to the specified target path.
