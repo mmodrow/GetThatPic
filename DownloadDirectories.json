@@ -6,7 +6,7 @@
   },
   {
     "Name": "thecodinglove.com",
-    "Directory": "H:\\Bild\\einfach witzig\\animated_gif",
-    "IsPathRelative": false
+    "Directory": "animated_gif",
+    "IsPathRelative": true
   }
  ]

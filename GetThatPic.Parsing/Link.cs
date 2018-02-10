@@ -34,6 +34,8 @@ namespace GetThatPic.Parsing
         /// </summary>
         private static readonly Regex HtmlCommentPattern = new Regex("<!--(.|\n)*?--!?>", RegexOptions.Multiline);
 
+        private static readonly Regex DropLeadingPeriod = new Regex(@"^\.(.*)");
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Link" /> class.
         /// </summary>
@@ -118,17 +120,29 @@ namespace GetThatPic.Parsing
         /// Get the file ending from an URL.
         /// </summary>
         /// <param name="url">The URL.</param>
-        /// <returns>The file ending.</returns>
-        public static string FileEndingFromUrl(string url)
+        /// <param name="includePeriod">if set to <c>true</c> the period should be included.</param>
+        /// <returns>
+        /// The file ending.
+        /// </returns>
+        public static string FileEndingFromUrl(string url, bool includePeriod = true)
         {
+            string ending = Path.GetExtension(url) ?? string.Empty;
+            if (!includePeriod)
+            {
+                return DropLeadingPeriod.Replace(ending, "$1");
+            }
+
+            return ending;
+            /*
             if (string.IsNullOrWhiteSpace(url))
             {
                 return string.Empty;
             }
-
+            
             Regex fileEnding = new Regex(@"^.*?(\.[a-zA-Z0-9]+)$");
             string output = fileEnding.Replace(url, "$1");
             return url != output ? output : string.Empty;
+            */
         }
 
         /// <summary>
@@ -176,7 +190,7 @@ namespace GetThatPic.Parsing
             HtmlDocument doc = await GetDocument(url);
 
             IEnumerable<string> imageUrls = (await GetImageUrls(url, doc, domain)).ToList();
-            IEnumerable<string> fileEndings = imageUrls.Select(FileEndingFromUrl)
+            IEnumerable<string> fileEndings = imageUrls.Select(url1 => FileEndingFromUrl(url1))
                 .Select(ending => !string.IsNullOrWhiteSpace(ending) ? ending : domain.DefaultFileEnding).ToList();
 
             string imageBaseFileName = await GetImageFileName(url, doc, domain);

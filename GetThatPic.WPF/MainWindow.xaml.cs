@@ -207,5 +207,10 @@ namespace GetThatPic.WPF
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
         }
+
+        private void DownloadImage(object sender, RoutedEventArgs e)
+        {
+            state.History?.Current?.Save();
+        }
     }
 }

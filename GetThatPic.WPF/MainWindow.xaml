@@ -19,7 +19,10 @@
             <TabItem Header="Preview">
                 <Grid Background="#FFE5E5E5">
                     <Button Name="PreviousPreviewImageButton" Content="&lt;" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="18" Click="PreviewPreviousImage"/>
-                    <Button Name="NextPreviewImageButton" Content="&gt;" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="18" Click="PreviewNextImage"/>
+                    <Button Name="DownloadImageButton" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="18" Click="DownloadImage">
+                        <Image x:Name="DownloadButtonImage" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Assets/download-to-storage-drive128.png"/>
+                    </Button>
+                        <Button Name="NextPreviewImageButton" Content="&gt;" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="18" Click="PreviewNextImage"/>
                     <TextBlock Name="PreviewImageName" Text="File Name" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,10,40,0" VerticalAlignment="Top"/>
                     <TextBlock Name="PreviewImageUrl" Text="File Url" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,26,40,0" VerticalAlignment="Top"/>
                     <TextBlock Name="PreviewImageDownloadPath" Text="File Download Path" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,42,40,0" VerticalAlignment="Top"/>
