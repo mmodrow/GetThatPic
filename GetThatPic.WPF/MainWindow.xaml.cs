@@ -51,6 +51,17 @@ namespace GetThatPic.WPF
         }
 
         /// <summary>
+        /// Raises the <see cref="E:System.Windows.Window.Closed" /> event.
+        /// </summary>
+        /// <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+        protected override void OnClosed(System.EventArgs e)
+        {
+            base.OnClosed(e);
+
+            Application.Current.Shutdown();
+        }
+
+        /// <summary>
         /// Previews the previous image.
         /// </summary>
         /// <param name="sender">The sender.</param>

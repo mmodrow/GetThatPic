@@ -6,13 +6,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="GetThatPic" 
-        Height="584.853" 
+        Height="626.853" 
         Width="525" 
         VerticalAlignment="Center"
         HorizontalAlignment="Center" 
         Icon="Assets/download-to-storage-drive128_backplate.png">
     <Grid>
-        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,46">
             <TabItem Header="Load">
                 <Grid Background="#FFE5E5E5">
                     <Button Name="OpenLastFileButton" Content="Open Last File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="88" Click="OpenLastFileButton_Click"/>
@@ -29,7 +29,7 @@
                         <Button Name="DownloadImageButton" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Width="18" Click="DownloadImageButton_Click">
                             <Image x:Name="DownloadButtonImage" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="Assets/download-to-storage-drive128.png"/>
                         </Button>
-                            <Button Name="NextPreviewImageButton" Content="&gt;" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="18" Click="PreviewNextImage"/>
+                        <Button Name="NextPreviewImageButton" Content="&gt;" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="18" Click="PreviewNextImage"/>
                         <TextBlock Name="PreviewImageName" Text="File Name" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,10,40,0" VerticalAlignment="Top"/>
                         <TextBlock Name="PreviewImageUrl" Text="File Url" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,26,40,0" VerticalAlignment="Top"/>
                         <TextBlock Name="PreviewImageDownloadPath" Text="File Download Path" HorizontalAlignment="Stretch" TextAlignment="Center" Margin="41,42,40,0" VerticalAlignment="Top"/>
@@ -52,6 +52,10 @@
                 </Grid>
             </TabItem>
         </TabControl>
-
+        <Grid VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="46" Margin="0,0,0,0">
+            <Label Content="Downloads in Queue:" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom"/>
+            <Label Name="QueueSizeLabel" Content="0" HorizontalAlignment="Left" Margin="133,0,0,10" VerticalAlignment="Bottom" Width="24"/>
+            <ProgressBar Name="DownloadProgress" HorizontalAlignment="Stretch" Height="26" Margin="157,0,13,10" VerticalAlignment="Bottom"/>
+        </Grid>
     </Grid>
 </Window>
