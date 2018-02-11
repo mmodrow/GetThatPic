@@ -122,13 +122,32 @@ namespace GetThatPic.WPF
             string droppedUrl = (string)e.Data.GetData(System.Windows.DataFormats.Text);
             LogTextBox.Text += "\n" + droppedUrl;
             IList<ImageEntry> images = (await state.LinkParser.GetImages(droppedUrl))
-                .Select(image => new ImageEntry() { MetaData = image }).ToList();
-
+                .Select(image => new ImageEntry()
+                {
+                    MetaData = image,
+                    Window = this,
+                    State = state
+                }).ToList();
+            
             foreach (ImageEntry image in images)
             {
-                UpdatePreview(image);
-
+                state.DownloadQueue.Enqueue(image);
                 state.History.Push(image);
+            }
+
+            if (!state.IsDownloading)
+            {
+                ProcessDownloadQueue();
+            }
+        }
+
+        /// <summary>
+        /// Processes the download queue.
+        /// </summary>
+        public void ProcessDownloadQueue()
+        {
+            if (state.DownloadQueue.Any() && !state.IsDownloading) { 
+                UpdatePreview(state.DownloadQueue.Dequeue());
             }
         }
 

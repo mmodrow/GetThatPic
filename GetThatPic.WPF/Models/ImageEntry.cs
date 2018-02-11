@@ -3,11 +3,8 @@
 // <author>Marc A. Modrow</author>
 // </copyright>
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -41,6 +38,12 @@ namespace GetThatPic.WPF.Models
         /// </value>
         public ImageMetaData MetaData { get; set; }
 
+        public MainWindow Window { get; set; }
+
+        public MainWindowState State { get; set; }
+
+        private int previousProgressStep = 0;
+
         /// <summary>
         /// Gets the bitmap.
         /// TODO: Status update in Frontend.
@@ -54,8 +57,10 @@ namespace GetThatPic.WPF.Models
             {
                 if (null == bitmap)
                 {
+                    Logger.Log("Download-Progress: ", false);
                     bitmap = new BitmapImage();
-
+                    State.IsDownloading = true;
+                    previousProgressStep = 0;
                     bitmap.BeginInit();
                     bitmap.DownloadCompleted += ImagEntry_ImageDownloadComplete;
                     bitmap.DownloadFailed += ImagEntry_ImageDownloadFailed;
@@ -63,7 +68,6 @@ namespace GetThatPic.WPF.Models
                     bitmap.UriSource = new Uri(MetaData.ImageUrl);
                     bitmap.EndInit();
 
-                    Logger.Log("Download-Progress: ", false);
                 }
 
                 return bitmap;
@@ -72,20 +76,31 @@ namespace GetThatPic.WPF.Models
 
         private void ImagEntry_ImageDownloadProgress(object sender, DownloadProgressEventArgs e)
         {
-            Logger.Log(".", false);
-            if (e.ToString() == "100")
-            {
-                Logger.Log(@" - Finshed!\n");
+            State.IsDownloading = true;
+            if(previousProgressStep != 100 && previousProgressStep != 0) { 
+                Logger.Log(".", false);
+                if (e.Progress >= 100)
+                {
+                    Logger.Log(@" - Finshed "+MetaData.Name+"!\n");
+                }
             }
+            previousProgressStep = e.Progress;
         }
 
         private void ImagEntry_ImageDownloadFailed(object sender, ExceptionEventArgs e)
         {
+            State.IsDownloading = false;
+            previousProgressStep = 0;
+            Window.ProcessDownloadQueue();
             throw new NotImplementedException();
         }
 
         private void ImagEntry_ImageDownloadComplete(object sender, EventArgs e)
         {
+            State.IsDownloading = false;
+            previousProgressStep = 0;
+
+            Window.ProcessDownloadQueue();
             Save();
         }
 
@@ -146,7 +161,7 @@ namespace GetThatPic.WPF.Models
                     equal = similarity > 0.9;
                 }
 
-                Logger.Log("Existing image " + targetPath + "is " + (equal ? string.Empty : "not ") +
+                Logger.Log("Existing image " + targetPath + " is " + (equal ? string.Empty : "not ") +
                            "equal to the new one.");
 
                 if (!equal || !askIfEqual)

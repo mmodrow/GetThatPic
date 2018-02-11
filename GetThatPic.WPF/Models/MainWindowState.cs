@@ -3,6 +3,7 @@
 // <author>Marc A. Modrow</author>
 // </copyright>
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 using GetThatPic.Data.Structure;
@@ -25,6 +26,14 @@ namespace GetThatPic.WPF.Models
         public RingBuffer<ImageEntry> History { get; } = new RingBuffer<ImageEntry>(50);
 
         /// <summary>
+        /// Gets the download queue.
+        /// </summary>
+        /// <value>
+        /// The download queue.
+        /// </value>
+        public Queue<ImageEntry> DownloadQueue { get; } = new Queue<ImageEntry>();
+
+        /// <summary>
         /// Gets the link parser.
         /// </summary>
         /// <value>
@@ -39,5 +48,13 @@ namespace GetThatPic.WPF.Models
         /// The preview item.
         /// </value>
         public ImageEntry PreviewItem { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is downloading currently.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is downloading; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsDownloading { get; set; }
     }
 }
