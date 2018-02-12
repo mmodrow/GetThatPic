@@ -20,6 +20,11 @@ namespace GetThatPic.Data.IO
         public static event Action<string> LogToGui;
 
         /// <summary>
+        /// Occurs when signalling an error to the GUI.
+        /// </summary>
+        public static event Action SignalErrorToGui;
+
+        /// <summary>
         /// Logs the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
@@ -44,7 +49,8 @@ namespace GetThatPic.Data.IO
         /// <param name="message">The message.</param>
         public static void Error(string message)
         {
-            System.Console.WriteLine("Error: " + message);
+            Console.WriteLine("Error: " + message);
+            SignalError();
         }
 
         /// <summary>
@@ -54,6 +60,14 @@ namespace GetThatPic.Data.IO
         private static void UpdateGuiLog(string message)
         {
             LogToGui?.Invoke(message);
+        }
+
+        /// <summary>
+        /// Updates the GUI log.
+        /// </summary>
+        private static void SignalError()
+        {
+            SignalErrorToGui?.Invoke();
         }
     }
 }

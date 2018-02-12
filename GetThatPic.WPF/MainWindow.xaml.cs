@@ -9,12 +9,14 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using GetThatPic.Data.IO;
 using GetThatPic.WPF.Models;
 using WpfAnimatedGif;
 using Clipboard = System.Windows.Clipboard;
+using Color = System.Windows.Media.Color;
 using DragEventArgs = System.Windows.DragEventArgs;
 
 namespace GetThatPic.WPF
@@ -44,6 +46,7 @@ namespace GetThatPic.WPF
             LogTextBox.Text = logCallToAction;
 
             Logger.LogToGui += message => LogTextBox.Text += message;
+            Logger.SignalErrorToGui += () => ErrorFlash();
 
             // TODO: Click image to open it in the file system.
             // TODO: Download.
@@ -76,6 +79,30 @@ namespace GetThatPic.WPF
             base.OnClosed(e);
 
             Application.Current.Shutdown();
+        }
+
+        private void ErrorFlash(bool toRed = true, int cycles = 3)
+        {
+            if (cycles < 0)
+            {
+                return;
+            }
+
+            Color color = toRed ? Color.FromRgb(255,0,0) : Color.FromRgb(229, 229, 229);
+
+            LoadGrid.Background = new SolidColorBrush(color);
+            PreviewGrid.Background = new SolidColorBrush(color);
+            LegalGrid.Background = new SolidColorBrush(color);
+
+            System.Threading.Thread.Sleep(125);
+            if (toRed)
+            {
+                ErrorFlash(false, cycles);
+            }
+            else
+            {
+                ErrorFlash(true, cycles - 1);
+            }
         }
 
         /// <summary>
@@ -156,6 +183,10 @@ namespace GetThatPic.WPF
                 {
                     state.DroppedUrls.Add(url);
                     await ParseUrl(url);
+                }
+                else
+                {
+                    Logger.Error("Got that one covered.");
                 }
             }
 
