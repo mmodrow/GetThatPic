@@ -61,7 +61,6 @@ namespace GetThatPic.WPF.Models
 
         /// <summary>
         /// Gets the bitmap.
-        /// TODO: Status update in Frontend.
         /// See: https://stackoverflow.com/questions/4161359/save-bitmapimage-to-file
         /// </summary>
         /// <value>

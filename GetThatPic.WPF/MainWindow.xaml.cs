@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -46,7 +47,13 @@ namespace GetThatPic.WPF
             LogTextBox.Text = logCallToAction;
 
             Logger.LogToGui += message => LogTextBox.Text += message;
-            Logger.SignalErrorToGui += () => ErrorFlash();
+            Logger.SignalErrorToGui += () =>
+            {
+                ////void Work() => ErrorFlash();
+                ////Thread thread = new Thread(Work);
+                ////thread.Start();
+                ErrorFlash();
+            };
 
             // TODO: Click image to open it in the file system.
             // TODO: Download.
@@ -81,6 +88,11 @@ namespace GetThatPic.WPF
             Application.Current.Shutdown();
         }
 
+        /// <summary>
+        /// Lets the GUI flash to indicate errors.
+        /// </summary>
+        /// <param name="toRed">if set to <c>true</c> [to red].</param>
+        /// <param name="cycles">The cycles.</param>
         private void ErrorFlash(bool toRed = true, int cycles = 3)
         {
             if (cycles < 0)
@@ -88,13 +100,16 @@ namespace GetThatPic.WPF
                 return;
             }
 
-            Color color = toRed ? Color.FromRgb(255,0,0) : Color.FromRgb(229, 229, 229);
+            SolidColorBrush fromgGreyColor = toRed ? new SolidColorBrush(Color.FromRgb(255,0,0)) : new SolidColorBrush(Color.FromRgb(229, 229, 229));
+            SolidColorBrush fromgWhiteColor = toRed ? new SolidColorBrush(Color.FromRgb(255,0,0)) : new SolidColorBrush(Color.FromRgb(255, 255, 255));
 
-            LoadGrid.Background = new SolidColorBrush(color);
-            PreviewGrid.Background = new SolidColorBrush(color);
-            LegalGrid.Background = new SolidColorBrush(color);
+            LoadGrid.Background = fromgGreyColor;
+            PreviewGrid.Background = fromgGreyColor;
+            LegalGrid.Background = fromgGreyColor;
 
-            System.Threading.Thread.Sleep(125);
+            Background = fromgWhiteColor;
+            
+            System.Threading.Thread.Sleep(250);
             if (toRed)
             {
                 ErrorFlash(false, cycles);

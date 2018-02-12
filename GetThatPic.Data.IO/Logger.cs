@@ -49,7 +49,7 @@ namespace GetThatPic.Data.IO
         /// <param name="message">The message.</param>
         public static void Error(string message)
         {
-            Console.WriteLine("Error: " + message);
+            Log("Error: " + message);
             SignalError();
         }
 

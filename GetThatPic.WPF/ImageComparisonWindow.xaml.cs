@@ -43,6 +43,7 @@ namespace GetThatPic.WPF
                 diskImagePathes.Select(imagePath => new BitmapImage(new Uri(imagePath)));
             OldImage.Source = diskImages.FirstOrDefault();
             NewImage.Source = newImage.Bitmap;
+            Focus();
         }
 
         /// <summary>
