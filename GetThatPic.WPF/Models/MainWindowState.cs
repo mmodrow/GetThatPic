@@ -2,13 +2,10 @@
 // Copyright (c) 2018 All Rights Reserved
 // <author>Marc A. Modrow</author>
 // </copyright>
-using System;
+
 using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Media.Imaging;
 using GetThatPic.Data.Structure;
 using GetThatPic.Parsing;
-using GetThatPic.Parsing.Models;
 
 namespace GetThatPic.WPF.Models
 {
@@ -32,6 +29,14 @@ namespace GetThatPic.WPF.Models
         /// The download queue.
         /// </value>
         public Queue<ImageEntry> DownloadQueue { get; } = new Queue<ImageEntry>();
+
+        /// <summary>
+        /// Gets the dropped urls.
+        /// </summary>
+        /// <value>
+        /// The dropped urls.
+        /// </value>
+        public IList<string> DroppedUrls { get; } = new List<string>();
 
         /// <summary>
         /// Gets the link parser.

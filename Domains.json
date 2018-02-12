@@ -451,7 +451,7 @@
   {
     "Name": "questionablecontent.net",
     "Url": "/http:\/\/(?:www\\.)?questionablecontent\\.net/",
-    "Path": "/^\/view.php\\?comic=([0-9]+)$/",
+    "Path": "/^\/?view\\.php\\?comic=([0-9]+)$/",
     "Images": [
       {
         "Type": "Attribute",

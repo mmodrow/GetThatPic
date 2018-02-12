@@ -55,7 +55,7 @@
         <Grid VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="46" Margin="0,0,0,0">
             <Label Content="Downloads in Queue:" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom"/>
             <Label Name="QueueSizeLabel" Content="0" HorizontalAlignment="Left" Margin="133,0,0,10" VerticalAlignment="Bottom" Width="24"/>
-            <ProgressBar Name="DownloadProgress" HorizontalAlignment="Stretch" Height="26" Margin="157,0,13,10" VerticalAlignment="Bottom"/>
+            <ProgressBar Name="DownloadProgress" HorizontalAlignment="Stretch" Height="26" Margin="157,0,13,10" VerticalAlignment="Bottom" Maximum="100"/>
         </Grid>
     </Grid>
 </Window>

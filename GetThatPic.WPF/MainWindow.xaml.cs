@@ -6,9 +6,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using GetThatPic.Data.IO;
 using GetThatPic.WPF.Models;
 using WpfAnimatedGif;
 using Clipboard = System.Windows.Clipboard;
@@ -40,6 +43,8 @@ namespace GetThatPic.WPF
             state = new MainWindowState();
             LogTextBox.Text = logCallToAction;
 
+            Logger.LogToGui += message => LogTextBox.Text += message;
+
             // TODO: Click image to open it in the file system.
             // TODO: Download.
             // TODO: Async status updates on big downloads.
@@ -48,6 +53,18 @@ namespace GetThatPic.WPF
             // TODO: Command line Interface?
             // TODO: Login functionality for private/mature content.
             // TODO: Transpile old XML configs to JSON.
+        }
+
+        /// <summary>
+        /// Processes the download queue.
+        /// </summary>
+        public void ProcessDownloadQueue()
+        {
+            QueueSizeLabel.Content = state.DownloadQueue.Count;
+            if (state.DownloadQueue.Any() && !state.IsDownloading)
+            {
+                UpdatePreview(state.DownloadQueue.Dequeue());
+            }
         }
 
         /// <summary>
@@ -131,19 +148,15 @@ namespace GetThatPic.WPF
         {
             // TODO: Migrate to using Link-Class here
             string droppedUrl = (string)e.Data.GetData(System.Windows.DataFormats.Text);
-            LogTextBox.Text += "\n" + droppedUrl;
-            IList<ImageEntry> images = (await state.LinkParser.GetImages(droppedUrl))
-                .Select(image => new ImageEntry()
-                {
-                    MetaData = image,
-                    Window = this,
-                    State = state
-                }).ToList();
-            
-            foreach (ImageEntry image in images)
+            Logger.Log(droppedUrl);
+
+            foreach (string url in new Regex(@"\r?\n").Split(droppedUrl ?? string.Empty))
             {
-                state.DownloadQueue.Enqueue(image);
-                state.History.Push(image);
+                if (!state.DroppedUrls.Contains(url))
+                {
+                    state.DroppedUrls.Add(url);
+                    await ParseUrl(url);
+                }
             }
 
             if (!state.IsDownloading)
@@ -153,12 +166,25 @@ namespace GetThatPic.WPF
         }
 
         /// <summary>
-        /// Processes the download queue.
+        /// Parses the URL.
         /// </summary>
-        public void ProcessDownloadQueue()
+        /// <param name="droppedUrl">The dropped URL.</param>
+        /// <returns>An empty Task.</returns>
+        private async Task ParseUrl(string droppedUrl)
         {
-            if (state.DownloadQueue.Any() && !state.IsDownloading) { 
-                UpdatePreview(state.DownloadQueue.Dequeue());
+            IList<ImageEntry> images = (await state.LinkParser.GetImages(droppedUrl))
+                .Select(image => new ImageEntry()
+                {
+                    MetaData = image,
+                    Window = this,
+                    State = state
+                }).ToList();
+
+            foreach (ImageEntry image in images)
+            {
+                state.DownloadQueue.Enqueue(image);
+                state.History.Push(image);
+                QueueSizeLabel.Content = state.DownloadQueue.Count;
             }
         }
 

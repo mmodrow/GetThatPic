@@ -26,6 +26,11 @@ namespace GetThatPic.WPF.Models
         private static readonly Regex BeforeFileEnding = new Regex(@"^(.+)(\..+)$");
 
         /// <summary>
+        /// The previous progress step
+        /// </summary>
+        private int previousProgressStep = 0;
+
+        /// <summary>
         /// The bitmap.
         /// </summary>
         private BitmapImage bitmap;
@@ -38,11 +43,21 @@ namespace GetThatPic.WPF.Models
         /// </value>
         public ImageMetaData MetaData { get; set; }
 
+        /// <summary>
+        /// Gets or sets the window.
+        /// </summary>
+        /// <value>
+        /// The window.
+        /// </value>
         public MainWindow Window { get; set; }
 
+        /// <summary>
+        /// Gets or sets the state.
+        /// </summary>
+        /// <value>
+        /// The state.
+        /// </value>
         public MainWindowState State { get; set; }
-
-        private int previousProgressStep = 0;
 
         /// <summary>
         /// Gets the bitmap.
@@ -52,14 +67,13 @@ namespace GetThatPic.WPF.Models
         /// <value>
         /// The bitmap.
         /// </value>
-        public BitmapImage Bitmap {
+        public BitmapImage Bitmap
+        {
             get
             {
                 if (null == bitmap)
                 {
-                    Logger.Log("Download-Progress: ", false);
                     bitmap = new BitmapImage();
-                    State.IsDownloading = true;
                     previousProgressStep = 0;
                     bitmap.BeginInit();
                     bitmap.DownloadCompleted += ImagEntry_ImageDownloadComplete;
@@ -67,43 +81,11 @@ namespace GetThatPic.WPF.Models
                     bitmap.DownloadProgress += ImagEntry_ImageDownloadProgress;
                     bitmap.UriSource = new Uri(MetaData.ImageUrl);
                     bitmap.EndInit();
-
                 }
 
                 return bitmap;
             }
         }
-
-        private void ImagEntry_ImageDownloadProgress(object sender, DownloadProgressEventArgs e)
-        {
-            State.IsDownloading = true;
-            if(previousProgressStep != 100 && previousProgressStep != 0) { 
-                Logger.Log(".", false);
-                if (e.Progress >= 100)
-                {
-                    Logger.Log(@" - Finshed "+MetaData.Name+"!\n");
-                }
-            }
-            previousProgressStep = e.Progress;
-        }
-
-        private void ImagEntry_ImageDownloadFailed(object sender, ExceptionEventArgs e)
-        {
-            State.IsDownloading = false;
-            previousProgressStep = 0;
-            Window.ProcessDownloadQueue();
-            throw new NotImplementedException();
-        }
-
-        private void ImagEntry_ImageDownloadComplete(object sender, EventArgs e)
-        {
-            State.IsDownloading = false;
-            previousProgressStep = 0;
-
-            Window.ProcessDownloadQueue();
-            Save();
-        }
-
 
         /// <summary>
         /// Saves this image to the specified target path.
@@ -132,7 +114,7 @@ namespace GetThatPic.WPF.Models
             if (sameNameExists || possibleFallbackNames.Any())
             {
                 string diskPath;
-                if (sameNameExists)
+                if (sameNameExists && new FileInfo(targetPath).Length > 0)
                 {
                     Logger.Log("1 direct match found.");
                     diskPath = targetPath;
@@ -149,35 +131,95 @@ namespace GetThatPic.WPF.Models
                         Logger.Log("1 indirect match found.");
                     }
 
-                    diskPath = possibleFallbackNames.First() ?? string.Empty;
+                    diskPath = possibleFallbackNames.FirstOrDefault(path => new FileInfo(path).Length > 0) ?? string.Empty;
                 }
 
-                BitmapImage diskImage = new BitmapImage(new Uri(diskPath));
-
-                bool equal = Bitmap.IsEqual(diskImage);
-                if (equal && !diskImage.IsLossless())
+                try
                 {
-                    float similarity = diskImage.Similarity(Bitmap, 0.02);
-                    equal = similarity > 0.9;
+                    BitmapImage diskImage = new BitmapImage(new Uri(diskPath));
+
+                    bool equal = Bitmap.IsEqual(diskImage);
+                    float similarity = -1;
+                    if (equal && !diskImage.IsLossless())
+                    {
+                        similarity = diskImage.Similarity(Bitmap, 0.02);
+                        equal = similarity > 0.9;
+                    }
+
+                    Logger.Log("Existing image " + targetPath + " is " + (equal ? string.Empty : "not ") +
+                               "equal to the new one.");
+                    if (similarity > -1)
+                    {
+                        Logger.Log("Similarity: " + similarity);
+                    }
+
+                    if (!equal || !askIfEqual)
+                    {
+                        targetPath = BeforeFileEnding.Replace(targetPath, "$1_" + Sanitizing.CurrentUnixTime + "$2");
+                    }
+
+                    if (askIfEqual)
+                    {
+                        ImageComparisonWindow compare =
+                            new ImageComparisonWindow(this, possibleFallbackNames, targetPath);
+                        compare.Show();
+                        return;
+                    }
                 }
-
-                Logger.Log("Existing image " + targetPath + " is " + (equal ? string.Empty : "not ") +
-                           "equal to the new one.");
-
-                if (!equal || !askIfEqual)
+                catch (Exception e)
                 {
-                    targetPath = BeforeFileEnding.Replace(targetPath, "$1_" + Sanitizing.CurrentUnixTime + "$2");
-                }
-                
-                if (askIfEqual)
-                {
-                    ImageComparisonWindow compare = new ImageComparisonWindow(this, possibleFallbackNames, targetPath);
-                    compare.Show();
-                    return;
+                    Logger.Error("Image rejected. Probably the target is broken? " + e.Message);
                 }
             }
 
             SaveImageToDisk(targetPath);
+        }
+
+        /// <summary>
+        /// Handles the ImageDownloadProgress event of the ImagEntry control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DownloadProgressEventArgs"/> instance containing the event data.</param>
+        private void ImagEntry_ImageDownloadProgress(object sender, DownloadProgressEventArgs e)
+        {
+            State.IsDownloading = true;
+            Window.DownloadProgress.Value = e.Progress;
+            if (previousProgressStep != 100 && previousProgressStep != 0 && e.Progress >= 100)
+            {
+                Logger.Log("Finshed " + MetaData.Name + "!");
+            }
+
+            previousProgressStep = e.Progress;
+        }
+
+        /// <summary>
+        /// Handles the ImageDownloadFailed event of the ImagEntry control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ExceptionEventArgs" /> instance containing the event data.</param>
+        /// <exception cref="NotImplementedException">TODO: Implement handling.</exception>
+        private void ImagEntry_ImageDownloadFailed(object sender, ExceptionEventArgs e)
+        {
+            State.IsDownloading = false;
+            previousProgressStep = 0;
+            Window.DownloadProgress.Value = 0;
+            Window.ProcessDownloadQueue();
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Handles the ImageDownloadComplete event of the ImagEntry control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void ImagEntry_ImageDownloadComplete(object sender, EventArgs e)
+        {
+            State.IsDownloading = false;
+            previousProgressStep = 0;
+
+            Window.DownloadProgress.Value = 0;
+            Window.ProcessDownloadQueue();
+            Save();
         }
 
         /// <summary>
