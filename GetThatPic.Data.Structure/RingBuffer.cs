@@ -23,16 +23,6 @@ namespace GetThatPic.Data.Structure
         /// The length.
         /// </summary>
         private int length;
-        
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RingBuffer{T}"/> class.
-        /// </summary>
-        /// <param name="size">The size.</param>
-        public RingBuffer(int size = 50)
-        {
-            BufferSize = size;
-            buffer = new T[BufferSize];
-        }
 
         /// <summary>
         /// Gets the length.
@@ -165,6 +155,16 @@ namespace GetThatPic.Data.Structure
 
                 return buffer[(StartIndex + i) % BufferSize];
             }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RingBuffer{T}"/> class.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        public RingBuffer(int size = 50)
+        {
+            this.BufferSize = size;
+            buffer = new T[BufferSize];
         }
 
         /// <summary>

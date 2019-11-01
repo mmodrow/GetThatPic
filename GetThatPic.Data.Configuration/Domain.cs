@@ -119,7 +119,7 @@ namespace GetThatPic.Data.Configuration
         /// </returns>
         public override string ToString()
         {
-            return Name;
+            return this.Name;
         }
     }
 }
