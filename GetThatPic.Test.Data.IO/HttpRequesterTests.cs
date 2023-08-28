@@ -63,7 +63,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetString_404()
         {
-            string response = await HttpRequester.GetString("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklösdgklöjm/");
+            string response = await HttpRequester.GetString("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklÃ¶sdgklÃ¶jm/");
             Assert.Null(response);
         }
 
@@ -116,7 +116,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetStream_404()
         {
-            Stream response = await HttpRequester.GetStream("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklösdgklöjm/");
+            Stream response = await HttpRequester.GetStream("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklÃ¶sdgklÃ¶jm/");
             Assert.Null(response);
         }
     }

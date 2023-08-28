@@ -203,14 +203,23 @@
       <Project>{7ef71512-ec77-4c82-83f2-76bd6ca22846}</Project>
       <Name>GetThatPic.Data.Structure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GetThatPic.Logging\GetThatPic.Logging.csproj">
+      <Project>{2535f11a-2ff4-4cd7-a66d-a6fe814ec5c4}</Project>
+      <Name>GetThatPic.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GetThatPic.Parsing\GetThatPic.Parsing.csproj">
       <Project>{283331B6-2000-4888-B73B-2C7B6508E43A}</Project>
       <Name>GetThatPic.Parsing</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies">
+      <Version>1.0.3</Version>
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="NETStandard.Library">
-      <Version>2.0.1</Version>
+      <Version>2.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

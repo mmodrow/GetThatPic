@@ -50,11 +50,12 @@ namespace GetThatPic.WPF.Extensions
         }
 
         /// <summary>
-        /// Transforms the specfied image's content to a byte array.
+        /// Transforms the specified image's content to a byte array.
         /// </summary>
         /// <param name="image">The image.</param>
+        /// <param name="logging"></param>
         /// <returns>The pixel bytes.</returns>
-        public static byte[] ToBytes(this BitmapImage image)
+        public static byte[] ToBytes(this BitmapImage image, Logging.Logging logging)
         {
             byte[] data = { };
             if (image != null)
@@ -73,7 +74,7 @@ namespace GetThatPic.WPF.Extensions
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Bitmap could not be read. >> " + ex.Message);
+                    logging.Error("Bitmap could not be read. >> " + ex.Message);
                 }
             }
 
