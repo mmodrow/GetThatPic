@@ -173,9 +173,9 @@ namespace GetThatPic.Data.Structure
         /// <param name="newEntry">The new entry.</param>
         public void Push(T newEntry)
         {
-            bool updateReadIndex = Length - 1 == ReadIndex && Length < BufferSize;
+            var updateReadIndex = Length - 1 == ReadIndex && Length < BufferSize;
 
-            int writeIndex = (StartIndex + Length) % BufferSize;
+            var writeIndex = (StartIndex + Length) % BufferSize;
             buffer[writeIndex] = newEntry;
             if (Length == BufferSize)
             {
@@ -204,9 +204,9 @@ namespace GetThatPic.Data.Structure
                 return default(T);
             }
 
-            int index = (StartIndex + Length + BufferSize - 1) % BufferSize;
+            var index = (StartIndex + Length + BufferSize - 1) % BufferSize;
 
-            T output = buffer[index];
+            var output = buffer[index];
             buffer[index] = default(T);
 
             Length--;

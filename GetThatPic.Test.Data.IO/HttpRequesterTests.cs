@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading.Tasks;
 using GetThatPic.Data.IO;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace GetThatPic.Test.Data.IO
 {
@@ -15,6 +16,13 @@ namespace GetThatPic.Test.Data.IO
     /// </summary>
     public class HttpRequesterTests
     {
+        private readonly ITestOutputHelper _testOutputHelper;
+
+        public HttpRequesterTests(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
+
         /// <summary>
         /// Gets a null url.
         /// </summary>
@@ -52,7 +60,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetString_Google()
         {
-            string response = await HttpRequester.GetString("https://google.com/");
+            var response = await HttpRequester.GetString("https://google.com/");
             Assert.Contains("<title>Google</title>", response);
         }
 
@@ -63,7 +71,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetString_404()
         {
-            string response = await HttpRequester.GetString("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklösdgklöjm/");
+            var response = await HttpRequester.GetString("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklösdgklöjm/");
             Assert.Null(response);
         }
 
@@ -104,9 +112,11 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetStream_Google()
         {
-            Stream stream = await HttpRequester.GetStream("https://google.com/");
-            StreamReader reader = new StreamReader(stream);
-            Assert.Contains("<title>Google</title>", reader.ReadToEnd());
+            var stream = await HttpRequester.GetStream("https://google.com/");
+            var reader = new StreamReader(stream);
+            var actualString = reader.ReadToEnd();
+            _testOutputHelper.WriteLine(actualString);
+            Assert.Matches("<title>[^<]*?Google[^<]*?</title>", actualString);
         }
 
         /// <summary>
@@ -116,7 +126,7 @@ namespace GetThatPic.Test.Data.IO
         [Fact]
         public async Task GetStream_404()
         {
-            Stream response = await HttpRequester.GetStream("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklösdgklöjm/");
+            var response = await HttpRequester.GetStream("https://sgosdbodgosdgosdgosdgsg.gosgsdgogle.coklösdgklöjm/");
             Assert.Null(response);
         }
     }

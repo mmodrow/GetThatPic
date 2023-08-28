@@ -18,7 +18,7 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void IsEmpty_Empty()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
 
             Assert.True(buffer.IsEmpty);
         }
@@ -29,7 +29,7 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void IsEmpty_Filled()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
             buffer.Push(1);
 
             Assert.False(buffer.IsEmpty);
@@ -41,7 +41,7 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void IsEmpty_Cleaned()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
             buffer.Push(1);
             buffer.Pop();
 
@@ -62,14 +62,14 @@ namespace GetThatPic.Test.Data.Structure
         [InlineData(2, 0, 2)]
         public void Length(int push, int pop, int length)
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
 
-            for (int i = 0; i < push; i++)
+            for (var i = 0; i < push; i++)
             {
                 buffer.Push(i + 1);
             }
 
-            for (int i = 0; i < pop; i++)
+            for (var i = 0; i < pop; i++)
             {
                 buffer.Pop();
             }
@@ -90,16 +90,16 @@ namespace GetThatPic.Test.Data.Structure
         [InlineData(new string[] { "a", "b", "c" }, 4, null)]
         public void Pop_Empty(string[] input, int pops, string output)
         {
-            RingBuffer<string> buffer = new RingBuffer<string>();
+            var buffer = new RingBuffer<string>();
 
-            foreach (string s in input)
+            foreach (var s in input)
             {
                 buffer.Push(s);
             }
 
-            string popped = "nothing";
+            var popped = "nothing";
 
-            for (int i = 0; i < pops; i++)
+            for (var i = 0; i < pops; i++)
             {
                 popped = buffer.Pop();
             }
@@ -119,9 +119,9 @@ namespace GetThatPic.Test.Data.Structure
         [InlineData(new[] { "a", "b", "c" }, 3)]
         public void Push_Empty(string[] input, int length)
         {
-            RingBuffer<string> buffer = new RingBuffer<string>();
+            var buffer = new RingBuffer<string>();
 
-            foreach (string s in input)
+            foreach (var s in input)
             {
                 buffer.Push(s);
             }
@@ -141,16 +141,16 @@ namespace GetThatPic.Test.Data.Structure
         [InlineData(new[] { "a", "b", "c" }, 2, "a")]
         public void Previous(string[] input, int stepsBack, string output)
         {
-            RingBuffer<string> buffer = new RingBuffer<string>();
+            var buffer = new RingBuffer<string>();
 
-            foreach (string s in input)
+            foreach (var s in input)
             {
                 buffer.Push(s);
             }
 
-            string found = "nothing";
+            var found = "nothing";
 
-            for (int i = 0; i < stepsBack; i++)
+            for (var i = 0; i < stepsBack; i++)
             {
                 found = buffer.Previous;
             }
@@ -169,9 +169,9 @@ namespace GetThatPic.Test.Data.Structure
         [InlineData(new[] { 1, 2, 3, 4, 5, 6, 7 }, 6)]
         public void Previous_Overflow(int[] input, int previous)
         {
-            RingBuffer<int> buffer = new RingBuffer<int>(3);
+            var buffer = new RingBuffer<int>(3);
 
-            foreach (int i in input)
+            foreach (var i in input)
             {
                 buffer.Push(i);
             }
@@ -185,13 +185,13 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void Next_FromFirstInCollection()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
 
-            for (int i  = 1; i < 10; i++)
+            for (var i  = 1; i < 10; i++)
             {
                 buffer.Push(i);
                 // ReSharper disable once UnusedVariable
-                int bufferPrevious = buffer.Previous;
+                var bufferPrevious = buffer.Previous;
             }
 
             Assert.Equal(2, buffer.Next);
@@ -203,18 +203,18 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void Next_FromWithinInCollection()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
 
-            for (int i  = 1; i < 10; i++)
+            for (var i  = 1; i < 10; i++)
             {
                 buffer.Push(i);
                 // ReSharper disable once UnusedVariable
-                int bufferPrevious = buffer.Previous;
+                var bufferPrevious = buffer.Previous;
             }
 
             // ReSharper disable once UnusedVariable
             // ReSharper disable once NotAccessedVariable
-            int bufferNext = buffer.Next;
+            var bufferNext = buffer.Next;
             // ReSharper disable once RedundantAssignment
             bufferNext = buffer.Next;
             // ReSharper disable once RedundantAssignment
@@ -229,13 +229,13 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void Next_Overflow()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>(3);
+            var buffer = new RingBuffer<int>(3);
 
-            for (int i = 1; i <= 10; i++)
+            for (var i = 1; i <= 10; i++)
             {
                 buffer.Push(i);
                 // ReSharper disable once UnusedVariable
-                int bufferPrevious = buffer.Previous;
+                var bufferPrevious = buffer.Previous;
             }
             
             Assert.Equal(9, buffer.Next);
@@ -248,9 +248,9 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void Next_Overflow_IndexTooGreat()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>(3);
+            var buffer = new RingBuffer<int>(3);
 
-            for (int i = 1; i <= 10; i++)
+            for (var i = 1; i <= 10; i++)
             {
                 buffer.Push(i);
             }
@@ -264,7 +264,7 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void Next_Empty()
         {
-            RingBuffer<string> buffer = new RingBuffer<string>();
+            var buffer = new RingBuffer<string>();
 
             Assert.Null(buffer.Next);
         }
@@ -275,7 +275,7 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void LastWritten_Empty()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
             
             Assert.Equal(0, buffer.LastWritten);
         }
@@ -286,9 +286,9 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void LastWritten_Written()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
 
-            for (int i = 1; i <= 10; i++)
+            for (var i = 1; i <= 10; i++)
             {
                 buffer.Push(i);
             }
@@ -302,9 +302,9 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void LastWritten_WrittenAndDeleted()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
 
-            for (int i = 1; i <= 10; i++)
+            for (var i = 1; i <= 10; i++)
             {
                 buffer.Push(i);
             }
@@ -320,7 +320,7 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void Item_Empty()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
 
             Assert.Equal(0, buffer[0]);
         }
@@ -331,9 +331,9 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void Item_First()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
 
-            for (int i = 1; i <= 10; i++)
+            for (var i = 1; i <= 10; i++)
             {
                 buffer.Push(i);
             }
@@ -347,9 +347,9 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void Item_Within()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
 
-            for (int i = 1; i <= 10; i++)
+            for (var i = 1; i <= 10; i++)
             {
                 buffer.Push(i);
             }
@@ -363,9 +363,9 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void Item_Last()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
 
-            for (int i = 1; i <= 10; i++)
+            for (var i = 1; i <= 10; i++)
             {
                 buffer.Push(i);
             }
@@ -379,13 +379,13 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void Item_Overflow()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>(4);
+            var buffer = new RingBuffer<int>(4);
 
-            for (int i = 1; i <= 10; i++)
+            for (var i = 1; i <= 10; i++)
             {
                 buffer.Push(i);
                 // ReSharper disable once UnusedVariable
-                int bufferPrevious = buffer.Previous;
+                var bufferPrevious = buffer.Previous;
             }
 
             Assert.Equal(8, buffer[1]);
@@ -397,9 +397,9 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void Item_IndexTooGreat()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
 
-            for (int i = 1; i <= 10; i++)
+            for (var i = 1; i <= 10; i++)
             {
                 buffer.Push(i);
             }
@@ -413,9 +413,9 @@ namespace GetThatPic.Test.Data.Structure
         [Fact]
         public void Item_NegativeIndex()
         {
-            RingBuffer<int> buffer = new RingBuffer<int>();
+            var buffer = new RingBuffer<int>();
 
-            for (int i = 1; i < 10; i++)
+            for (var i = 1; i < 10; i++)
             {
                 buffer.Push(i);
             }
@@ -434,9 +434,9 @@ namespace GetThatPic.Test.Data.Structure
         [InlineData(new[] { 1, 2, 3, 4, 5, 6, 7 }, 7)]
         public void Current_Overflow(int[] input, int last)
         {
-            RingBuffer<int> buffer = new RingBuffer<int>(4);
+            var buffer = new RingBuffer<int>(4);
 
-            foreach (int i in input)
+            foreach (var i in input)
             {
                 buffer.Push(i);
             }
@@ -455,9 +455,9 @@ namespace GetThatPic.Test.Data.Structure
         [InlineData(new[] { 1, 2, 3, 4, 5, 6, 7 }, 4)]
         public void Length_Overflow(int[] input, int length)
         {
-            RingBuffer<int> buffer = new RingBuffer<int>(4);
+            var buffer = new RingBuffer<int>(4);
 
-            foreach (int i in input)
+            foreach (var i in input)
             {
                 buffer.Push(i);
             }

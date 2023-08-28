@@ -229,7 +229,7 @@ namespace GetThatPic.Parsing
         /// <returns>Sanitized input.</returns>
         public static string SanititzeFileName(string input)
         {
-            string output = string.Empty;
+            var output = string.Empty;
             if (!string.IsNullOrWhiteSpace(input))
             {
                 output = input.Trim();
@@ -277,7 +277,7 @@ namespace GetThatPic.Parsing
         /// <returns>Input with scrambled swears recreated.</returns>
         public static string RecreateSwearing(string input)
         {
-            string output = string.Empty;
+            var output = string.Empty;
             if (!string.IsNullOrWhiteSpace(input))
             {
                 output = ShitPattern.Replace(input, ShitReplacement);
@@ -299,7 +299,7 @@ namespace GetThatPic.Parsing
         /// <returns>Input with it's contractions recreated.</returns>
         public static string RecreateContractions(string input)
         {
-            string output = string.Empty;
+            var output = string.Empty;
             if (!string.IsNullOrWhiteSpace(input))
             {
                 output = WillPattern.Replace(input, WillReplacement);
@@ -325,11 +325,11 @@ namespace GetThatPic.Parsing
         /// </returns>
         public static string RemoveDiacritics(string input)
         {
-            string output = string.Empty;
+            var output = string.Empty;
             if (!string.IsNullOrWhiteSpace(input))
             {
-                string normalizedString = input.Normalize(NormalizationForm.FormD);
-                StringBuilder stringBuilder = new StringBuilder();
+                var normalizedString = input.Normalize(NormalizationForm.FormD);
+                var stringBuilder = new StringBuilder();
 
                 foreach (var c in normalizedString)
                 {
@@ -352,12 +352,12 @@ namespace GetThatPic.Parsing
         /// <returns>Input with umlauts replaced by corresponding combination of latin letters.</returns>
         public static string ReplaceUmlauts(string input)
         {
-            string output = string.Empty;
+            var output = string.Empty;
             if (!string.IsNullOrWhiteSpace(input))
             {
-                Regex allCapsAe = new Regex("Ä([^a-zäöü])");
-                Regex allCapsOe = new Regex("Ö([^a-zäöü])");
-                Regex allCapsUe = new Regex("Ü([^a-zäöü])");
+                var allCapsAe = new Regex("Ä([^a-zäöü])");
+                var allCapsOe = new Regex("Ö([^a-zäöü])");
+                var allCapsUe = new Regex("Ü([^a-zäöü])");
                 output = input.Replace("ö", "oe")
                                 .Replace("ä", "ae")
                                 .Replace("ü", "ue");
@@ -383,7 +383,7 @@ namespace GetThatPic.Parsing
         /// <returns>Input without illegal characters.</returns>
         public static string ReplaceIllegalCharacters(string input)
         {
-            string output = string.Empty;
+            var output = string.Empty;
             if (!string.IsNullOrWhiteSpace(input))
             {
                 output = CharactersToDropPattern.Replace(input, string.Empty);
@@ -400,7 +400,7 @@ namespace GetThatPic.Parsing
         /// <returns>Input without superfluous substitution characters.</returns>
         public static string StripSuperfluousReplacementCharacters(string input)
         {
-            string output = string.Empty;
+            var output = string.Empty;
             if (!string.IsNullOrWhiteSpace(input))
             {
                 output = SubstituteGroupsPattern.Replace(input, CharactersNeedingSubstitutionReplacement);
@@ -417,7 +417,7 @@ namespace GetThatPic.Parsing
         /// <returns>The input shortened to the maximum legal length.</returns>
         public static string Crop(string input)
         {
-            string output = string.Empty;
+            var output = string.Empty;
             if (!string.IsNullOrWhiteSpace(input))
             {
                 const int NtfsNameLimit = 255;

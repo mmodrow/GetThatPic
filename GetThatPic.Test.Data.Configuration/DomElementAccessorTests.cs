@@ -22,7 +22,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// </summary>
         private const string ValidMarkup = @"<html>
     <head>
-        <title>groﬂartig</title>
+        <title>gro√üartig</title>
     </head>
     <body>
         <h1>toll!</h1>
@@ -35,7 +35,7 @@ namespace GetThatPic.Test.Data.Configuration
         /// <summary>
         /// The broken markup example.
         /// </summary>
-        private const string BrokenMarkup = "<html<head><title>groﬂartig</title>";
+        private const string BrokenMarkup = "<html<head><title>gro√üartig</title>";
         
         /// <summary>
         /// Tries GetContent with an invalid selector.
@@ -46,14 +46,14 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData(null)]
         public void GetContent_InvalidSelector(string selector)
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
+            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Text,
                 Selector = selector
             };
 
-            IList<string> content = accessor.GetContent(doc);
+            var content = accessor.GetContent(doc);
 
             Assert.Empty(content);
         }
@@ -67,15 +67,15 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData(null)]
         public void GetContent_InvalidAttributeName(string name)
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
+            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
                 Selector = "span",
                 AttributeName = name
             };
 
-            IList<string> content = accessor.GetContent(doc);
+            var content = accessor.GetContent(doc);
 
             Assert.Empty(content);
         }
@@ -86,16 +86,16 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_InnerText()
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
+            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Text,
                 Selector = "head"
             };
 
-            string content = accessor.GetContent(doc).FirstOrDefault()?.Trim();
+            var content = accessor.GetContent(doc).FirstOrDefault()?.Trim();
 
-            Assert.Equal("groﬂartig", content);
+            Assert.Equal("gro√üartig", content);
         }
 
         /// <summary>
@@ -104,18 +104,18 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_InnerHtml_Single()
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
+            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Html,
                 Selector = "head"
             };
 
-            string content = accessor.GetContent(doc).FirstOrDefault();
+            var content = accessor.GetContent(doc).FirstOrDefault();
 
             Assert.Equal(
 @"
-        <title>groﬂartig</title>
+        <title>gro√üartig</title>
     ",
                 content);
         }
@@ -126,14 +126,14 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_InnerHtml_Multiple()
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
+            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Html,
                 Selector = "h2"
             };
 
-            IList<string> content = accessor.GetContent(doc);
+            var content = accessor.GetContent(doc);
 
             Assert.Equal(2, content.Count);
         }
@@ -144,15 +144,15 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_Attribute_Data()
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
+            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
                 AttributeName = "data-stuff",
                 Selector = "#MainNavChild"
             };
 
-            string content = accessor.GetContent(doc).FirstOrDefault();
+            var content = accessor.GetContent(doc).FirstOrDefault();
 
             Assert.Equal("Dreams are made of", content);
         }
@@ -163,8 +163,8 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_Pattern_Valid()
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
+            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
                 AttributeName = "data-stuff",
@@ -173,7 +173,7 @@ namespace GetThatPic.Test.Data.Configuration
                 Replace = "$1up"
             };
 
-            string content = accessor.GetContent(doc).FirstOrDefault();
+            var content = accessor.GetContent(doc).FirstOrDefault();
 
             Assert.Equal("Dreams are made up", content);
         }
@@ -187,8 +187,8 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData(null)]
         public void GetContent_Pattern_Invalid(string regexContent)
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
+            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
                 AttributeName = "data-stuff",
@@ -196,7 +196,7 @@ namespace GetThatPic.Test.Data.Configuration
                 Pattern = null != regexContent ? new Regex(regexContent) : null
             };
 
-            string content = accessor.GetContent(doc)?.FirstOrDefault();
+            var content = accessor.GetContent(doc)?.FirstOrDefault();
 
             Assert.Null(content);
         }
@@ -207,8 +207,8 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_Replace_Valid()
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
+            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
                 AttributeName = "data-stuff",
@@ -216,7 +216,7 @@ namespace GetThatPic.Test.Data.Configuration
                 Pattern = new Regex(@"^((?:[A-Za-z]+\s){3}).*$")
             };
 
-            string content = accessor.GetContent(doc).FirstOrDefault();
+            var content = accessor.GetContent(doc).FirstOrDefault();
 
             Assert.Equal("Dreams are made ", content);
         }
@@ -230,8 +230,8 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData(null)]
         public void GetContent_Replace_Invalid(string replace)
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
-            DomElementAccessor accessor = new DomElementAccessor()
+            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
                 AttributeName = "data-stuff",
@@ -239,7 +239,7 @@ namespace GetThatPic.Test.Data.Configuration
                 Replace = replace
             };
 
-            string content = accessor.GetContent(doc)?.FirstOrDefault();
+            var content = accessor.GetContent(doc)?.FirstOrDefault();
 
             Assert.Equal(replace, content);
         }

@@ -45,7 +45,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void Constructor_True()
         {
-            Link link = new Link(true, false);
+            var link = new Link(true, false);
 
             Assert.Contains(link.Domains, domain => domain.Url.IsMatch("http://dilbert.com"));
         }
@@ -56,7 +56,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void Constructor_False()
         {
-            Link link = new Link(false, false);
+            var link = new Link(false, false);
 
             Assert.DoesNotContain(link.Domains, domain => domain.Url.IsMatch("http://dilbert.com"));
         }
@@ -67,7 +67,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void IdentifyDomain_EmptyConfig_NonEmptyUrl()
         {
-            Link link = new Link(false, false);
+            var link = new Link(false, false);
 
             Assert.Null(link.IdentifyDomain("http://dilbert.com"));
         }
@@ -78,7 +78,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void IdentifyDomain_EmptyConfig_EmptyUrl()
         {
-            Link link = new Link(false, false);
+            var link = new Link(false, false);
 
             Assert.Null(link.IdentifyDomain(null));
         }
@@ -89,7 +89,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void IdentifyDomain_NonEmptyConfig_EmptyUrl()
         {
-            Link link = new Link(false, false);
+            var link = new Link(false, false);
 
             link.Domains.Add(new Domain
             {
@@ -107,7 +107,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void IdentifyDomain_NonEmptyConfig_NonEmptyUrl_Contained()
         {
-            Link link = new Link(false, false);
+            var link = new Link(false, false);
 
             link.Domains.Add(new Domain
             {
@@ -125,7 +125,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void IdentifyDomain_NonEmptyConfig_NonEmptyUrl_NotContained()
         {
-            Link link = new Link(false, false);
+            var link = new Link(false, false);
 
             link.Domains.Add(new Domain
             {
@@ -143,7 +143,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void InitializeConfig_NoElementAdded()
         {
-            Link link = new Link(false, false);
+            var link = new Link(false, false);
             link.InitializeConfig(true, false);
 
             Assert.Contains(link.Domains, domain => domain.Url.IsMatch("http://dilbert.com"));
@@ -156,8 +156,8 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetDocumentFromUrl_Title()
         {
-            HtmlDocument doc = await Link.GetDocumentFromUrl("https://google.com/");
-            IList<HtmlNode> title = doc.QuerySelectorAll("title");
+            var doc = await Link.GetDocumentFromUrl("https://google.com/");
+            var title = doc.QuerySelectorAll("title");
             Assert.Contains(title, item => "Google" == item.InnerHtml);
         }
 
@@ -168,7 +168,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetDocumentFromUrl_null()
         {
-            HtmlDocument doc = await Link.GetDocumentFromUrl(null);
+            var doc = await Link.GetDocumentFromUrl(null);
             Assert.Null(doc);
         }
 
@@ -179,7 +179,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetDocumentFromUrl_empty()
         {
-            HtmlDocument doc = await Link.GetDocumentFromUrl(string.Empty);
+            var doc = await Link.GetDocumentFromUrl(string.Empty);
             Assert.Null(doc);
         }
 
@@ -189,8 +189,8 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void GetDocumentFromMarkup_Title()
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(ValidMarkup);
-            IList<HtmlNode> title = doc.QuerySelectorAll("title");
+            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var title = doc.QuerySelectorAll("title");
             Assert.Contains(title, item => "gro�artig" == item.InnerHtml);
         }
 
@@ -200,7 +200,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public  void GetDocumentFromMarkup_null()
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(null);
+            var doc = Link.GetDocumentFromMarkup(null);
             Assert.Null(doc);
         }
 
@@ -210,7 +210,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public void GetDocumentFromMarkup_Empty()
         {
-            HtmlDocument doc = Link.GetDocumentFromMarkup(string.Empty);
+            var doc = Link.GetDocumentFromMarkup(string.Empty);
             Assert.Null(doc);
         }
 
@@ -231,8 +231,8 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetDocument_Url()
         {
-            HtmlDocument doc = await Link.GetDocument("https://google.com/");
-            IList<HtmlNode> title = doc.QuerySelectorAll("title");
+            var doc = await Link.GetDocument("https://google.com/");
+            var title = doc.QuerySelectorAll("title");
             Assert.Contains(title, item => "Google" == item.InnerHtml);
         }
 
@@ -243,8 +243,8 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetDocument_ValidMarkup()
         {
-            HtmlDocument doc = await Link.GetDocument(ValidMarkup);
-            IList<HtmlNode> title = doc.QuerySelectorAll("title");
+            var doc = await Link.GetDocument(ValidMarkup);
+            var title = doc.QuerySelectorAll("title");
             Assert.Contains(title, item => "gro�artig" == item.InnerHtml);
         }
 
@@ -261,7 +261,7 @@ namespace GetThatPic.Test.Parsing
         [InlineData("")]
         public async Task GetDocument_InvalidString(string input)
         {
-            HtmlDocument doc = await Link.GetDocument(input);
+            var doc = await Link.GetDocument(input);
             Assert.Null(doc);
         }
 
@@ -272,7 +272,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetImageUrls_Single_Dilbert()
         {
-            Link link = new Link(true, false);
+            var link = new Link(true, false);
 
             Assert.Contains(
                 "http://assets.amuniversal.com/64a5e1b036e9012ea5cb00163e41dd5b", 
@@ -286,9 +286,9 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetImageUrls_Multiple_Schisslaweng()
         {
-            Link link = new Link(true, false);
+            var link = new Link(true, false);
 
-            IEnumerable<string> foundImageUrls = await link.GetImageUrls("https://www.schisslaweng.net/probe/");
+            var foundImageUrls = await link.GetImageUrls("https://www.schisslaweng.net/probe/");
             IEnumerable<string> expectedImageUrls = new List<string>
             {
                 "https://www.schisslaweng.net/wp-content/uploads/sites/2/2017/03/01_Trainingistalles_FINAL_web-980x1386.jpg",
@@ -311,7 +311,7 @@ namespace GetThatPic.Test.Parsing
         [InlineData("")]
         public async Task GetImageUrls_Invalid(string url)
         {
-            Link link = new Link(true, false);
+            var link = new Link(true, false);
 
             Assert.Empty(await link.GetImageUrls(url));
         }
@@ -323,7 +323,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetImageUrls_NonConfigured()
         {
-            Link link = new Link(true, false);
+            var link = new Link(true, false);
 
             Assert.Empty(await link.GetImageUrls("http://this.pageis.not/present"));
         }
@@ -335,9 +335,9 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetImageFileName_Dilbert()
         {
-            Link link = new Link(true, false);
+            var link = new Link(true, false);
 
-            string output = await link.GetImageFileName("http://dilbert.com/strip/2018-01-23");
+            var output = await link.GetImageFileName("http://dilbert.com/strip/2018-01-23");
             Assert.Contains(
                 "2018-01-23_-_User_Specifications_Are_Not_Complete",
                 output);
@@ -353,7 +353,7 @@ namespace GetThatPic.Test.Parsing
         [InlineData("")]
         public async Task GetImageFileName_Invalid(string url)
         {
-            Link link = new Link(true, false);
+            var link = new Link(true, false);
 
             Assert.Empty(await link.GetImageFileName(url));
         }
@@ -365,7 +365,7 @@ namespace GetThatPic.Test.Parsing
         [Fact]
         public async Task GetImageFileName_NonConfigured()
         {
-            Link link = new Link(true, false);
+            var link = new Link(true, false);
 
             Assert.Empty(await link.GetImageFileName("http://this.pageis.not/present"));
         }

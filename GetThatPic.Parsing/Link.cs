@@ -72,7 +72,7 @@ namespace GetThatPic.Parsing
         /// </returns>
         public static string FileEndingFromUrl(string url, bool includePeriod = true)
         {
-            string ending = Path.GetExtension(url) ?? string.Empty;
+            var ending = Path.GetExtension(url) ?? string.Empty;
             return !includePeriod ? DropLeadingPeriod.Replace(ending, "$1") : ending;
         }
 
@@ -133,7 +133,7 @@ namespace GetThatPic.Parsing
                 return null;
             }
 
-            string markup = await HttpRequester.GetString(url).ConfigureAwait(false);
+            var markup = await HttpRequester.GetString(url).ConfigureAwait(false);
             markup = HtmlCommentPattern.Replace(markup, string.Empty);
             return GetDocumentFromMarkup(markup);
         }
@@ -179,9 +179,9 @@ namespace GetThatPic.Parsing
                 imageNameFragments.Add(downloadInstruction.GetContent(doc, url));
             }
 
-            IEnumerable<string> nonEmptyNameParts = imageNameFragments.SelectMany(fragments => fragments)
+            var nonEmptyNameParts = imageNameFragments.SelectMany(fragments => fragments)
                 .Where(fragment => !string.IsNullOrWhiteSpace(fragment));
-            string joinedFragments = string.Join(domain.FileNameFragmentDelimiter, nonEmptyNameParts);
+            var joinedFragments = string.Join(domain.FileNameFragmentDelimiter, nonEmptyNameParts);
             return Sanitizing.SanititzeFileName(joinedFragments);
         }
 
@@ -192,24 +192,24 @@ namespace GetThatPic.Parsing
         /// <returns>A List of corresponding ImageEntries.</returns>
         public async Task<IList<(string ImageUrl, string Name, string TargetFileSystemLocation)>> GetImages(string url)
         {
-            Domain domain = this.IdentifyDomain(url);
-            HtmlDocument doc = await GetDocument(url).ConfigureAwait(false);
+            var domain = this.IdentifyDomain(url);
+            var doc = await GetDocument(url).ConfigureAwait(false);
 
             IEnumerable<string> imageUrls = (await this.GetImageUrls(url, doc, domain).ConfigureAwait(false)).ToList();
             IEnumerable<string> fileEndings = imageUrls.Select(url1 => FileEndingFromUrl(url1))
                 .Select(ending => !string.IsNullOrWhiteSpace(ending) ? ending : domain.DefaultFileEnding).ToList();
 
-            string imageBaseFileName = await this.GetImageFileName(url, doc, domain).ConfigureAwait(false);
+            var imageBaseFileName = await this.GetImageFileName(url, doc, domain).ConfigureAwait(false);
 
             IList<string> imageFileNames = new List<string>();
-            int numImages = imageUrls.Count();
+            var numImages = imageUrls.Count();
             if (numImages > 1)
             {
-                int numDigits = (numImages + 1).ToString().Length;
-                for (int i = 1; i <= numImages; i++)
+                var numDigits = (numImages + 1).ToString().Length;
+                for (var i = 1; i <= numImages; i++)
                 {
-                    string fileName = imageBaseFileName + i.ToString().PadLeft(numDigits, '0')
-                                                        + fileEndings.ElementAt(i - 1);
+                    var fileName = imageBaseFileName + i.ToString().PadLeft(numDigits, '0')
+                                                     + fileEndings.ElementAt(i - 1);
                     imageFileNames.Add(fileName);
                 }
             }
@@ -265,7 +265,7 @@ namespace GetThatPic.Parsing
                 IEnumerable<string> imagePaths = downloadInstruction.GetContent(doc, url);
                 if (imagePaths.Any())
                 {
-                    string protocol = Protocol.Replace(url, "$1");
+                    var protocol = Protocol.Replace(url, "$1");
                     imagePaths = imagePaths.Select(
                         imageUrl => imageUrl.StartsWith("//") ? protocol + imageUrl : imageUrl);
                     return imagePaths;
@@ -287,8 +287,8 @@ namespace GetThatPic.Parsing
                 return null;
             }
 
-            string domain = HttpRequester.ProtocolAndDomain.Replace(url, "$1");
-            string path = HttpRequester.PathAfterdomain.Replace(url, "$1");
+            var domain = HttpRequester.ProtocolAndDomain.Replace(url, "$1");
+            var path = HttpRequester.PathAfterdomain.Replace(url, "$1");
 
             IList<Domain> matchingDomains =
                 this.Domains.Where(d => d.Url.IsMatch(domain) && d.Path.IsMatch(path)).ToList();
@@ -308,15 +308,15 @@ namespace GetThatPic.Parsing
                 this.Domains.Clear();
             }
 
-            IList<Domain> domains = this.LoadDomainsFromJsonFile("Domains", loadCustomConfigs);
-            IList<DownloadDirectory> downloadDirectories =
+            var domains = this.LoadDomainsFromJsonFile("Domains", loadCustomConfigs);
+            var downloadDirectories =
                 this.LoadDomainDirectoriesFromJsonFile("DownloadDirectories", loadCustomConfigs);
 
-            foreach (Domain domain in domains)
+            foreach (var domain in domains)
             {
-                DownloadDirectory directoryConfig =
+                var directoryConfig =
                     downloadDirectories.FirstOrDefault(downloadDirectory => downloadDirectory.Name == domain.Name);
-                string directory = directoryConfig?.Directory;
+                var directory = directoryConfig?.Directory;
                 if (!string.IsNullOrWhiteSpace(directory))
                 {
                     domain.DownloadDirectory = directory;
@@ -369,9 +369,9 @@ namespace GetThatPic.Parsing
         /// <returns>The JSON-string for the config.</returns>
         private static string ParseConfigJson(string fileName, bool loadCustomConfigs)
         {
-            string inputFile = FindJsonFile(fileName);
+            var inputFile = FindJsonFile(fileName);
             string json;
-            using (StreamReader r = new StreamReader(inputFile))
+            using (var r = new StreamReader(inputFile))
             {
                 json = r.ReadToEnd();
             }
@@ -383,7 +383,7 @@ namespace GetThatPic.Parsing
                 return JsonConvert.SerializeObject(jsonData);
             }
 
-            string customInputFile = FindJsonFile(
+            var customInputFile = FindJsonFile(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + @"\GetThatPic\Config\" + fileName);
             if (string.IsNullOrWhiteSpace(customInputFile))
             {
@@ -391,7 +391,7 @@ namespace GetThatPic.Parsing
             }
 
             string customJson;
-            using (StreamReader r = new StreamReader(customInputFile))
+            using (var r = new StreamReader(customInputFile))
             {
                 customJson = r.ReadToEnd();
             }
@@ -417,7 +417,7 @@ namespace GetThatPic.Parsing
             string fileName = null,
             bool loadCustomConfigs = true)
         {
-            string json = ParseConfigJson(fileName, loadCustomConfigs);
+            var json = ParseConfigJson(fileName, loadCustomConfigs);
             var downloadDirectories = JsonConvert.DeserializeObject<List<DownloadDirectory>>(json);
             return downloadDirectories;
         }
@@ -432,7 +432,7 @@ namespace GetThatPic.Parsing
         /// </returns>
         private IList<Domain> LoadDomainsFromJsonFile(string fileName = null, bool loadCustomConfigs = true)
         {
-            string json = ParseConfigJson(fileName, loadCustomConfigs);
+            var json = ParseConfigJson(fileName, loadCustomConfigs);
             var domains = JsonConvert.DeserializeObject<List<Domain>>(json);
             return domains;
         }

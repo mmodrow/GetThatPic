@@ -115,7 +115,7 @@ namespace GetThatPic.Data.Configuration
                 return new List<string>();
             }
 
-            IList<HtmlNode> nodes = TargetType.Url != Type && !string.IsNullOrWhiteSpace(Selector)
+            var nodes = TargetType.Url != Type && !string.IsNullOrWhiteSpace(Selector)
                 ? doc.QuerySelectorAll(Selector)
                 : null;
             IList<string> output = null;

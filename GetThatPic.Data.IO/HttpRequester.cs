@@ -83,7 +83,7 @@ namespace GetThatPic.Data.IO
                 Client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate");
                 Client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0");
                 Client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
-                Stream stream = await Client.GetStreamAsync(url);
+                var stream = await Client.GetStreamAsync(url);
                 return stream;
             }
             catch
