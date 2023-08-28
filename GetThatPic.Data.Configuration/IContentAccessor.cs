@@ -6,21 +6,20 @@
 using System.Collections.Generic;
 using HtmlAgilityPack;
 
-namespace GetThatPic.Data.Configuration
+namespace GetThatPic.Data.Configuration;
+
+/// <summary>
+/// Interface for any kind of Image Download Instruction.
+/// </summary>
+public interface IContentAccessor
 {
     /// <summary>
-    /// Interface for any kind of Image Download Instruction.
+    /// Gets the content specified by a DomElementAccessor from a given HtmlDocument.
     /// </summary>
-    public interface IContentAccessor
-    {
-        /// <summary>
-        /// Gets the content specified by a DomElementAccessor from a given HtmlDocument.
-        /// </summary>
-        /// <param name="doc">The document.</param>
-        /// <param name="url">The URL.</param>
-        /// <returns>
-        /// The desired Content.
-        /// </returns>
-        IList<string> GetContent(HtmlDocument doc, string url = null);
-    }
+    /// <param name="doc">The document.</param>
+    /// <param name="url">The URL.</param>
+    /// <returns>
+    /// The desired Content.
+    /// </returns>
+    IList<string> GetContent(HtmlDocument doc, string url = null);
 }

@@ -4,214 +4,213 @@
 // </copyright>
 using System;
 
-namespace GetThatPic.Data.Structure
+namespace GetThatPic.Data.Structure;
+
+/// <summary>
+/// Implements a generic RingBuffer.
+/// Act base on the first in last out principle.
+/// </summary>
+/// <typeparam name="T">The type this buffer should buffer.</typeparam>
+public class RingBuffer<T>
 {
     /// <summary>
-    /// Implements a generic RingBuffer.
-    /// Act base on the first in last out principle.
+    /// The buffer.
     /// </summary>
-    /// <typeparam name="T">The type this buffer should buffer.</typeparam>
-    public class RingBuffer<T>
+    // ReSharper disable once InconsistentNaming
+    private readonly T[] buffer;
+
+    /// <summary>
+    /// The length.
+    /// </summary>
+    private int _length;
+
+    /// <summary>
+    /// Gets the length.
+    /// </summary>
+    /// <value>
+    /// The length.
+    /// </value>
+    public int Length
     {
-        /// <summary>
-        /// The buffer.
-        /// </summary>
-        // ReSharper disable once InconsistentNaming
-        private readonly T[] buffer;
-
-        /// <summary>
-        /// The length.
-        /// </summary>
-        private int _length;
-
-        /// <summary>
-        /// Gets the length.
-        /// </summary>
-        /// <value>
-        /// The length.
-        /// </value>
-        public int Length
+        get => _length;
+        private set
         {
-            get => _length;
-            private set
+            if (_length >= 0 && _length <= BufferSize)
             {
-                if (_length >= 0 && _length <= BufferSize)
-                {
-                    _length = value;
-                }
+                _length = value;
             }
         }
+    }
 
-        /// <summary>
-        /// Gets a value indicating whether this instance is empty.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsEmpty => 0 >= Length;
+    /// <summary>
+    /// Gets a value indicating whether this instance is empty.
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if this instance is empty; otherwise, <c>false</c>.
+    /// </value>
+    public bool IsEmpty => 0 >= Length;
 
-        /// <summary>
-        /// Gets the entry pointed at by the current read index.
-        /// </summary>
-        /// <value>
-        /// The current entry.
-        /// </value>
-        public T LastWritten => buffer[Math.Max((StartIndex + Length - 1) % BufferSize, 0)];
+    /// <summary>
+    /// Gets the entry pointed at by the current read index.
+    /// </summary>
+    /// <value>
+    /// The current entry.
+    /// </value>
+    public T LastWritten => buffer[Math.Max((StartIndex + Length - 1) % BufferSize, 0)];
 
-        /// <summary>
-        /// Gets the entry pointed at by the current read index.
-        /// </summary>
-        /// <value>
-        /// The current entry.
-        /// </value>
-        public T Current => -1 < ReadIndex ? buffer[(StartIndex + ReadIndex) % BufferSize] : default(T);
+    /// <summary>
+    /// Gets the entry pointed at by the current read index.
+    /// </summary>
+    /// <value>
+    /// The current entry.
+    /// </value>
+    public T Current => -1 < ReadIndex ? buffer[(StartIndex + ReadIndex) % BufferSize] : default;
 
-        /// <summary>
-        /// Gets the previous element.
-        /// </summary>
-        /// <value>
-        /// The previous.
-        /// </value>
-        public T Previous
+    /// <summary>
+    /// Gets the previous element.
+    /// </summary>
+    /// <value>
+    /// The previous.
+    /// </value>
+    public T Previous
+    {
+        get
         {
-            get
+            if (
+                ReadIndex <= 0
+                || IsEmpty
+                || null == buffer[(ReadIndex + StartIndex + BufferSize - 1) % BufferSize]
+                || buffer[(ReadIndex + StartIndex + BufferSize - 1) % BufferSize].Equals(default(T)))
             {
-                if (
-                    ReadIndex <= 0
-                    || IsEmpty
-                    || null == buffer[(ReadIndex + StartIndex + BufferSize - 1) % BufferSize]
-                    || buffer[(ReadIndex + StartIndex + BufferSize - 1) % BufferSize].Equals(default(T)))
-                {
-                    return default(T);
-                }
-
-                ReadIndex = (ReadIndex + BufferSize - 1) % BufferSize;
-                return Current;
+                return default;
             }
+
+            ReadIndex = (ReadIndex + BufferSize - 1) % BufferSize;
+            return Current;
+        }
+    }
+
+    /// <summary>
+    /// Gets the next element.
+    /// </summary>
+    /// <value>
+    /// The next.
+    /// </value>
+    public T Next
+    {
+        get
+        {
+            if (ReadIndex >= Length - 1)
+            {
+                return default;
+            }
+
+            ReadIndex = (ReadIndex + 1) % BufferSize;
+            return Current;
+        }
+    }
+
+    /// <summary>
+    /// Gets the buffer size.
+    /// Using a ring buffer to make caching superfluous.
+    /// </summary>
+    private int BufferSize { get; }
+
+    /// <summary>
+    /// Gets or sets the writeIndex of the ring buffer.
+    /// </summary>
+    /// <value>
+    /// The index.
+    /// </value>
+    private int StartIndex { get; set; }
+
+    /// <summary>
+    /// Gets or sets the readIndex of the ring buffer.
+    /// </summary>
+    /// <value>
+    /// The index.
+    /// </value>
+    private int ReadIndex { get; set; }
+
+    /// <summary>
+    /// Gets the <see cref="T"/> with the specified i.
+    /// </summary>
+    /// <value>
+    /// The <see cref="T"/>.
+    /// </value>
+    /// <param name="i">The i.</param>
+    /// <returns>The desired element.</returns>
+    public T this[int i]
+    {
+        get
+        {
+            if (i < 0 || IsEmpty)
+            {
+                i = Math.Max(Length - 1, 0);
+            }
+            else if (i >= Length)
+            {
+                i %= Length;
+            }
+
+            return buffer[(StartIndex + i) % BufferSize];
+        }
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RingBuffer{T}"/> class.
+    /// </summary>
+    /// <param name="size">The size.</param>
+    public RingBuffer(int size = 50)
+    {
+        BufferSize = size;
+        buffer = new T[BufferSize];
+    }
+
+    /// <summary>
+    /// Adds a new entry.
+    /// </summary>
+    /// <param name="newEntry">The new entry.</param>
+    public void Push(T newEntry)
+    {
+        var updateReadIndex = Length - 1 == ReadIndex && Length < BufferSize;
+
+        var writeIndex = (StartIndex + Length) % BufferSize;
+        buffer[writeIndex] = newEntry;
+        if (Length == BufferSize)
+        {
+            StartIndex = (StartIndex + 1) % BufferSize;
         }
 
-        /// <summary>
-        /// Gets the next element.
-        /// </summary>
-        /// <value>
-        /// The next.
-        /// </value>
-        public T Next
+        if (Length < BufferSize)
         {
-            get
-            {
-                if (ReadIndex >= Length - 1)
-                {
-                    return default(T);
-                }
-
-                ReadIndex = (ReadIndex + 1) % BufferSize;
-                return Current;
-            }
+            Length++;
         }
 
-        /// <summary>
-        /// Gets the buffer size.
-        /// Using a ring buffer to make caching superfluous.
-        /// </summary>
-        private int BufferSize { get; }
-
-        /// <summary>
-        /// Gets or sets the writeIndex of the ring buffer.
-        /// </summary>
-        /// <value>
-        /// The index.
-        /// </value>
-        private int StartIndex { get; set; }
-
-        /// <summary>
-        /// Gets or sets the readIndex of the ring buffer.
-        /// </summary>
-        /// <value>
-        /// The index.
-        /// </value>
-        private int ReadIndex { get; set; }
-
-        /// <summary>
-        /// Gets the <see cref="T"/> with the specified i.
-        /// </summary>
-        /// <value>
-        /// The <see cref="T"/>.
-        /// </value>
-        /// <param name="i">The i.</param>
-        /// <returns>The desired element.</returns>
-        public T this[int i]
+        if (updateReadIndex)
         {
-            get
-            {
-                if (i < 0 || IsEmpty)
-                {
-                    i = Math.Max(Length - 1, 0);
-                }
-                else if (i >= Length)
-                {
-                    i = i % Length;
-                }
+            ReadIndex = Length - 1;
+        }
+    }
 
-                return buffer[(StartIndex + i) % BufferSize];
-            }
+    /// <summary>
+    /// Pops this instance's last written entry.
+    /// </summary>
+    /// <returns>The popped element.</returns>
+    public T Pop()
+    {
+        if (Length == 0)
+        {
+            return default;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RingBuffer{T}"/> class.
-        /// </summary>
-        /// <param name="size">The size.</param>
-        public RingBuffer(int size = 50)
-        {
-            this.BufferSize = size;
-            buffer = new T[BufferSize];
-        }
+        var index = (StartIndex + Length + BufferSize - 1) % BufferSize;
 
-        /// <summary>
-        /// Adds a new entry.
-        /// </summary>
-        /// <param name="newEntry">The new entry.</param>
-        public void Push(T newEntry)
-        {
-            var updateReadIndex = Length - 1 == ReadIndex && Length < BufferSize;
+        var output = buffer[index];
+        buffer[index] = default;
 
-            var writeIndex = (StartIndex + Length) % BufferSize;
-            buffer[writeIndex] = newEntry;
-            if (Length == BufferSize)
-            {
-                StartIndex = (StartIndex + 1) % BufferSize;
-            }
-
-            if (Length < BufferSize)
-            {
-                Length++;
-            }
-
-            if (updateReadIndex)
-            {
-                ReadIndex = Length - 1;
-            }
-        }
-
-        /// <summary>
-        /// Pops this instance's last written entry.
-        /// </summary>
-        /// <returns>The popped element.</returns>
-        public T Pop()
-        {
-            if (Length == 0)
-            {
-                return default(T);
-            }
-
-            var index = (StartIndex + Length + BufferSize - 1) % BufferSize;
-
-            var output = buffer[index];
-            buffer[index] = default(T);
-
-            Length--;
+        Length--;
             
-            return output;
-        }
+        return output;
     }
 }
