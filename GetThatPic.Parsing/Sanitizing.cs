@@ -227,7 +227,7 @@ namespace GetThatPic.Parsing
         /// </summary>
         /// <param name="input">The input.</param>
         /// <returns>Sanitized input.</returns>
-        public static string SanititzeFileName(string input)
+        public static string SanitizeFileName(string input)
         {
             var output = string.Empty;
             if (!string.IsNullOrWhiteSpace(input))

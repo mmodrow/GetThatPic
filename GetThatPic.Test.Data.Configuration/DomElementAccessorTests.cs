@@ -46,7 +46,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData(null)]
         public void GetContent_InvalidSelector(string selector)
         {
-            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var doc = UrlParser.GetDocumentFromMarkup(ValidMarkup);
             var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Text,
@@ -67,7 +67,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData(null)]
         public void GetContent_InvalidAttributeName(string name)
         {
-            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var doc = UrlParser.GetDocumentFromMarkup(ValidMarkup);
             var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
@@ -86,7 +86,7 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_InnerText()
         {
-            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var doc = UrlParser.GetDocumentFromMarkup(ValidMarkup);
             var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Text,
@@ -104,7 +104,7 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_InnerHtml_Single()
         {
-            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var doc = UrlParser.GetDocumentFromMarkup(ValidMarkup);
             var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Html,
@@ -126,7 +126,7 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_InnerHtml_Multiple()
         {
-            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var doc = UrlParser.GetDocumentFromMarkup(ValidMarkup);
             var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Html,
@@ -144,7 +144,7 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_Attribute_Data()
         {
-            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var doc = UrlParser.GetDocumentFromMarkup(ValidMarkup);
             var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
@@ -163,7 +163,7 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_Pattern_Valid()
         {
-            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var doc = UrlParser.GetDocumentFromMarkup(ValidMarkup);
             var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
@@ -187,7 +187,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData(null)]
         public void GetContent_Pattern_Invalid(string regexContent)
         {
-            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var doc = UrlParser.GetDocumentFromMarkup(ValidMarkup);
             var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
@@ -207,7 +207,7 @@ namespace GetThatPic.Test.Data.Configuration
         [Fact]
         public void GetContent_Replace_Valid()
         {
-            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var doc = UrlParser.GetDocumentFromMarkup(ValidMarkup);
             var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,
@@ -230,7 +230,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData(null)]
         public void GetContent_Replace_Invalid(string replace)
         {
-            var doc = Link.GetDocumentFromMarkup(ValidMarkup);
+            var doc = UrlParser.GetDocumentFromMarkup(ValidMarkup);
             var accessor = new DomElementAccessor()
             {
                 Type = DomElementAccessor.TargetType.Attribute,

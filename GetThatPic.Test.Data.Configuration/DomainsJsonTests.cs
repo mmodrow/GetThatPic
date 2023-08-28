@@ -51,7 +51,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("https://www.graphitti-blog.de/2017/11/12/mein-biorhythmus/", "graphitti-blog.de")]
         public void Name(string url, string expectedName)
         {
-            var link = new Link(true, false);
+            var link = new UrlParser(true, false);
 
             var domain = link.IdentifyDomain(url);
             Assert.Equal(expectedName, domain.Name);
@@ -96,7 +96,7 @@ namespace GetThatPic.Test.Data.Configuration
         ////[InlineData("https://media1.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "fury_kung_fury_kung_hackerman")]
         public async Task FileName(string url, string expectedName)
         {
-            var link = new Link(true, false);
+            var link = new UrlParser(true, false);
 
             var fileName = await link.GetImageFileName(url);
             Assert.Equal(expectedName, fileName);
@@ -135,7 +135,7 @@ namespace GetThatPic.Test.Data.Configuration
         ////[InlineData("https://media1.giphy.com/media/QbumCX9HFFDQA/giphy.gif", "https://i.giphy.com/media/QbumCX9HFFDQA/giphy.gif")]
         public async Task ImageUrl(string url, string expectedImageUrl)
         {
-            var link = new Link(true, false);
+            var link = new UrlParser(true, false);
 
             IEnumerable<string> fileName = (await link.GetImageUrls(url)).ToList();
             Assert.Contains(expectedImageUrl, fileName);
@@ -154,7 +154,7 @@ namespace GetThatPic.Test.Data.Configuration
         [InlineData("https://www.schisslaweng.net/koerperklaus/", 1)]
         public async Task ImageCount(string url, int imageCount)
         {
-            var link = new Link(true, false);
+            var link = new UrlParser(true, false);
 
             var urls = await link.GetImageUrls(url);
             Assert.Equal(imageCount, urls?.Count());

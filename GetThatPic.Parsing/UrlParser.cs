@@ -24,7 +24,7 @@ namespace GetThatPic.Parsing
     /// Parses an url for the correct domain configuration node.
     /// From Domain and url other data can be retrieved.
     /// </summary>
-    public class Link
+    public class UrlParser
     {
         /// <summary>
         /// Pattern to drop a leading period.
@@ -42,11 +42,11 @@ namespace GetThatPic.Parsing
         private static readonly Regex Protocol = new Regex("^(https?:).*?$", RegexOptions.IgnoreCase);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Link" /> class.
+        /// Initializes a new instance of the <see cref="UrlParser" /> class.
         /// </summary>
         /// <param name="autoInitialize">if set to <c>true</c> the config gets automatically initialized.</param>
         /// <param name="loadCustomConfigs">if set to <c>true</c> [load custom configs].</param>
-        public Link(bool autoInitialize = true, bool loadCustomConfigs = true)
+        public UrlParser(bool autoInitialize = true, bool loadCustomConfigs = true)
         {
             if (autoInitialize)
             {
@@ -182,7 +182,7 @@ namespace GetThatPic.Parsing
             var nonEmptyNameParts = imageNameFragments.SelectMany(fragments => fragments)
                 .Where(fragment => !string.IsNullOrWhiteSpace(fragment));
             var joinedFragments = string.Join(domain.FileNameFragmentDelimiter, nonEmptyNameParts);
-            return Sanitizing.SanititzeFileName(joinedFragments);
+            return Sanitizing.SanitizeFileName(joinedFragments);
         }
 
         /// <summary>
