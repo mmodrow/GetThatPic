@@ -22,7 +22,7 @@ namespace GetThatPic.Data.Structure
         /// <summary>
         /// The length.
         /// </summary>
-        private int length;
+        private int _length;
 
         /// <summary>
         /// Gets the length.
@@ -32,12 +32,12 @@ namespace GetThatPic.Data.Structure
         /// </value>
         public int Length
         {
-            get => length;
+            get => _length;
             private set
             {
-                if (length >= 0 && length <= BufferSize)
+                if (_length >= 0 && _length <= BufferSize)
                 {
-                    length = value;
+                    _length = value;
                 }
             }
         }

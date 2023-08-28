@@ -420,17 +420,17 @@ namespace GetThatPic.Parsing
             var output = string.Empty;
             if (!string.IsNullOrWhiteSpace(input))
             {
-                const int NtfsNameLimit = 255;
-                const int UnixTimeStampWithSeprarator = 11;
-                const int NormalFileEndingLength = 4;
+                const int ntfsNameLimit = 255;
+                const int unixTimeStampWithSeparator = 11;
+                const int normalFileEndingLength = 4;
 
-                const int MaxLength = NtfsNameLimit - UnixTimeStampWithSeprarator - NormalFileEndingLength;
-                if (input.Length <= MaxLength)
+                const int maxLength = ntfsNameLimit - unixTimeStampWithSeparator - normalFileEndingLength;
+                if (input.Length <= maxLength)
                 {
                     return input;
                 }
 
-                output = input.Substring(0, MaxLength);
+                output = input.Substring(0, maxLength);
             }
 
             return output;

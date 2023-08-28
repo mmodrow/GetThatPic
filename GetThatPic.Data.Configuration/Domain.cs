@@ -17,7 +17,7 @@ namespace GetThatPic.Data.Configuration
         /// <summary>
         /// The download directory.
         /// </summary>
-        private string downloadDirectory;
+        private string _downloadDirectory;
         
         /// <summary>
         /// Gets or sets the name.
@@ -78,7 +78,7 @@ namespace GetThatPic.Data.Configuration
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(downloadDirectory))
+                if (string.IsNullOrWhiteSpace(_downloadDirectory))
                 {
                     DownloadDirectory = Name;
                 }
@@ -86,13 +86,13 @@ namespace GetThatPic.Data.Configuration
                 if (IsPathRelative)
                 {
                     return Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) +
-                       @"\GetThatPic\" + downloadDirectory + @"\";
+                       @"\GetThatPic\" + _downloadDirectory + @"\";
                 }
 
-                return downloadDirectory + @"\";
+                return _downloadDirectory + @"\";
             }
 
-            set => downloadDirectory = value;
+            set => _downloadDirectory = value;
         }
 
         /// <summary>
